@@ -1,4 +1,4 @@
-// Base-case Q2'26F driver assumptions, defense notes, and guidance ranges —
+// Base-case Q2'26F driver assumptions, defense notes, and guidance ranges,
 // transcribed from the "Assumptions" tab of the source model. This is the
 // single source of truth for both the locked snapshot and the sandbox's
 // reset-to-base state.
@@ -26,13 +26,13 @@ export const DRIVERS = {
       "Trips/MAPC YoY growth has ranged +2% to +4% over the last 7 quarters (Q3'24 +4%, Q4'24 +3%, Q1'25 +3%, Q2'25 +2%, Q3'25 +4%, Q4'25 +3%, Q1'26 +3%) with no clear deceleration. We hold the Q1'26 rate of +3% flat. Balaji (CFO), Q1'26 call, on insurance price cuts: “we've seen that price reduction translate to acceleration in trip growth... we expect to see this translating to accelerating US business growth in 2026.”",
   },
   gbPerTrip: {
-    label: "GB per Trip — 12-Quarter Historical Mean",
+    label: "GB per Trip - 12-Quarter Historical Mean",
     value: 14.43,
     defense:
-      "Range-bound $14.10–$14.75 over 12 quarters, no directional trend. Historical mean = $14.43. Produces GB = $57.2B, inside guidance range $56.25–$57.75B. Offsetting forces: premium mix tailwind vs. insurance affordability headwind.",
+      "Range-bound $14.10-$14.75 over 12 quarters, no directional trend. Historical mean = $14.43. Produces GB = $57.2B, inside guidance range $56.25-$57.75B. Offsetting forces: premium mix tailwind vs. insurance affordability headwind.",
   },
   ebitdaMarginBase: {
-    label: "EBITDA Margin — Base Case",
+    label: "EBITDA Margin - Base Case",
     value: 0.0485,
     defense:
       "Base case 4.85%. Avg YoY additive margin expansion = +0.43pp over the last 4 quarters, applied to the Q2'25 base of 4.53%. Insurance savings tailwind per Balaji's explicit Q1'26 commentary.",
@@ -59,7 +59,7 @@ export const DRIVERS = {
     label: "Mobility Take Rate",
     value: 0.307,
     defense:
-      "Q2'25 comparable (30.7%). Q1'26 at 25.8% excluded — same contra-revenue reclassification as consolidated (Mobility revenue +5% vs GB +25%).",
+      "Q2'25 comparable (30.7%). Q1'26 at 25.8% excluded: same contra-revenue reclassification as consolidated (Mobility revenue +5% vs GB +25%).",
   },
   deliveryTakeRate: {
     label: "Delivery Take Rate",
@@ -71,7 +71,7 @@ export const DRIVERS = {
     label: "Freight Take Rate",
     value: 1.0015,
     defense:
-      "Revenue consistently ~100.1–100.2% of GB. 12-quarter average = 100.15%.",
+      "Revenue consistently ~100.1-100.2% of GB. 12-quarter average = 100.15%.",
   },
   mobilityOpMargin: {
     label: "Mobility Op Income Margin (% of Mobility GB)",

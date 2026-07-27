@@ -7,23 +7,23 @@ import { FileDown } from "lucide-react";
 const SOURCES = [
   { label: "Q2'24 Earnings Press Release", note: "prior-year comp column supplies Q2'23 actuals", file: "q2-24-press-release.pdf" },
   { label: "Q3'24 Earnings Press Release", note: "prior-year comp column supplies Q3'23 actuals", file: "q3-24-press-release.pdf" },
-  { label: "Q4'24 Earnings Press Release", note: "prior-year comp column supplies Q4'23 actuals; Non-GAAP OI history begins here", file: "q4-24-press-release.pdf" },
+  { label: "Q4'24 Earnings Press Release", note: "prior-year comp column supplies Q4'23 actuals, Non-GAAP OI history begins here", file: "q4-24-press-release.pdf" },
   { label: "Q1'25 Earnings Press Release", note: "prior-year comp column supplies Q1'24 actuals", file: "q1-25-press-release.pdf" },
-  { label: "Q2'25 Earnings Press Release", note: "Q2'25 actuals — base quarter for the Q2'26F build-up", file: "q2-25-press-release.pdf" },
+  { label: "Q2'25 Earnings Press Release", note: "Q2'25 actuals, base quarter for the Q2'26F build-up", file: "q2-25-press-release.pdf" },
   { label: "Q3'25 Earnings Press Release", note: "Q3'25 actuals", file: "q3-25-press-release.pdf" },
   { label: "Q4'25 Earnings Press Release", note: "Q4'25 actuals", file: "q4-25-press-release.pdf" },
-  { label: "Q1'26 Earnings Press Release", note: "Q1'26 actuals; retroactively disclosed Q4'24 / Q1'25 segment Non-GAAP OI", file: "q1-26-press-release.pdf" },
+  { label: "Q1'26 Earnings Press Release", note: "Q1'26 actuals, retroactively disclosed Q4'24 / Q1'25 segment Non-GAAP OI", file: "q1-26-press-release.pdf" },
   { label: "Q1'26 Earnings Call Transcript", note: "MAPC growth, trips/MAPC, and insurance-tailwind commentary cited in driver defense notes", file: "q1-26-call-transcript.pdf" },
 ];
 
 const DRIVER_TREE = [
   { step: "MAPCs YoY Growth", detail: "Applied to Q2'25 actual MAPCs (180M) to get Q2'26F MAPCs." },
   { step: "Trips/MAPC YoY Growth", detail: "Applied to Q2'25 actual monthly trips/MAPC (6.05x) to get Q2'26F trips/MAPC." },
-  { step: "Total Trips", detail: "MAPCs × monthly trips/MAPC × 3 months." },
+  { step: "Total Trips", detail: "MAPCs times monthly trips/MAPC times 3 months." },
   { step: "GB per Trip", detail: "12-quarter historical mean, applied to total trips to get Gross Bookings." },
   { step: "Segment Mix", detail: "Mobility / Delivery / Freight % of total GB, applied to Gross Bookings to get segment GB." },
-  { step: "Segment Take Rates", detail: "Applied to segment GB to get segment revenue. Total revenue = sum of segments (segment tab is primary; consolidated revenue references it)." },
-  { step: "EBITDA Margin Scenario", detail: "Applied directly to total Gross Bookings (top-down) to get consolidated Adj EBITDA — independent of the segment build-up below." },
+  { step: "Segment Take Rates", detail: "Applied to segment GB to get segment revenue. Total revenue equals the sum of segments (segment tab is primary, consolidated revenue references it)." },
+  { step: "EBITDA Margin Scenario", detail: "Applied directly to total Gross Bookings (top-down) to get consolidated Adj EBITDA, independent of the segment build-up below." },
   { step: "Segment Op Margins", detail: "Applied to segment GB to get segment Non-GAAP Operating Income (the metric that replaced segment Adj EBITDA starting Q1'26)." },
   { step: "Corp G&A + Platform R&D", detail: "Flat dollar deduction, added to segment NGOP sum to get total Non-GAAP Operating Income." },
 ];
@@ -31,11 +31,11 @@ const DRIVER_TREE = [
 const CAVEATS = [
   {
     title: "Segment Adj EBITDA was discontinued starting Q1'26",
-    body: "Uber stopped disclosing segment-level Adjusted EBITDA starting with the Q1'26 print. It was replaced by segment Non-GAAP Operating Income. Consolidated Adj EBITDA is still disclosed, but not at the segment level. This model keeps the two series separate rather than splicing them — the segment margin charts on the forecast page use the pre-Q1'26 Adj EBITDA basis, labeled accordingly.",
+    body: "Uber stopped disclosing segment-level Adjusted EBITDA starting with the Q1'26 print. It was replaced by segment Non-GAAP Operating Income. Consolidated Adj EBITDA is still disclosed, but not at the segment level. This model keeps the two series separate rather than splicing them. The segment margin charts on the forecast page use the pre-Q1'26 Adj EBITDA basis, labeled accordingly.",
   },
   {
     title: "Take rate noise from contra-revenue reclassification",
-    body: "Q2'24, Q3'24, and Q1'26 take rates are distorted by a disclosed reclassification of certain sales & marketing costs as contra-revenue. In Q1'26, Mobility revenue grew only 5% YoY versus Gross Bookings +25% YoY — an accounting effect, not a demand slowdown. Those quarters are treated as outliers rather than trend signal when setting take rate assumptions.",
+    body: "Q2'24, Q3'24, and Q1'26 take rates are distorted by a disclosed reclassification of certain sales and marketing costs as contra-revenue. In Q1'26, Mobility revenue grew only 5% YoY versus Gross Bookings +25% YoY, an accounting effect, not a demand slowdown. Those quarters are treated as outliers rather than trend signal when setting take rate assumptions.",
   },
   {
     title: "Segment trips/MAPC isn't disclosed",
@@ -45,12 +45,12 @@ const CAVEATS = [
 
 function DriverDefense({ label, value, defense, format }: { label: string; value: number; defense: string; format: (v: number) => string }) {
   return (
-    <div className="flex flex-col gap-1 py-3" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+    <div className="flex flex-col gap-1.5 py-4" style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
       <div className="flex items-baseline justify-between gap-3">
-        <span className="text-[12px] font-medium" style={{ color: "#FAFAFA" }}>{label}</span>
-        <span className="tnum text-[12.5px] flex-shrink-0" style={{ color: "#A5B4FC", fontFamily: "var(--font-geist-mono)" }}>{format(value)}</span>
+        <span className="text-[13px] font-bold" style={{ color: "#0A0A0A" }}>{label}</span>
+        <span className="tnum text-[13px] font-bold flex-shrink-0" style={{ color: "#04964F", fontFamily: "var(--font-geist-mono)" }}>{format(value)}</span>
       </div>
-      <p className="text-[11.5px] leading-relaxed" style={{ color: "#71717A" }}>{defense}</p>
+      <p className="text-[12px] leading-relaxed" style={{ color: "#6B6B6B" }}>{defense}</p>
     </div>
   );
 }
@@ -61,74 +61,74 @@ export default function MethodologyPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 px-5 py-6 max-w-[900px] w-full mx-auto flex flex-col gap-10">
+      <main className="flex-1 px-6 md:px-10 py-10 md:py-14 max-w-[900px] w-full mx-auto flex flex-col gap-14">
         <div>
-          <h1 className="text-[18px] font-semibold mb-1.5" style={{ color: "#FAFAFA" }}>
+          <h1 className="text-[30px] font-black tracking-tight mb-3" style={{ color: "#0A0A0A" }}>
             Methodology
           </h1>
-          <p className="text-[12.5px] leading-relaxed" style={{ color: "#71717A" }}>
+          <p className="text-[13.5px] leading-relaxed" style={{ color: "#6B6B6B" }}>
             This Q2&apos;26F forecast was built from Uber&apos;s publicly disclosed segment financials
-            (Q2&apos;23–Q1&apos;26) and management commentary from the Q1&apos;26 earnings call, then submitted
+            (Q2&apos;23 through Q1&apos;26) and management commentary from the Q1&apos;26 earnings call, then submitted
             as a locked snapshot ahead of Uber&apos;s {new Date(GUIDANCE.earningsDate + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} print.
             Every base-case assumption below is defended against a specific historical trend or disclosed
-            data point — no assumption is a bare guess.
+            data point. No assumption is a bare guess.
           </p>
         </div>
 
         {/* Data sources */}
         <section>
-          <h2 className="text-[13px] font-semibold mb-1" style={{ color: "#FAFAFA" }}>
+          <h2 className="text-[20px] font-extrabold tracking-tight mb-1.5" style={{ color: "#0A0A0A" }}>
             Data Sources
           </h2>
-          <p className="text-[11.5px] mb-3" style={{ color: "#52525B" }}>
+          <p className="text-[12.5px] mb-4" style={{ color: "#9B9B9B" }}>
             Click any title to download the original PDF.
           </p>
-          <div className="flex flex-col rounded-lg overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div className="flex flex-col rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
             {SOURCES.map((s, i) => (
               <div
                 key={s.label}
-                className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-3 px-3.5 py-2.5"
+                className="flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-3 px-4 py-3"
                 style={{
-                  background: i % 2 === 0 ? "#0F0F11" : "#0C0C0E",
-                  borderTop: i > 0 ? "1px solid rgba(255,255,255,0.04)" : undefined,
+                  background: i % 2 === 0 ? "#FFFFFF" : "#FAFAFA",
+                  borderTop: i > 0 ? "1px solid rgba(0,0,0,0.05)" : undefined,
                 }}
               >
                 <a
                   href={`/sources/${s.file}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-[12px] font-medium flex-shrink-0 group"
-                  style={{ color: "#D4D4D8", width: 240 }}
+                  className="flex items-center gap-1.5 text-[12.5px] font-semibold flex-shrink-0 group"
+                  style={{ color: "#0A0A0A", width: 240 }}
                 >
-                  <FileDown size={11} strokeWidth={1.75} style={{ color: "#52525B" }} className="group-hover:opacity-100" />
+                  <FileDown size={12} strokeWidth={2} style={{ color: "#9B9B9B" }} />
                   <span className="group-hover:underline">{s.label}</span>
                 </a>
-                <span className="text-[11.5px]" style={{ color: "#52525B" }}>{s.note}</span>
+                <span className="text-[12px]" style={{ color: "#9B9B9B" }}>{s.note}</span>
               </div>
             ))}
           </div>
-          <p className="text-[11px] mt-2" style={{ color: "#3F3F46" }}>
+          <p className="text-[11.5px] mt-3" style={{ color: "#B5B5B5" }}>
             Q1&apos;26 note: {q125.note}
           </p>
         </section>
 
         {/* Driver tree */}
         <section>
-          <h2 className="text-[13px] font-semibold mb-3" style={{ color: "#FAFAFA" }}>
+          <h2 className="text-[20px] font-extrabold tracking-tight mb-4" style={{ color: "#0A0A0A" }}>
             Driver Tree Logic
           </h2>
           <div className="flex flex-col gap-0">
             {DRIVER_TREE.map((d, i) => (
-              <div key={d.step} className="flex gap-3 py-2.5" style={{ borderTop: i > 0 ? "1px solid rgba(255,255,255,0.04)" : undefined }}>
+              <div key={d.step} className="flex gap-4 py-3.5" style={{ borderTop: i > 0 ? "1px solid rgba(0,0,0,0.05)" : undefined }}>
                 <span
-                  className="flex-shrink-0 flex items-center justify-center w-5 h-5 rounded-full text-[10px] tnum font-medium mt-0.5"
-                  style={{ background: "rgba(99,102,241,0.12)", color: "#A5B4FC", fontFamily: "var(--font-geist-mono)" }}
+                  className="flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full text-[11px] tnum font-bold mt-0.5"
+                  style={{ background: "rgba(6,193,103,0.12)", color: "#04964F", fontFamily: "var(--font-geist-mono)" }}
                 >
                   {i + 1}
                 </span>
                 <div>
-                  <span className="text-[12px] font-medium" style={{ color: "#FAFAFA" }}>{d.step}</span>
-                  <p className="text-[11.5px] leading-relaxed mt-0.5" style={{ color: "#71717A" }}>{d.detail}</p>
+                  <span className="text-[13px] font-bold" style={{ color: "#0A0A0A" }}>{d.step}</span>
+                  <p className="text-[12px] leading-relaxed mt-0.5" style={{ color: "#6B6B6B" }}>{d.detail}</p>
                 </div>
               </div>
             ))}
@@ -137,43 +137,42 @@ export default function MethodologyPage() {
 
         {/* EBITDA scenarios */}
         <section>
-          <h2 className="text-[13px] font-semibold mb-3" style={{ color: "#FAFAFA" }}>
+          <h2 className="text-[20px] font-extrabold tracking-tight mb-4" style={{ color: "#0A0A0A" }}>
             EBITDA Margin Scenarios
           </h2>
-          <div className="grid grid-cols-3 gap-2.5">
+          <div className="grid grid-cols-3 gap-3">
             {(Object.keys(EBITDA_SCENARIOS) as (keyof typeof EBITDA_SCENARIOS)[]).map((key) => {
               const s = EBITDA_SCENARIOS[key];
               const active = key === "base";
               return (
                 <div
                   key={key}
-                  className="flex flex-col gap-1 px-3.5 py-3 rounded-lg"
+                  className="flex flex-col gap-1.5 px-5 py-4 rounded-3xl"
                   style={{
-                    background: active ? "rgba(99,102,241,0.08)" : "#0F0F11",
-                    border: active ? "1px solid rgba(99,102,241,0.3)" : "1px solid rgba(255,255,255,0.06)",
+                    background: active ? "#06C167" : "#F6F6F6",
                   }}
                 >
-                  <span className="text-[11px] font-medium" style={{ color: active ? "#A5B4FC" : "#A1A1AA" }}>
+                  <span className="text-[11.5px] font-bold" style={{ color: active ? "#FFFFFF" : "#6B6B6B" }}>
                     {s.label}{active && " (submitted)"}
                   </span>
-                  <span className="tnum text-[15px] font-semibold" style={{ color: "#FAFAFA", fontFamily: "var(--font-geist-mono)" }}>
+                  <span className="tnum text-[19px] font-black" style={{ color: active ? "#FFFFFF" : "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
                     {fmtPct(s.margin)}
                   </span>
                 </div>
               );
             })}
           </div>
-          <p className="text-[11px] mt-2.5" style={{ color: "#3F3F46" }}>
-            Guidance range: {fmtM(GUIDANCE.adjEbitdaLow)}–{fmtM(GUIDANCE.adjEbitdaHigh)} Adj EBITDA, non-GAAP EPS ${GUIDANCE.epsLow.toFixed(2)}–${GUIDANCE.epsHigh.toFixed(2)}.
+          <p className="text-[12px] mt-3" style={{ color: "#9B9B9B" }}>
+            Guidance range: {fmtM(GUIDANCE.adjEbitdaLow)} to {fmtM(GUIDANCE.adjEbitdaHigh)} Adj EBITDA, non-GAAP EPS ${GUIDANCE.epsLow.toFixed(2)} to ${GUIDANCE.epsHigh.toFixed(2)}.
           </p>
         </section>
 
         {/* Base case defense */}
         <section>
-          <h2 className="text-[13px] font-semibold mb-1" style={{ color: "#FAFAFA" }}>
+          <h2 className="text-[20px] font-extrabold tracking-tight mb-1.5" style={{ color: "#0A0A0A" }}>
             Base-Case Assumption Defense
           </h2>
-          <p className="text-[11.5px] mb-2" style={{ color: "#52525B" }}>
+          <p className="text-[12.5px] mb-3" style={{ color: "#9B9B9B" }}>
             Pulled directly from the Defense / Source column of the model&apos;s Assumptions tab.
           </p>
           <div className="flex flex-col">
@@ -195,19 +194,19 @@ export default function MethodologyPage() {
         </section>
 
         {/* Caveats */}
-        <section className="pb-8">
-          <h2 className="text-[13px] font-semibold mb-3" style={{ color: "#FAFAFA" }}>
+        <section className="pb-12">
+          <h2 className="text-[20px] font-extrabold tracking-tight mb-4" style={{ color: "#0A0A0A" }}>
             Known Caveats
           </h2>
           <div className="flex flex-col gap-3">
             {CAVEATS.map((c) => (
               <div
                 key={c.title}
-                className="rounded-lg px-3.5 py-3"
-                style={{ background: "#0F0F11", border: "1px solid rgba(249,115,22,0.15)" }}
+                className="rounded-3xl px-5 py-4"
+                style={{ background: "#F6F6F6" }}
               >
-                <span className="text-[12px] font-medium" style={{ color: "#F97316" }}>{c.title}</span>
-                <p className="text-[11.5px] leading-relaxed mt-1" style={{ color: "#71717A" }}>{c.body}</p>
+                <span className="text-[13px] font-bold" style={{ color: "#0A0A0A" }}>{c.title}</span>
+                <p className="text-[12px] leading-relaxed mt-1.5" style={{ color: "#6B6B6B" }}>{c.body}</p>
               </div>
             ))}
           </div>

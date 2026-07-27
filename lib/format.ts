@@ -1,7 +1,7 @@
 export function fmtM(v: number | null | undefined, decimals = 0): string {
   if (v === null || v === undefined || !isFinite(v)) return "—";
-  const sign = v < 0 ? "-" : "";
-  return `${sign}$${Math.abs(v).toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}M`;
+  const abs = `$${Math.abs(v).toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}M`;
+  return v < 0 ? `(${abs})` : abs;
 }
 
 export function fmtB(v: number | null | undefined, decimals = 2): string {

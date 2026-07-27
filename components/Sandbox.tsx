@@ -43,19 +43,19 @@ function SliderRow({
   defense?: string;
 }) {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-1 text-[11.5px]" style={{ color: "#A1A1AA" }}>
+        <span className="flex items-center gap-1.5 text-[12px] font-medium" style={{ color: "#3A3A3A" }}>
           {label}
           {defense && (
             <span title={defense} className="cursor-help">
-              <Info size={10.5} strokeWidth={1.75} style={{ color: "#3F3F46" }} />
+              <Info size={11} strokeWidth={2} style={{ color: "#B5B5B5" }} />
             </span>
           )}
         </span>
         <span
-          className="tnum text-[12.5px] font-medium"
-          style={{ color: "#FAFAFA", fontFamily: "var(--font-geist-mono)" }}
+          className="tnum text-[13px] font-bold"
+          style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}
         >
           {format(value)}
         </span>
@@ -68,11 +68,11 @@ function SliderRow({
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
       />
-      <div className="flex items-center justify-between text-[9.5px]" style={{ color: "#3F3F46" }}>
+      <div className="flex items-center justify-between text-[9.5px] font-medium" style={{ color: "#B5B5B5" }}>
         <span>{format(min)}</span>
         {histMin !== undefined && histMax !== undefined && (
           <span>
-            12-qtr range: {format(histMin)}–{format(histMax)}
+            12-qtr range: {format(histMin)} to {format(histMax)}
           </span>
         )}
         <span>{format(max)}</span>
@@ -84,13 +84,13 @@ function SliderRow({
 function GroupCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div
-      className="flex flex-col gap-4 rounded-xl p-4"
-      style={{ background: "#0F0F11", border: "1px solid rgba(255,255,255,0.07)" }}
+      className="flex flex-col gap-5 rounded-[28px] p-6 sm:p-7"
+      style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)" }}
     >
-      <h3 className="text-[11px] font-semibold uppercase" style={{ color: "#71717A", letterSpacing: "0.07em" }}>
+      <h3 className="text-[11px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.08em" }}>
         {title}
       </h3>
-      <div className="flex flex-col gap-4">{children}</div>
+      <div className="flex flex-col gap-6">{children}</div>
     </div>
   );
 }
@@ -100,7 +100,7 @@ function DeltaChip({ current, base }: { current: number; base: number }) {
   const pctDiff = base !== 0 ? diff / base : 0;
   if (Math.abs(pctDiff) < 0.0005) {
     return (
-      <span className="flex items-center gap-0.5 text-[10px] tnum" style={{ color: "#52525B" }}>
+      <span className="flex items-center gap-0.5 text-[10px] font-semibold tnum" style={{ color: "#B5B5B5" }}>
         <Minus size={9} /> flat
       </span>
     );
@@ -108,8 +108,8 @@ function DeltaChip({ current, base }: { current: number; base: number }) {
   const up = diff > 0;
   return (
     <span
-      className="flex items-center gap-0.5 text-[10px] tnum"
-      style={{ color: up ? "#4ADE80" : "#F87171", fontFamily: "var(--font-geist-mono)" }}
+      className="flex items-center gap-0.5 text-[10px] font-semibold tnum"
+      style={{ color: up ? "#04964F" : "#6B6B6B", fontFamily: "var(--font-geist-mono)" }}
     >
       {up ? <TrendingUp size={9} /> : <TrendingDown size={9} />}
       {up ? "+" : ""}
@@ -121,13 +121,13 @@ function DeltaChip({ current, base }: { current: number; base: number }) {
 function KPI({ label, value, base }: { label: string; value: number; base: number }) {
   return (
     <div
-      className="flex flex-col gap-1 px-3.5 py-2.5 rounded-lg"
-      style={{ background: "#131316", border: "1px solid rgba(255,255,255,0.06)" }}
+      className="flex flex-col gap-1.5 px-4 py-3.5 rounded-2xl"
+      style={{ background: "#F6F6F6" }}
     >
-      <span className="text-[9.5px] uppercase" style={{ color: "#52525B", letterSpacing: "0.06em" }}>
+      <span className="text-[9.5px] font-semibold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.06em" }}>
         {label}
       </span>
-      <span className="tnum text-[17px] font-semibold leading-none" style={{ color: "#FAFAFA", fontFamily: "var(--font-geist-mono)" }}>
+      <span className="tnum text-[22px] font-black leading-none tracking-tight" style={{ color: "#0A0A0A" }}>
         {fmtM(value)}
       </span>
       <DeltaChip current={value} base={base} />
@@ -154,29 +154,29 @@ export default function Sandbox() {
 
   return (
     <section className="fade-in-up">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-          <h2 className="text-[14px] font-semibold" style={{ color: "#FAFAFA" }}>
+          <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
             Driver Sandbox
           </h2>
-          <p className="text-[11px]" style={{ color: "#52525B" }}>
+          <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
             Drag any assumption to see the segment P&amp;L update live. Doesn&apos;t affect the locked forecast above.
           </p>
         </div>
         <button
           onClick={() => setInputs(BASE_INPUTS)}
           disabled={isBase}
-          className="flex items-center gap-1.5 text-[11px] font-medium px-3 py-1.5 rounded-md transition-colors duration-100 disabled:opacity-30 disabled:cursor-not-allowed"
-          style={{ color: "#A1A1AA", border: "1px solid rgba(255,255,255,0.08)" }}
+          className="flex items-center gap-1.5 text-[12px] font-bold px-5 py-2.5 rounded-full disabled:opacity-30 disabled:cursor-not-allowed"
+          style={{ color: "#FFFFFF", background: "#06C167" }}
         >
-          <RotateCcw size={11} strokeWidth={1.75} />
+          <RotateCcw size={12} strokeWidth={2.25} />
           Reset to base case
         </button>
       </div>
 
-      <div className="grid lg:grid-cols-[1fr_380px] gap-4 items-start">
+      <div className="grid lg:grid-cols-[1fr_400px] gap-5 items-start">
         {/* Left: driver controls */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           <GroupCard title="1. Platform Drivers">
             <SliderRow
               label="MAPCs YoY Growth Rate"
@@ -213,7 +213,7 @@ export default function Sandbox() {
           </GroupCard>
 
           <GroupCard title="2. EBITDA Margin Scenario">
-            <div className="flex gap-1.5">
+            <div className="flex gap-2">
               {(Object.keys(EBITDA_SCENARIOS) as ScenarioKey[]).map((key) => {
                 const s = EBITDA_SCENARIOS[key];
                 const active = scenario === key;
@@ -221,16 +221,15 @@ export default function Sandbox() {
                   <button
                     key={key}
                     onClick={() => set("ebitdaMargin", s.margin)}
-                    className="flex-1 flex flex-col items-center gap-0.5 py-2 rounded-md transition-colors duration-100"
+                    className="flex-1 flex flex-col items-center gap-0.5 py-3 rounded-full"
                     style={{
-                      background: active ? "rgba(99,102,241,0.12)" : "#131316",
-                      border: active ? "1px solid rgba(99,102,241,0.4)" : "1px solid rgba(255,255,255,0.06)",
+                      background: active ? "#06C167" : "#F6F6F6",
                     }}
                   >
-                    <span className="text-[10.5px] font-medium" style={{ color: active ? "#A5B4FC" : "#71717A" }}>
+                    <span className="text-[11px] font-bold" style={{ color: active ? "#FFFFFF" : "#6B6B6B" }}>
                       {s.label}
                     </span>
-                    <span className="tnum text-[11px]" style={{ color: active ? "#A5B4FC" : "#3F3F46", fontFamily: "var(--font-geist-mono)" }}>
+                    <span className="tnum text-[11px] font-semibold" style={{ color: active ? "#FFFFFF" : "#9B9B9B", fontFamily: "var(--font-geist-mono)" }}>
                       {fmtPct(s.margin)}
                     </span>
                   </button>
@@ -249,8 +248,8 @@ export default function Sandbox() {
               histMax={RANGES.ebitdaMargin.max}
               defense={DRIVERS.ebitdaMarginBase.defense}
             />
-            <p className="text-[10px]" style={{ color: "#3F3F46" }}>
-              Guidance: ${fmtNum(GUIDANCE.adjEbitdaLow)}M–${fmtNum(GUIDANCE.adjEbitdaHigh)}M Adj EBITDA
+            <p className="text-[10.5px] font-medium" style={{ color: "#B5B5B5" }}>
+              Guidance: ${fmtNum(GUIDANCE.adjEbitdaLow)}M to ${fmtNum(GUIDANCE.adjEbitdaHigh)}M Adj EBITDA
             </p>
           </GroupCard>
 
@@ -279,9 +278,9 @@ export default function Sandbox() {
               histMax={RANGES.deliveryMix.max}
               defense={DRIVERS.deliveryMix.defense}
             />
-            <div className="flex items-center justify-between text-[11px] px-0.5" style={{ color: "#52525B" }}>
+            <div className="flex items-center justify-between text-[12px] font-medium px-0.5" style={{ color: "#6B6B6B" }}>
               <span>Freight % of Total GB (derived)</span>
-              <span className="tnum" style={{ color: "#A1A1AA", fontFamily: "var(--font-geist-mono)" }}>
+              <span className="tnum font-bold" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
                 {fmtPct(out.freightMix)}
               </span>
             </div>
@@ -379,20 +378,20 @@ export default function Sandbox() {
         </div>
 
         {/* Right: live output panel */}
-        <div className="lg:sticky lg:top-4 flex flex-col gap-4">
+        <div className="lg:sticky lg:top-6 flex flex-col gap-5">
           <div
-            className="rounded-xl p-4 flex flex-col gap-4"
-            style={{ background: "#0F0F11", border: "1px solid rgba(255,255,255,0.07)" }}
+            className="rounded-[28px] p-6 sm:p-7 flex flex-col gap-6"
+            style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)" }}
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-[11px] font-semibold uppercase" style={{ color: "#71717A", letterSpacing: "0.07em" }}>
+              <h3 className="text-[11px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.08em" }}>
                 Sandbox Output
               </h3>
               <span
-                className="text-[10px] font-medium px-2 py-0.5 rounded-full tnum"
+                className="text-[10px] font-bold px-3 py-1 rounded-full tnum"
                 style={{
-                  color: isBase ? "#6366F1" : "#F97316",
-                  background: isBase ? "rgba(99,102,241,0.1)" : "rgba(249,115,22,0.1)",
+                  color: isBase ? "#04964F" : "#6B6B6B",
+                  background: isBase ? "rgba(6,193,103,0.12)" : "#F0F0F0",
                   fontFamily: "var(--font-geist-mono)",
                 }}
               >
@@ -400,44 +399,45 @@ export default function Sandbox() {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-2.5">
               <KPI label="Gross Bookings" value={out.grossBookings} base={BASE_OUTPUT.grossBookings} />
               <KPI label="Revenue" value={out.totalRevenue} base={BASE_OUTPUT.totalRevenue} />
               <KPI label="Adj EBITDA" value={out.adjEbitda} base={BASE_OUTPUT.adjEbitda} />
               <KPI label="Non-GAAP OI" value={out.totalNGOP} base={BASE_OUTPUT.totalNGOP} />
             </div>
 
-            <div className="flex flex-col gap-2.5">
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center justify-between text-[10px]">
-                  <span style={{ color: "#52525B" }}>GB vs. guidance</span>
-                  <span className="tnum" style={{ color: "#FAFAFA", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.grossBookings)}</span>
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between text-[10.5px] font-medium">
+                  <span style={{ color: "#6B6B6B" }}>GB vs. guidance</span>
+                  <span className="tnum font-bold" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.grossBookings)}</span>
                 </div>
                 <GuidanceBar low={GUIDANCE.grossBookingsLow} high={GUIDANCE.grossBookingsHigh} value={out.grossBookings} />
               </div>
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center justify-between text-[10px]">
-                  <span style={{ color: "#52525B" }}>Adj EBITDA vs. guidance</span>
-                  <span className="tnum" style={{ color: "#FAFAFA", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.adjEbitda)}</span>
+              <div className="flex flex-col gap-1.5">
+                <div className="flex items-center justify-between text-[10.5px] font-medium">
+                  <span style={{ color: "#6B6B6B" }}>Adj EBITDA vs. guidance</span>
+                  <span className="tnum font-bold" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.adjEbitda)}</span>
                 </div>
                 <GuidanceBar low={GUIDANCE.adjEbitdaLow} high={GUIDANCE.adjEbitdaHigh} value={out.adjEbitda} />
               </div>
             </div>
 
-            <div className="overflow-x-auto scrollbar-thin-dark">
+            <div className="overflow-x-auto scrollbar-thin-dark rounded-2xl" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
               <table className="w-full border-collapse" style={{ minWidth: 320 }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                  <tr style={{ borderBottom: "1px solid rgba(0,0,0,0.08)" }}>
                     {["Segment", "GB", "Rev", "NGOP"].map((h, i) => (
                       <th
                         key={h}
-                        className="px-2 py-1.5 font-medium"
+                        className="px-3 py-2 font-semibold"
                         style={{
                           textAlign: i === 0 ? "left" : "right",
-                          color: "#3F3F46",
+                          color: "#9B9B9B",
                           fontSize: "9.5px",
                           textTransform: "uppercase",
                           letterSpacing: "0.05em",
+                          background: "#FAFAFA",
                         }}
                       >
                         {h}
@@ -451,31 +451,31 @@ export default function Sandbox() {
                     { name: "Delivery", gb: out.deliveryGB, rev: out.deliveryRevenue, ngop: out.deliveryNGOP },
                     { name: "Freight", gb: out.freightGB, rev: out.freightRevenue, ngop: out.freightNGOP },
                   ].map((row) => (
-                    <tr key={row.name} style={{ borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
-                      <td className="px-2 py-1.5 text-[11px]" style={{ color: "#D4D4D8" }}>{row.name}</td>
-                      <td className="px-2 py-1.5 text-right tnum text-[11px]" style={{ color: "#A1A1AA", fontFamily: "var(--font-geist-mono)" }}>{fmtM(row.gb)}</td>
-                      <td className="px-2 py-1.5 text-right tnum text-[11px]" style={{ color: "#A1A1AA", fontFamily: "var(--font-geist-mono)" }}>{fmtM(row.rev)}</td>
-                      <td className="px-2 py-1.5 text-right tnum text-[11px]" style={{ color: "#A1A1AA", fontFamily: "var(--font-geist-mono)" }}>{fmtM(row.ngop)}</td>
+                    <tr key={row.name} style={{ borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
+                      <td className="px-3 py-2 text-[11px] font-medium" style={{ color: "#0A0A0A" }}>{row.name}</td>
+                      <td className="px-3 py-2 text-right tnum text-[11px]" style={{ color: "#3A3A3A", fontFamily: "var(--font-geist-mono)" }}>{fmtM(row.gb)}</td>
+                      <td className="px-3 py-2 text-right tnum text-[11px]" style={{ color: "#3A3A3A", fontFamily: "var(--font-geist-mono)" }}>{fmtM(row.rev)}</td>
+                      <td className="px-3 py-2 text-right tnum text-[11px]" style={{ color: "#3A3A3A", fontFamily: "var(--font-geist-mono)" }}>{fmtM(row.ngop)}</td>
                     </tr>
                   ))}
                   <tr>
-                    <td className="px-2 py-1.5 text-[11px]" style={{ color: "#D4D4D8" }}>Corp G&A</td>
+                    <td className="px-3 py-2 text-[11px] font-medium" style={{ color: "#0A0A0A" }}>Corp G&A</td>
                     <td colSpan={2} />
-                    <td className="px-2 py-1.5 text-right tnum text-[11px]" style={{ color: "#F87171", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.corpGA)}</td>
+                    <td className="px-3 py-2 text-right tnum text-[11px]" style={{ color: "#3A3A3A", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.corpGA)}</td>
                   </tr>
-                  <tr style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-                    <td className="px-2 py-2 text-[11px] font-semibold" style={{ color: "#FAFAFA" }}>Total</td>
-                    <td className="px-2 py-2 text-right tnum text-[11px] font-semibold" style={{ color: "#FAFAFA", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.grossBookings)}</td>
-                    <td className="px-2 py-2 text-right tnum text-[11px] font-semibold" style={{ color: "#FAFAFA", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.totalRevenue)}</td>
-                    <td className="px-2 py-2 text-right tnum text-[11px] font-semibold" style={{ color: "#FAFAFA", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.totalNGOP)}</td>
+                  <tr style={{ borderTop: "1px solid rgba(0,0,0,0.1)" }}>
+                    <td className="px-3 py-2.5 text-[11px] font-bold" style={{ color: "#0A0A0A" }}>Total</td>
+                    <td className="px-3 py-2.5 text-right tnum text-[11px] font-bold" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.grossBookings)}</td>
+                    <td className="px-3 py-2.5 text-right tnum text-[11px] font-bold" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.totalRevenue)}</td>
+                    <td className="px-3 py-2.5 text-right tnum text-[11px] font-bold" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>{fmtM(out.totalNGOP)}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <div className="text-[10px] pt-1" style={{ color: "#3F3F46", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-              Implied consolidated take rate: <span className="tnum" style={{ color: "#71717A" }}>{fmtPct(out.consolidatedTakeRate)}</span>
-              {" · "}Total trips: <span className="tnum" style={{ color: "#71717A" }}>{fmtNum(out.totalTrips)}M</span>
+            <div className="text-[10.5px] font-medium pt-1" style={{ color: "#B5B5B5", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+              Implied consolidated take rate: <span className="tnum font-semibold" style={{ color: "#6B6B6B" }}>{fmtPct(out.consolidatedTakeRate)}</span>
+              {" · "}Total trips: <span className="tnum font-semibold" style={{ color: "#6B6B6B" }}>{fmtNum(out.totalTrips)}M</span>
             </div>
           </div>
         </div>
