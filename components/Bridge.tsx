@@ -2,6 +2,7 @@
 
 import { ArrowDown, TrendingUp } from "lucide-react";
 import { PieChart, Pie, Cell } from "recharts";
+import { useState } from "react";
 import { runForecast } from "@/lib/forecast";
 import { fmtM, fmtPct } from "@/lib/format";
 import { LOCKED_INPUTS } from "./LockedForecast";
@@ -21,13 +22,21 @@ function OpChip({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ResultCard({ label, value }: { label: string; value: string }) {
+function ResultCard({ label, value, compact }: { label: string; value: string; compact?: boolean }) {
   return (
-    <div className="flex flex-col gap-1 px-5 py-4 rounded-2xl" style={{ background: "#F6F6F6" }}>
+    <div
+      className="flex flex-col gap-1 px-4 py-3 rounded-2xl transition-colors duration-150"
+      style={{ background: "#F6F6F6", cursor: "default" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.background = "#EBEBEB"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.background = "#F6F6F6"; }}
+    >
       <span className="text-[10px] font-semibold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.06em" }}>
         {label}
       </span>
-      <span className="tnum text-[26px] font-black leading-none tracking-tight" style={{ color: "#0A0A0A" }}>
+      <span
+        className={`tnum font-black leading-none tracking-tight ${compact ? "text-[20px]" : "text-[26px]"}`}
+        style={{ color: "#0A0A0A" }}
+      >
         {value}
       </span>
     </div>
@@ -47,14 +56,28 @@ function MiniWaterfallRow({
   color: string;
   maxAbs: number;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   const widthPct = maxAbs !== 0 ? (Math.abs(value) / maxAbs) * 100 : 0;
   return (
-    <div className="flex items-center gap-2.5">
+    <div
+      className="flex items-center gap-2.5 rounded-lg px-1 py-0.5 transition-colors duration-150"
+      style={{ background: isHovered ? "rgba(0,0,0,0.03)" : "transparent", cursor: "default" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <span className="text-[10.5px] font-medium w-[62px] flex-shrink-0" style={{ color: "#6B6B6B" }}>
         {label}
       </span>
       <div className="flex-1 h-1.5 rounded-full" style={{ background: "rgba(0,0,0,0.05)" }}>
-        <div className="h-full rounded-full" style={{ width: `${widthPct}%`, background: color }} />
+        <div
+          className="h-full rounded-full"
+          style={{
+            width: `${widthPct}%`,
+            background: color,
+            filter: isHovered ? "brightness(1.15)" : "none",
+            transition: "filter 0.15s ease",
+          }}
+        />
       </div>
       <span className="tnum text-[10.5px] font-semibold flex-shrink-0 text-right" style={{ color: "#3A3A3A", fontFamily: "var(--font-geist-mono)" }}>
         {fmtM(value)}
@@ -73,6 +96,7 @@ interface FlowNode {
 }
 
 function RevenueFlow({ nodes, total }: { nodes: FlowNode[]; total: number }) {
+  const [hovered, setHovered] = useState<string | null>(null);
   const width = 300;
   const height = 132;
   const nodeW = 8;
@@ -96,24 +120,51 @@ function RevenueFlow({ nodes, total }: { nodes: FlowNode[]; total: number }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <svg viewBox={`0 0 ${width} ${height}`} width="100%" height={height} preserveAspectRatio="none">
-        {/* source trunk */}
+      <svg viewBox={`0 0 ${width} ${height}`} width="100%" height={height} preserveAspectRatio="none" style={{ cursor: "default" }}>
         <rect x={0} y={0} width={nodeW} height={height} rx={2} fill="#3A3A3A" />
+        {ribbons.map((r) => {
+          const isHovered = hovered === r.label;
+          const isDimmed = hovered !== null && !isHovered;
+          return (
+            <path
+              key={r.label}
+              d={`M${x1},${r.srcY0} C${midX},${r.srcY0} ${midX},${r.destY0} ${x2},${r.destY0} L${x2},${r.destY1} C${midX},${r.destY1} ${midX},${r.srcY1} ${x1},${r.srcY1} Z`}
+              fill={r.color}
+              fillOpacity={isDimmed ? 0.06 : isHovered ? 0.3 : 0.16}
+              style={{ transition: "fill-opacity 0.15s ease" }}
+              onMouseEnter={() => setHovered(r.label)}
+              onMouseLeave={() => setHovered(null)}
+            />
+          );
+        })}
         {ribbons.map((r) => (
-          <path
+          <rect
             key={r.label}
-            d={`M${x1},${r.srcY0} C${midX},${r.srcY0} ${midX},${r.destY0} ${x2},${r.destY0} L${x2},${r.destY1} C${midX},${r.destY1} ${midX},${r.srcY1} ${x1},${r.srcY1} Z`}
+            x={x2}
+            y={r.destY0}
+            width={nodeW}
+            height={Math.max(r.destY1 - r.destY0, 0)}
+            rx={2}
             fill={r.color}
-            fillOpacity={0.16}
+            fillOpacity={hovered !== null && hovered !== r.label ? 0.35 : 1}
+            style={{ transition: "fill-opacity 0.15s ease" }}
+            onMouseEnter={() => setHovered(r.label)}
+            onMouseLeave={() => setHovered(null)}
           />
-        ))}
-        {ribbons.map((r) => (
-          <rect key={r.label} x={x2} y={r.destY0} width={nodeW} height={Math.max(r.destY1 - r.destY0, 0)} rx={2} fill={r.color} />
         ))}
       </svg>
       <div className="flex flex-col gap-1.5">
         {ribbons.map((r) => (
-          <div key={r.label} className="flex items-center justify-between text-[10.5px]">
+          <div
+            key={r.label}
+            className="flex items-center justify-between text-[10.5px] rounded-lg px-1.5 py-0.5 transition-colors duration-150"
+            style={{
+              background: hovered === r.label ? "rgba(0,0,0,0.04)" : "transparent",
+              cursor: "default",
+            }}
+            onMouseEnter={() => setHovered(r.label)}
+            onMouseLeave={() => setHovered(null)}
+          >
             <span className="flex items-center gap-1.5 font-medium" style={{ color: "#3A3A3A" }}>
               <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: r.color }} />
               {r.label}
@@ -161,6 +212,7 @@ function SegmentMixDonut({
             cy="50%"
             innerRadius={44}
             outerRadius={68}
+            activeOuterRadius={74}
             startAngle={90}
             endAngle={-270}
             stroke="#FFFFFF"
@@ -204,7 +256,7 @@ function SegmentMixDonut({
   );
 }
 
-export default function Bridge() {
+export default function Bridge({ compact }: { compact?: boolean }) {
   const out = runForecast(LOCKED_INPUTS);
 
   const ngopSegments = [
@@ -223,26 +275,34 @@ export default function Bridge() {
 
   return (
     <section>
-      <div className="mb-8">
-        <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
+      <div className={compact ? "mb-5" : "mb-8"}>
+        <h2
+          className={`font-extrabold tracking-tight ${compact ? "text-[15px]" : "text-[19px]"}`}
+          style={{ color: "#0A0A0A" }}
+        >
           Gross Bookings to Bottom Line
         </h2>
-        <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-          Three independent calculations, all rooted in Gross Bookings. Revenue and Non-GAAP OI build from
-          the segment mix, Adj EBITDA is a separate top-down calc, see driver tree logic on the methodology page.
-        </p>
+        {!compact && (
+          <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
+            Three independent calculations, all rooted in Gross Bookings. Revenue and Non-GAAP OI build from
+            the segment mix, Adj EBITDA is a separate top-down calc, see driver tree logic on the methodology page.
+          </p>
+        )}
       </div>
 
       <div
-        className="rounded-[28px] p-6 sm:p-10"
+        className={`rounded-[28px] ${compact ? "p-5 sm:p-6" : "p-6 sm:p-10"}`}
         style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)" }}
       >
         {/* Shared root */}
-        <div className="flex flex-col items-start gap-1 mb-8">
+        <div className={`flex flex-col items-start gap-1 ${compact ? "mb-5" : "mb-8"}`}>
           <span className="text-[10.5px] font-semibold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.06em" }}>
             Gross Bookings
           </span>
-          <span className="tnum text-[38px] font-black leading-none tracking-tight" style={{ color: "#0A0A0A" }}>
+          <span
+            className={`tnum font-black leading-none tracking-tight ${compact ? "text-[28px]" : "text-[38px]"}`}
+            style={{ color: "#0A0A0A" }}
+          >
             {fmtM(out.grossBookings)}
           </span>
         </div>
@@ -254,7 +314,7 @@ export default function Bridge() {
             <OpChip>&times; {fmtPct(out.consolidatedTakeRate)} take rate</OpChip>
             <ArrowDown size={16} strokeWidth={2.5} style={{ color: "#C4C4C4" }} />
             <div className="w-full">
-              <ResultCard label="Revenue" value={fmtM(out.totalRevenue)} />
+              <ResultCard label="Revenue" value={fmtM(out.totalRevenue)} compact={compact} />
             </div>
             <div className="w-full pt-1 px-1">
               <RevenueFlow nodes={revenueFlowNodes} total={out.totalRevenue} />
@@ -272,7 +332,7 @@ export default function Bridge() {
               ))}
             </div>
             <div className="w-full">
-              <ResultCard label="Non-GAAP Op Income" value={fmtM(out.totalNGOP)} />
+              <ResultCard label="Non-GAAP Op Income" value={fmtM(out.totalNGOP)} compact={compact} />
             </div>
           </div>
 
@@ -288,7 +348,7 @@ export default function Bridge() {
             <OpChip>&times; {fmtPct(LOCKED_INPUTS.ebitdaMargin, 2)} EBITDA margin</OpChip>
             <ArrowDown size={16} strokeWidth={2.5} style={{ color: "#C4C4C4" }} />
             <div className="w-full">
-              <ResultCard label="Adj EBITDA" value={fmtM(out.adjEbitda)} />
+              <ResultCard label="Adj EBITDA" value={fmtM(out.adjEbitda)} compact={compact} />
             </div>
             <p className="text-[10px] leading-relaxed text-center" style={{ color: "#B5B5B5" }} title="Uber's own reporting treats Adj EBITDA and segment Non-GAAP OI as separate metrics, not additive. See the Methodology page.">
               Uber&apos;s own reporting treats Adj EBITDA and segment Non-GAAP OI as separate metrics, not

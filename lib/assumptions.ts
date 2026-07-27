@@ -117,4 +117,4 @@ export const GUIDANCE = {
   earningsDate: "2026-08-05",
 };
 
-export const LOCKED_SNAPSHOT_DATE = "2026-08-03";
+export const LOCKED_SNAPSHOT_DATE = "2026-07-27";

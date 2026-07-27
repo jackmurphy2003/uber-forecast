@@ -160,7 +160,7 @@ export default function Sandbox() {
             Driver Sandbox
           </h2>
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-            Drag any assumption to see the segment P&amp;L update live. Doesn&apos;t affect the locked forecast above.
+            Drag any assumption to see the segment P&amp;L update live. Doesn&apos;t affect the locked forecast on the Forecast tab.
           </p>
         </div>
         <button

@@ -49,8 +49,18 @@ function ChartCard({
 }) {
   return (
     <div
-      className="flex flex-col gap-2 rounded-3xl p-5"
-      style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)" }}
+      className="flex flex-col gap-2 rounded-3xl p-5 transition-all duration-200 hover:-translate-y-0.5"
+      style={{
+        background: "#FFFFFF",
+        border: "1px solid rgba(0,0,0,0.08)",
+        boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(0,0,0,0.09)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
+      }}
     >
       <div className="flex items-baseline justify-between mb-1">
         <h4 className="text-[12px] font-bold" style={{ color: "#0A0A0A" }}>
@@ -88,7 +98,7 @@ export default function HistoricalCharts() {
           Historical Trends, 12 Quarters
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-          Q2&apos;23 through Q1&apos;26 actuals feeding each driver in the sandbox below.
+          Q2&apos;23 through Q1&apos;26 actuals. Each driver feeds the assumptions in the Sandbox tab.
         </p>
       </div>
 
@@ -100,7 +110,7 @@ export default function HistoricalCharts() {
               <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={1} />
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} />
               <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => [`${v.toFixed(0)}M`, "MAPCs"]} />
-              <Line type="monotone" dataKey="value" stroke={GREEN} strokeWidth={2} dot={false} isAnimationActive={false} />
+              <Line type="monotone" dataKey="value" stroke={GREEN} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -112,7 +122,7 @@ export default function HistoricalCharts() {
               <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={1} />
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} domain={["dataMin - 0.2", "dataMax + 0.2"]} tickFormatter={(v: number) => v.toFixed(1)} />
               <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => [`${v.toFixed(2)}x`, "Trips/MAPC"]} />
-              <Line type="monotone" dataKey="value" stroke={GREEN} strokeWidth={2} dot={false} isAnimationActive={false} />
+              <Line type="monotone" dataKey="value" stroke={GREEN} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -124,7 +134,7 @@ export default function HistoricalCharts() {
               <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={1} />
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} domain={["dataMin - 0.3", "dataMax + 0.3"]} tickFormatter={(v: number) => `$${v.toFixed(2)}`} />
               <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => [`$${v.toFixed(2)}`, "GB/Trip"]} />
-              <Line type="monotone" dataKey="value" stroke={GREEN} strokeWidth={2} dot={false} isAnimationActive={false} />
+              <Line type="monotone" dataKey="value" stroke={GREEN} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -136,7 +146,7 @@ export default function HistoricalCharts() {
               <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={1} />
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={pctTick} domain={["dataMin - 0.01", "dataMax + 0.01"]} />
               <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => [pctTick(v), "Take Rate"]} />
-              <Line type="monotone" dataKey="value" stroke={BLACK} strokeWidth={2} dot={false} isAnimationActive={false} />
+              <Line type="monotone" dataKey="value" stroke={BLACK} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -148,7 +158,7 @@ export default function HistoricalCharts() {
               <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={1} />
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={pctTick} domain={["dataMin - 0.005", "dataMax + 0.005"]} />
               <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => [pctTick(v), "EBITDA Margin"]} />
-              <Line type="monotone" dataKey="value" stroke={GREEN} strokeWidth={2} dot={false} isAnimationActive={false} />
+              <Line type="monotone" dataKey="value" stroke={GREEN} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -168,9 +178,9 @@ export default function HistoricalCharts() {
               <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={1} />
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={pctTick} />
               <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => pctTick(v)} />
-              <Line type="monotone" dataKey="mobility" name="Mobility" stroke={GREEN} strokeWidth={2} dot={false} isAnimationActive={false} />
-              <Line type="monotone" dataKey="delivery" name="Delivery" stroke={BLACK} strokeWidth={2} dot={false} isAnimationActive={false} />
-              <Line type="monotone" dataKey="freight" name="Freight" stroke={GRAY} strokeWidth={2} dot={false} isAnimationActive={false} />
+              <Line type="monotone" dataKey="mobility" name="Mobility" stroke={GREEN} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
+              <Line type="monotone" dataKey="delivery" name="Delivery" stroke={BLACK} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
+              <Line type="monotone" dataKey="freight" name="Freight" stroke={GRAY} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -189,8 +199,8 @@ export default function HistoricalCharts() {
               <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={1} />
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={pctTick} />
               <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => pctTick(v)} />
-              <Line type="monotone" dataKey="mobility" name="Mobility" stroke={GREEN} strokeWidth={2} dot={false} isAnimationActive={false} />
-              <Line type="monotone" dataKey="delivery" name="Delivery" stroke={BLACK} strokeWidth={2} dot={false} isAnimationActive={false} />
+              <Line type="monotone" dataKey="mobility" name="Mobility" stroke={GREEN} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
+              <Line type="monotone" dataKey="delivery" name="Delivery" stroke={BLACK} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -209,8 +219,8 @@ export default function HistoricalCharts() {
               <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={1} />
               <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={pctTick} />
               <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => pctTick(v)} />
-              <Line type="monotone" dataKey="mobility" name="Mobility" stroke={GREEN} strokeWidth={2} dot={false} isAnimationActive={false} />
-              <Line type="monotone" dataKey="delivery" name="Delivery" stroke={BLACK} strokeWidth={2} dot={false} isAnimationActive={false} />
+              <Line type="monotone" dataKey="mobility" name="Mobility" stroke={GREEN} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
+              <Line type="monotone" dataKey="delivery" name="Delivery" stroke={BLACK} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
