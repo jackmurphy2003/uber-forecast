@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import LockedForecast from "@/components/LockedForecast";
+import Bridge from "@/components/Bridge";
 import HistoricalCharts from "@/components/HistoricalCharts";
 import Sandbox from "@/components/Sandbox";
 
@@ -9,6 +10,7 @@ export default function Home() {
       <Header />
       <main className="flex-1 px-6 md:px-10 py-10 md:py-14 max-w-[1400px] w-full mx-auto flex flex-col gap-16">
         <LockedForecast />
+        <Bridge />
         <HistoricalCharts />
         <Sandbox />
       </main>
