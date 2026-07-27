@@ -17,13 +17,13 @@ export const DRIVERS = {
     label: "MAPCs YoY Growth Rate",
     value: 0.175,
     defense:
-      "Q1'26 actual +17.1%. Accelerating from ~14% a year ago. Uber One 50M members +50% YoY, 7 new international markets in Q1'26, insurance-driven US price reductions driving new users. Source: Q1'26 earnings call transcript.",
+      "Q1'26 disclosed MAPC growth of 17% (Q1'26 PR, 10-Q, and call transcript all round to 17%; underlying MAPC levels of 199M vs. 170M imply ~17.1% precisely). Accelerating from ~14% a year ago. Uber One surpassed 50M members, +50% YoY, plus 7 new international market launches and insurance-driven US price reductions cited by management as drivers of new users. Source: Q1'26 earnings call transcript.",
   },
   tripsPerMapcGrowth: {
     label: "Monthly Trips per MAPC YoY Growth",
     value: 0.03,
     defense:
-      "Consistent +3% YoY for 4+ consecutive quarters. Balaji (CFO), Q1'26 call: “insurance price reductions translating to trip acceleration — expect it to continue through rest of year.”",
+      "Trips/MAPC YoY growth has ranged +2% to +4% over the last 7 quarters (Q3'24 +4%, Q4'24 +3%, Q1'25 +3%, Q2'25 +2%, Q3'25 +4%, Q4'25 +3%, Q1'26 +3%) with no clear deceleration. We hold the Q1'26 rate of +3% flat. Balaji (CFO), Q1'26 call, on insurance price cuts: “we've seen that price reduction translate to acceleration in trip growth... we expect to see this translating to accelerating US business growth in 2026.”",
   },
   gbPerTrip: {
     label: "GB per Trip — 12-Quarter Historical Mean",
@@ -95,7 +95,7 @@ export const DRIVERS = {
     label: "Corp G&A + Platform R&D ($M)",
     value: -1097.0,
     defense:
-      "Modeled input. Average of Q4'25 (-$996M) and Q1'25 (-$1,077M) = -$1,037M; -$1,097M implies slight additional growth.",
+      "Modeled input. Average of Q4'25 (-$996M) and Q1'26 (-$1,077M) = -$1,037M; -$1,097M implies slight additional growth.",
   },
 } as const;
 

@@ -2,17 +2,18 @@ import Header from "@/components/Header";
 import { DRIVERS, GUIDANCE, EBITDA_SCENARIOS } from "@/lib/assumptions";
 import { CONSOLIDATED } from "@/lib/data";
 import { fmtPct, fmtM } from "@/lib/format";
+import { FileDown } from "lucide-react";
 
 const SOURCES = [
-  { label: "Q2'24 Earnings Press Release", note: "prior-year comp column supplies Q2'23 actuals" },
-  { label: "Q3'24 Earnings Press Release", note: "prior-year comp column supplies Q3'23 actuals" },
-  { label: "Q4'24 Earnings Press Release", note: "prior-year comp column supplies Q4'23 actuals; Non-GAAP OI history begins here" },
-  { label: "Q1'25 Earnings Press Release", note: "prior-year comp column supplies Q1'24 actuals" },
-  { label: "Q2'25 Earnings Press Release", note: "Q2'25 actuals — base quarter for the Q2'26F build-up" },
-  { label: "Q3'25 Earnings Press Release", note: "Q3'25 actuals" },
-  { label: "Q4'25 Earnings Press Release", note: "Q4'25 actuals" },
-  { label: "Q1'26 Earnings Press Release", note: "Q1'26 actuals; retroactively disclosed Q4'24 / Q1'25 segment Non-GAAP OI" },
-  { label: "Q1'26 Earnings Call Transcript", note: "MAPC growth, trips/MAPC, and insurance-tailwind commentary cited in driver defense notes" },
+  { label: "Q2'24 Earnings Press Release", note: "prior-year comp column supplies Q2'23 actuals", file: "q2-24-press-release.pdf" },
+  { label: "Q3'24 Earnings Press Release", note: "prior-year comp column supplies Q3'23 actuals", file: "q3-24-press-release.pdf" },
+  { label: "Q4'24 Earnings Press Release", note: "prior-year comp column supplies Q4'23 actuals; Non-GAAP OI history begins here", file: "q4-24-press-release.pdf" },
+  { label: "Q1'25 Earnings Press Release", note: "prior-year comp column supplies Q1'24 actuals", file: "q1-25-press-release.pdf" },
+  { label: "Q2'25 Earnings Press Release", note: "Q2'25 actuals — base quarter for the Q2'26F build-up", file: "q2-25-press-release.pdf" },
+  { label: "Q3'25 Earnings Press Release", note: "Q3'25 actuals", file: "q3-25-press-release.pdf" },
+  { label: "Q4'25 Earnings Press Release", note: "Q4'25 actuals", file: "q4-25-press-release.pdf" },
+  { label: "Q1'26 Earnings Press Release", note: "Q1'26 actuals; retroactively disclosed Q4'24 / Q1'25 segment Non-GAAP OI", file: "q1-26-press-release.pdf" },
+  { label: "Q1'26 Earnings Call Transcript", note: "MAPC growth, trips/MAPC, and insurance-tailwind commentary cited in driver defense notes", file: "q1-26-call-transcript.pdf" },
 ];
 
 const DRIVER_TREE = [
@@ -76,9 +77,12 @@ export default function MethodologyPage() {
 
         {/* Data sources */}
         <section>
-          <h2 className="text-[13px] font-semibold mb-3" style={{ color: "#FAFAFA" }}>
+          <h2 className="text-[13px] font-semibold mb-1" style={{ color: "#FAFAFA" }}>
             Data Sources
           </h2>
+          <p className="text-[11.5px] mb-3" style={{ color: "#52525B" }}>
+            Click any title to download the original PDF.
+          </p>
           <div className="flex flex-col rounded-lg overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.06)" }}>
             {SOURCES.map((s, i) => (
               <div
@@ -89,9 +93,16 @@ export default function MethodologyPage() {
                   borderTop: i > 0 ? "1px solid rgba(255,255,255,0.04)" : undefined,
                 }}
               >
-                <span className="text-[12px] font-medium flex-shrink-0" style={{ color: "#D4D4D8", width: 240 }}>
-                  {s.label}
-                </span>
+                <a
+                  href={`/sources/${s.file}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-[12px] font-medium flex-shrink-0 group"
+                  style={{ color: "#D4D4D8", width: 240 }}
+                >
+                  <FileDown size={11} strokeWidth={1.75} style={{ color: "#52525B" }} className="group-hover:opacity-100" />
+                  <span className="group-hover:underline">{s.label}</span>
+                </a>
                 <span className="text-[11.5px]" style={{ color: "#52525B" }}>{s.note}</span>
               </div>
             ))}
