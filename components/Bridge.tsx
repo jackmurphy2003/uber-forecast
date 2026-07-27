@@ -212,7 +212,6 @@ function SegmentMixDonut({
             cy="50%"
             innerRadius={44}
             outerRadius={68}
-            activeOuterRadius={74}
             startAngle={90}
             endAngle={-270}
             stroke="#FFFFFF"
