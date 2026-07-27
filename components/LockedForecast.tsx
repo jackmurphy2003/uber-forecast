@@ -63,7 +63,7 @@ export default function LockedForecast() {
 
   return (
     <section
-      className="rounded-[28px] p-6 sm:p-10 fade-in-up"
+      className="rounded-[28px] p-6 sm:p-10"
       style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)" }}
     >
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">

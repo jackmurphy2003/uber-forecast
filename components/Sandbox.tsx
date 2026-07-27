@@ -153,7 +153,7 @@ export default function Sandbox() {
   const isBase = JSON.stringify(inputs) === JSON.stringify(BASE_INPUTS);
 
   return (
-    <section className="fade-in-up">
+    <section>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
           <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>

@@ -82,7 +82,7 @@ function pctTick(v: number) {
 
 export default function HistoricalCharts() {
   return (
-    <section className="fade-in-up">
+    <section>
       <div className="mb-8">
         <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
           Historical Trends, 12 Quarters
