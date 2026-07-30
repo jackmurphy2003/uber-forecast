@@ -9,6 +9,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
+import EditableText from "./EditableText";
 import {
   MAPC_SERIES,
   TRIPS_PER_MAPC_SERIES,
@@ -95,10 +96,10 @@ export default function HistoricalCharts() {
     <section>
       <div className="mb-8">
         <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-          Historical Trends, 12 Quarters
+          <EditableText id="charts-title">Historical Trends, 12 Quarters</EditableText>
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-          Q2&apos;23 through Q1&apos;26 actuals. Each driver feeds the assumptions in the Sandbox tab.
+          <EditableText id="charts-subtitle">Q2&apos;23 through Q1&apos;26 actuals. Each driver feeds the assumptions in the Sandbox tab.</EditableText>
         </p>
       </div>
 

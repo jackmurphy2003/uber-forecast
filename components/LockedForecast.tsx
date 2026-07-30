@@ -1,8 +1,8 @@
 import { DRIVERS, GUIDANCE, LOCKED_SNAPSHOT_DATE } from "@/lib/assumptions";
 import { runForecast } from "@/lib/forecast";
 import { fmtM, fmtPct, fmtNum, fmtDollar } from "@/lib/format";
-import { Lock, Calendar } from "lucide-react";
 import GuidanceBar from "./GuidanceBar";
+import EditableText from "./EditableText";
 
 export const LOCKED_INPUTS = {
   mapcGrowth: DRIVERS.mapcGrowth.value,
@@ -67,26 +67,17 @@ export default function LockedForecast() {
       style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)" }}
     >
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-        <div className="flex items-center gap-3">
-          <div
-            className="flex items-center justify-center w-9 h-9 rounded-full flex-shrink-0"
-            style={{ background: "rgba(6,193,103,0.12)" }}
-          >
-            <Lock size={15} strokeWidth={2} style={{ color: "#06C167" }} />
-          </div>
-          <div>
-            <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-              My Q2&apos;26F Forecast, Locked Submission
-            </h2>
-            <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-              Static snapshot. Sandbox sliders below do not affect these numbers.
-            </p>
-          </div>
+        <div>
+          <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
+            <EditableText id="locked-title">My Q2&apos;26F Forecast, Locked Submission</EditableText>
+          </h2>
+          <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
+            <EditableText id="locked-subtitle">Static snapshot. Sandbox sliders below do not affect these numbers.</EditableText>
+          </p>
         </div>
-        <div className="flex items-center gap-1.5 text-[11.5px] font-medium" style={{ color: "#6B6B6B" }}>
-          <Calendar size={11} strokeWidth={2} />
+        <div className="text-[11.5px] font-medium" style={{ color: "#6B6B6B" }}>
           Submitted{" "}
-          {submittedDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}, {" "}
+          {submittedDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })},{" "}
           {Math.round((earningsDate.getTime() - submittedDate.getTime()) / 86400000)} days before
           Uber&apos;s {earningsDate.toLocaleDateString("en-US", { month: "long", day: "numeric" })} print
         </div>

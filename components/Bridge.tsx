@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowDown, TrendingUp } from "lucide-react";
+import { ArrowDown } from "lucide-react";
+import EditableText from "./EditableText";
 import { PieChart, Pie, Cell } from "recharts";
 import { useState } from "react";
 import { runForecast } from "@/lib/forecast";
@@ -227,13 +228,15 @@ function SegmentMixDonut({
 
       <div className="flex flex-col gap-3">
         <div
-          className="flex items-start gap-2 px-4 py-3 rounded-2xl"
+          className="px-4 py-3 rounded-2xl"
           style={{ background: "rgba(6,193,103,0.08)" }}
         >
-          <TrendingUp size={14} strokeWidth={2.5} style={{ color: "#04964F" }} className="flex-shrink-0 mt-0.5" />
           <p className="text-[12px] leading-relaxed font-medium" style={{ color: "#0A0A0A" }}>
-            For the first time, Delivery GB ({fmtM(deliveryGB)}) is projected to edge out Mobility (
-            {fmtM(mobilityGB)}). Mobility has led every quarter since Q2&apos;23, this is the crossover quarter.
+            <EditableText id="bridge-crossover-pre">For the first time, Delivery GB</EditableText>
+            {" "}({fmtM(deliveryGB)}){" "}
+            <EditableText id="bridge-crossover-post">is projected to edge out Mobility</EditableText>
+            {" "}({fmtM(mobilityGB)}).{" "}
+            <EditableText id="bridge-crossover-trail">Mobility has led every quarter since Q2&apos;23.</EditableText>
           </p>
         </div>
 
@@ -279,12 +282,11 @@ export default function Bridge({ compact }: { compact?: boolean }) {
           className={`font-extrabold tracking-tight ${compact ? "text-[15px]" : "text-[19px]"}`}
           style={{ color: "#0A0A0A" }}
         >
-          Gross Bookings to Bottom Line
+          <EditableText id="bridge-title">Gross Bookings to Bottom Line</EditableText>
         </h2>
         {!compact && (
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-            Three independent calculations, all rooted in Gross Bookings. Revenue and Non-GAAP OI build from
-            the segment mix, Adj EBITDA is a separate top-down calc, see driver tree logic on the methodology page.
+            <EditableText id="bridge-desc">Three independent calculations, all rooted in Gross Bookings. Revenue and Non-GAAP OI build from the segment mix; Adj EBITDA is a separate top-down calc.</EditableText>
           </p>
         )}
       </div>

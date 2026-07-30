@@ -4,22 +4,22 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import LockedForecast from "./LockedForecast";
 import Bridge from "./Bridge";
+import EditableText from "./EditableText";
 import HistoricalCharts from "./HistoricalCharts";
 import Sandbox from "./Sandbox";
 
 const EMBED_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQacJLAq6Dq4tRKtbwoCwtXDyJJkM18fZUcqJYvjOdTwufXjC0aB5VQ3ZAiNXFH-G0tw6BWEz8eXD1Q/pubhtml?widget=true&headers=false";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGEyFVJhjJ4OJ4uQ-F7Xbg123_crgznesGnO7t8kOBt-vSOoLNDt2q1_eVgZBEDB_tS7F2-DscVtRD/pubhtml?widget=true&headers=false";
 
 function SheetsEmbed() {
   return (
     <section>
       <div className="mb-5">
         <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-          Full Model
+          <EditableText id="fullmodel-title">Full Model</EditableText>
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-          Click the sheet tabs at the bottom to navigate between Assumptions, Historicals, and the driver tree.
-          Sheet must be published to the web in Google Sheets for the embed to load.
+          <EditableText id="fullmodel-subtitle">Click the sheet tabs at the bottom to navigate between Assumptions, Historicals, and the driver tree.</EditableText>
         </p>
       </div>
       <div

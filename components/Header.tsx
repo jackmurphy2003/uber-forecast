@@ -71,18 +71,35 @@ export default function Header() {
         </Suspense>
       </div>
 
-      <div
-        className="flex-shrink-0 flex items-center gap-1.5 text-[11px] font-semibold"
-        style={{
-          color: "#3DDB94",
-          border: "1px solid rgba(6,193,103,0.3)",
-          borderRadius: "6px",
-          padding: "4px 10px",
-          background: "rgba(6,193,103,0.08)",
-        }}
-      >
-        <Lock size={10} strokeWidth={2} />
-        <span>Locked Aug 5</span>
+      <div className="flex-shrink-0 flex items-center gap-2">
+        <a
+          href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTGEyFVJhjJ4OJ4uQ-F7Xbg123_crgznesGnO7t8kOBt-vSOoLNDt2q1_eVgZBEDB_tS7F2-DscVtRD/pubhtml"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 text-[11px] font-semibold transition-colors duration-150"
+          style={{ color: "#9B9B9B" }}
+          onMouseEnter={e => (e.currentTarget.style.color = "#FFFFFF")}
+          onMouseLeave={e => (e.currentTarget.style.color = "#9B9B9B")}
+        >
+          Full Model
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none" style={{ display: "inline" }}>
+            <path d="M1 8L8 1M8 1H3M8 1V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+        <span style={{ color: "rgba(255,255,255,0.12)", fontSize: 14 }}>|</span>
+        <div
+          className="flex items-center gap-1.5 text-[11px] font-semibold"
+          style={{
+            color: "#3DDB94",
+            border: "1px solid rgba(6,193,103,0.3)",
+            borderRadius: "6px",
+            padding: "4px 10px",
+            background: "rgba(6,193,103,0.08)",
+          }}
+        >
+          <Lock size={10} strokeWidth={2} />
+          <span>Locked Aug 5</span>
+        </div>
       </div>
     </header>
   );

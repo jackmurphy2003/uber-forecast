@@ -5,7 +5,7 @@ import { fmtPct, fmtM } from "@/lib/format";
 import { FileDown, Table2, ArrowUpRight } from "lucide-react";
 
 const FULL_MODEL_URL =
-  "https://docs.google.com/spreadsheets/d/1o0GK6qa9aUWg9QjHW8VPgbVq8NDGGElwQ2wTtIeZTcg/edit?usp=sharing";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGEyFVJhjJ4OJ4uQ-F7Xbg123_crgznesGnO7t8kOBt-vSOoLNDt2q1_eVgZBEDB_tS7F2-DscVtRD/pubhtml";
 
 const SOURCES = [
   { label: "Q2'24 Earnings Press Release", note: "prior-year comp column supplies Q2'23 actuals", file: "q2-24-press-release.pdf" },
