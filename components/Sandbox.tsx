@@ -161,7 +161,7 @@ export default function Sandbox() {
             <EditableText id="sandbox-title">Driver Sandbox</EditableText>
           </h2>
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-            <EditableText id="sandbox-subtitle">Drag any assumption to see the segment P&amp;L update live. Doesn&apos;t affect the locked forecast on the Forecast tab.</EditableText>
+            <EditableText id="sandbox-subtitle">Change any assumption using the sliders to see the impact on the Sandbox output.</EditableText>
           </p>
         </div>
         <button

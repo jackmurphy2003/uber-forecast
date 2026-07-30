@@ -99,7 +99,7 @@ export default function HistoricalCharts() {
           <EditableText id="charts-title">Historical Trends, 12 Quarters</EditableText>
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-          <EditableText id="charts-subtitle">Q2&apos;23 through Q1&apos;26 actuals. Each driver feeds the assumptions in the Sandbox tab.</EditableText>
+          <EditableText id="charts-subtitle">Notable trends from Q2&apos;23 - Q1&apos;26 actuals.</EditableText>
         </p>
       </div>
 

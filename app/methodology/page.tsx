@@ -33,15 +33,15 @@ const DRIVER_TREE = [
 const CAVEATS = [
   {
     title: "Segment Adj EBITDA was discontinued starting Q1'26",
-    body: "Uber stopped disclosing segment-level Adjusted EBITDA starting with the Q1'26 print. It was replaced by segment Non-GAAP Operating Income. Consolidated Adj EBITDA is still disclosed, but not at the segment level. This model keeps the two series separate rather than splicing them. The segment margin charts on the forecast page use the pre-Q1'26 Adj EBITDA basis, labeled accordingly.",
+    body: "Uber stopped disclosing segment-level Adjusted EBITDA starting with the Q1'26 print. It was replaced by segment Non-GAAP Operating Income.",
   },
   {
     title: "Take rate noise from contra-revenue reclassification",
-    body: "Q2'24, Q3'24, and Q1'26 take rates are distorted by a disclosed reclassification of certain sales and marketing costs as contra-revenue. In Q1'26, Mobility revenue grew only 5% YoY versus Gross Bookings +25% YoY, an accounting effect, not a demand slowdown. Those quarters are treated as outliers rather than trend signal when setting take rate assumptions.",
+    body: "Q2'24, Q3'24, and Q1'26 take rates are distorted by a disclosed reclassification of certain sales and marketing costs as contra-revenue.",
   },
   {
     title: "Segment trips/MAPC isn't disclosed",
-    body: "Uber only discloses trips/MAPC at the consolidated level. Segment Gross Bookings in this model are built from top-down mix assumptions, not from segment-level trip counts.",
+    body: "Uber only discloses trips/MAPC at the consolidated level. Segment Gross Bookings in this model are built from mix assumptions, not from actual segment-level trip counts.",
   },
 ];
 
@@ -72,11 +72,9 @@ export default function MethodologyPage() {
           </h1>
           <p className="text-[13.5px] leading-relaxed" style={{ color: "#6B6B6B" }}>
             <EditableText id="methodology-intro">
-              This Q2&apos;26F forecast was built from Uber&apos;s publicly disclosed segment financials
-              (Q2&apos;23 through Q1&apos;26) and management commentary from the Q1&apos;26 earnings call, then submitted
-              as a locked snapshot ahead of Uber&apos;s August 5, 2026 print.
-              Every base-case assumption below is defended against a specific historical trend or disclosed
-              data point. No assumption is a bare guess.
+              This Q2&apos;26F forecast was built from Uber&apos;s public financials (Q2&apos;23 through Q1&apos;26) and
+              management commentary from the Q1&apos;26 earnings call, then submitted as a locked snapshot
+              ahead of Uber&apos;s August 5, 2026 print.
             </EditableText>
           </p>
         </div>

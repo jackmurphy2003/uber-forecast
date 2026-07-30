@@ -17,25 +17,25 @@ export const DRIVERS = {
     label: "MAPCs YoY Growth Rate",
     value: 0.175,
     defense:
-      "Q1'26 disclosed MAPC growth of 17% (Q1'26 PR, 10-Q, and call transcript all round to 17%; underlying MAPC levels of 199M vs. 170M imply ~17.1% precisely). Accelerating from ~14% a year ago. Uber One surpassed 50M members, +50% YoY, plus 7 new international market launches and insurance-driven US price reductions cited by management as drivers of new users. Source: Q1'26 earnings call transcript.",
+      "Q1'26 disclosed MAPC growth of 17% - up from ~14% a year ago. Uber One surpassed 50M members, +50% YoY, plus 7 new international market launches and insurance-driven US price reductions cited by management as drivers of new users. All signs point to continued growth in MAPC growth rate.",
   },
   tripsPerMapcGrowth: {
     label: "Monthly Trips per MAPC YoY Growth",
     value: 0.03,
     defense:
-      "Trips/MAPC YoY growth has ranged +2% to +4% over the last 7 quarters (Q3'24 +4%, Q4'24 +3%, Q1'25 +3%, Q2'25 +2%, Q3'25 +4%, Q4'25 +3%, Q1'26 +3%) with no clear deceleration. We hold the Q1'26 rate of +3% flat. Balaji (CFO), Q1'26 call, on insurance price cuts: “we've seen that price reduction translate to acceleration in trip growth... we expect to see this translating to accelerating US business growth in 2026.”",
+      “Trips/MAPC YoY growth has ranged +2% to +4% over the last 7 quarters with no clear deceleration. We hold the Q1'26 rate of +3% flat.”,
   },
   gbPerTrip: {
     label: "GB per Trip - 12-Quarter Historical Mean",
     value: 14.43,
     defense:
-      "Range-bound $14.10-$14.75 over 12 quarters, no directional trend. Historical mean = $14.43. Produces GB = $57.2B, inside guidance range $56.25-$57.75B. Offsetting forces: premium mix tailwind vs. insurance affordability headwind.",
+      "Range-bound $14.10-$14.75 over 12 quarters, no directional trend. Historical mean = $14.43. Offsetting forces: premium mix tailwind vs. insurance affordability headwind lead to using the historical mean as our driver.",
   },
   ebitdaMarginBase: {
     label: "EBITDA Margin - Base Case",
     value: 0.0485,
     defense:
-      "Base case 4.85%. Avg YoY additive margin expansion = +0.43pp over the last 4 quarters, applied to the Q2'25 base of 4.53%. Insurance savings tailwind per Balaji's explicit Q1'26 commentary.",
+      "Base case 4.85%. Avg YoY additive margin expansion = +0.43pp over the last 4 quarters, applied to the Q2'25 base of 4.53%. Insurance savings tailwind per Balaji's Q1'26 commentary.",
   },
   mobilityMix: {
     label: "Mobility % of Total GB",
@@ -53,7 +53,7 @@ export const DRIVERS = {
     label: "Freight % of Total GB",
     value: 0.023,
     defense:
-      "Straight-line from Q2'25. Freight returned to growth in Q1'26 but one quarter is insufficient to establish a new trend. Long-run structural decline as % of total.",
+      "Straight-line from Q2'25. Freight returned to growth in Q1'26 but one quarter is more of an outlier than something that signals a new trend.",
   },
   mobilityTakeRate: {
     label: "Mobility Take Rate",

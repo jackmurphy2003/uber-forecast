@@ -69,10 +69,10 @@ export default function LockedForecast() {
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
           <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-            <EditableText id="locked-title">My Q2&apos;26F Forecast, Locked Submission</EditableText>
+            <EditableText id="locked-title">Uber 2026 Q2 Forecast</EditableText>
           </h2>
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-            <EditableText id="locked-subtitle">Static snapshot. Sandbox sliders below do not affect these numbers.</EditableText>
+            <EditableText id="locked-subtitle">Directly from my spreadsheet - not affected by Sandbox tab sliders</EditableText>
           </p>
         </div>
         <div className="text-[11.5px] font-medium" style={{ color: "#6B6B6B" }}>
