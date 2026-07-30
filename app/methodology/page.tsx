@@ -2,11 +2,9 @@ import Header from "@/components/Header";
 import { DRIVERS, GUIDANCE, EBITDA_SCENARIOS } from "@/lib/assumptions";
 import { CONSOLIDATED } from "@/lib/data";
 import { fmtPct, fmtM } from "@/lib/format";
-import { FileDown, Table2, ArrowUpRight } from "lucide-react";
+import { FileDown } from "lucide-react";
 import EditableText from "@/components/EditableText";
 
-const FULL_MODEL_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGEyFVJhjJ4OJ4uQ-F7Xbg123_crgznesGnO7t8kOBt-vSOoLNDt2q1_eVgZBEDB_tS7F2-DscVtRD/pubhtml";
 
 const SOURCES = [
   { label: "Q2'24 Earnings Press Release", note: "prior-year comp column supplies Q2'23 actuals", file: "q2-24-press-release.pdf" },
@@ -119,32 +117,6 @@ export default function MethodologyPage() {
             Q1&apos;26 note: {q125.note}
           </p>
 
-          <a
-            href={FULL_MODEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-4 rounded-3xl px-5 py-4"
-            style={{ background: "#F6F6F6" }}
-          >
-            <div
-              className="flex items-center justify-center w-10 h-10 rounded-full flex-shrink-0"
-              style={{ background: "rgba(6,193,103,0.12)" }}
-            >
-              <Table2 size={16} strokeWidth={2} style={{ color: "#04964F" }} />
-            </div>
-            <span className="flex-1 text-[12.5px] font-semibold leading-snug" style={{ color: "#0A0A0A" }}>
-              <EditableText id="methodology-model-cta">This forecast was built bottom-up in Excel before being turned into this interactive tool.</EditableText>
-              <span className="block text-[11px] font-medium mt-0.5" style={{ color: "#6B6B6B" }}>
-                View the full model
-              </span>
-            </span>
-            <ArrowUpRight
-              size={16}
-              strokeWidth={2.25}
-              className="flex-shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              style={{ color: "#9B9B9B" }}
-            />
-          </a>
         </section>
 
         {/* Driver tree */}
