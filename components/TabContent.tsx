@@ -48,11 +48,10 @@ function TabContentInner() {
       {tab === "forecast" && (
         <>
           <LockedForecast />
-          <Bridge compact />
+          <Bridge />
           <SheetsEmbed />
         </>
       )}
-      {tab === "bridge" && <Bridge />}
       {tab === "trends" && <HistoricalCharts />}
       {tab === "sandbox" && <Sandbox />}
     </div>

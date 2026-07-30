@@ -23,7 +23,7 @@ export const DRIVERS = {
     label: "Monthly Trips per MAPC YoY Growth",
     value: 0.03,
     defense:
-      “Trips/MAPC YoY growth has ranged +2% to +4% over the last 7 quarters with no clear deceleration. We hold the Q1'26 rate of +3% flat.”,
+      "Trips/MAPC YoY growth has ranged +2% to +4% over the last 7 quarters with no clear deceleration. We hold the Q1'26 rate of +3% flat.",
   },
   gbPerTrip: {
     label: "GB per Trip - 12-Quarter Historical Mean",
@@ -47,7 +47,7 @@ export const DRIVERS = {
     label: "Delivery % of Total GB",
     value: 0.489,
     defense:
-      "Mix rising every quarter for the past year. Q1'26 at 48.4%. Delivery +23% vs Mobility +20% in Q1'26. Suburban expansion “very early innings,” 30% of Mobility users never used Eats (Balaji, Q1'26 call).",
+      "Mix rising every quarter for the past year. Q1'26 at 48.4%. Delivery +23% vs Mobility +20% in Q1'26. Suburban expansion 'very early innings,' 30% of Mobility users never used Eats (Balaji, Q1'26 call).",
   },
   freightMix: {
     label: "Freight % of Total GB",
