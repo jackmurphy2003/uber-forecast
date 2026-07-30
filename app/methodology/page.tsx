@@ -3,6 +3,7 @@ import { DRIVERS, GUIDANCE, EBITDA_SCENARIOS } from "@/lib/assumptions";
 import { CONSOLIDATED } from "@/lib/data";
 import { fmtPct, fmtM } from "@/lib/format";
 import { FileDown, Table2, ArrowUpRight } from "lucide-react";
+import EditableText from "@/components/EditableText";
 
 const FULL_MODEL_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGEyFVJhjJ4OJ4uQ-F7Xbg123_crgznesGnO7t8kOBt-vSOoLNDt2q1_eVgZBEDB_tS7F2-DscVtRD/pubhtml";
@@ -46,14 +47,16 @@ const CAVEATS = [
   },
 ];
 
-function DriverDefense({ label, value, defense, format }: { label: string; value: number; defense: string; format: (v: number) => string }) {
+function DriverDefense({ label, value, defense, format, editId }: { label: string; value: number; defense: string; format: (v: number) => string; editId: string }) {
   return (
     <div className="flex flex-col gap-1.5 py-4" style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
       <div className="flex items-baseline justify-between gap-3">
         <span className="text-[13px] font-bold" style={{ color: "#0A0A0A" }}>{label}</span>
         <span className="tnum text-[13px] font-bold flex-shrink-0" style={{ color: "#04964F", fontFamily: "var(--font-geist-mono)" }}>{format(value)}</span>
       </div>
-      <p className="text-[12px] leading-relaxed" style={{ color: "#6B6B6B" }}>{defense}</p>
+      <p className="text-[12px] leading-relaxed" style={{ color: "#6B6B6B" }}>
+        <EditableText id={editId}>{defense}</EditableText>
+      </p>
     </div>
   );
 }
@@ -70,11 +73,13 @@ export default function MethodologyPage() {
             Methodology
           </h1>
           <p className="text-[13.5px] leading-relaxed" style={{ color: "#6B6B6B" }}>
-            This Q2&apos;26F forecast was built from Uber&apos;s publicly disclosed segment financials
-            (Q2&apos;23 through Q1&apos;26) and management commentary from the Q1&apos;26 earnings call, then submitted
-            as a locked snapshot ahead of Uber&apos;s {new Date(GUIDANCE.earningsDate + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} print.
-            Every base-case assumption below is defended against a specific historical trend or disclosed
-            data point. No assumption is a bare guess.
+            <EditableText id="methodology-intro">
+              This Q2&apos;26F forecast was built from Uber&apos;s publicly disclosed segment financials
+              (Q2&apos;23 through Q1&apos;26) and management commentary from the Q1&apos;26 earnings call, then submitted
+              as a locked snapshot ahead of Uber&apos;s August 5, 2026 print.
+              Every base-case assumption below is defended against a specific historical trend or disclosed
+              data point. No assumption is a bare guess.
+            </EditableText>
           </p>
         </div>
 
@@ -128,7 +133,7 @@ export default function MethodologyPage() {
               <Table2 size={16} strokeWidth={2} style={{ color: "#04964F" }} />
             </div>
             <span className="flex-1 text-[12.5px] font-semibold leading-snug" style={{ color: "#0A0A0A" }}>
-              This forecast was built bottom-up in Excel before being turned into this interactive tool.
+              <EditableText id="methodology-model-cta">This forecast was built bottom-up in Excel before being turned into this interactive tool.</EditableText>
               <span className="block text-[11px] font-medium mt-0.5" style={{ color: "#6B6B6B" }}>
                 View the full model
               </span>
@@ -206,20 +211,20 @@ export default function MethodologyPage() {
             Pulled directly from the Defense / Source column of the model&apos;s Assumptions tab.
           </p>
           <div className="flex flex-col">
-            <DriverDefense label={DRIVERS.mapcGrowth.label} value={DRIVERS.mapcGrowth.value} defense={DRIVERS.mapcGrowth.defense} format={(v) => fmtPct(v)} />
-            <DriverDefense label={DRIVERS.tripsPerMapcGrowth.label} value={DRIVERS.tripsPerMapcGrowth.value} defense={DRIVERS.tripsPerMapcGrowth.defense} format={(v) => fmtPct(v)} />
-            <DriverDefense label={DRIVERS.gbPerTrip.label} value={DRIVERS.gbPerTrip.value} defense={DRIVERS.gbPerTrip.defense} format={(v) => `$${v.toFixed(2)}`} />
-            <DriverDefense label={DRIVERS.ebitdaMarginBase.label} value={DRIVERS.ebitdaMarginBase.value} defense={DRIVERS.ebitdaMarginBase.defense} format={(v) => fmtPct(v, 2)} />
-            <DriverDefense label={DRIVERS.mobilityMix.label} value={DRIVERS.mobilityMix.value} defense={DRIVERS.mobilityMix.defense} format={(v) => fmtPct(v)} />
-            <DriverDefense label={DRIVERS.deliveryMix.label} value={DRIVERS.deliveryMix.value} defense={DRIVERS.deliveryMix.defense} format={(v) => fmtPct(v)} />
-            <DriverDefense label={DRIVERS.freightMix.label} value={DRIVERS.freightMix.value} defense={DRIVERS.freightMix.defense} format={(v) => fmtPct(v)} />
-            <DriverDefense label={DRIVERS.mobilityTakeRate.label} value={DRIVERS.mobilityTakeRate.value} defense={DRIVERS.mobilityTakeRate.defense} format={(v) => fmtPct(v)} />
-            <DriverDefense label={DRIVERS.deliveryTakeRate.label} value={DRIVERS.deliveryTakeRate.value} defense={DRIVERS.deliveryTakeRate.defense} format={(v) => fmtPct(v)} />
-            <DriverDefense label={DRIVERS.freightTakeRate.label} value={DRIVERS.freightTakeRate.value} defense={DRIVERS.freightTakeRate.defense} format={(v) => fmtPct(v, 2)} />
-            <DriverDefense label={DRIVERS.mobilityOpMargin.label} value={DRIVERS.mobilityOpMargin.value} defense={DRIVERS.mobilityOpMargin.defense} format={(v) => fmtPct(v)} />
-            <DriverDefense label={DRIVERS.deliveryOpMargin.label} value={DRIVERS.deliveryOpMargin.value} defense={DRIVERS.deliveryOpMargin.defense} format={(v) => fmtPct(v)} />
-            <DriverDefense label={DRIVERS.freightOpIncome.label} value={DRIVERS.freightOpIncome.value} defense={DRIVERS.freightOpIncome.defense} format={(v) => fmtM(v)} />
-            <DriverDefense label={DRIVERS.corpGA.label} value={DRIVERS.corpGA.value} defense={DRIVERS.corpGA.defense} format={(v) => fmtM(v)} />
+            <DriverDefense label={DRIVERS.mapcGrowth.label} value={DRIVERS.mapcGrowth.value} defense={DRIVERS.mapcGrowth.defense} format={(v) => fmtPct(v)} editId="defense-mapc" />
+            <DriverDefense label={DRIVERS.tripsPerMapcGrowth.label} value={DRIVERS.tripsPerMapcGrowth.value} defense={DRIVERS.tripsPerMapcGrowth.defense} format={(v) => fmtPct(v)} editId="defense-trips-mapc" />
+            <DriverDefense label={DRIVERS.gbPerTrip.label} value={DRIVERS.gbPerTrip.value} defense={DRIVERS.gbPerTrip.defense} format={(v) => `$${v.toFixed(2)}`} editId="defense-gb-trip" />
+            <DriverDefense label={DRIVERS.ebitdaMarginBase.label} value={DRIVERS.ebitdaMarginBase.value} defense={DRIVERS.ebitdaMarginBase.defense} format={(v) => fmtPct(v, 2)} editId="defense-ebitda" />
+            <DriverDefense label={DRIVERS.mobilityMix.label} value={DRIVERS.mobilityMix.value} defense={DRIVERS.mobilityMix.defense} format={(v) => fmtPct(v)} editId="defense-mob-mix" />
+            <DriverDefense label={DRIVERS.deliveryMix.label} value={DRIVERS.deliveryMix.value} defense={DRIVERS.deliveryMix.defense} format={(v) => fmtPct(v)} editId="defense-del-mix" />
+            <DriverDefense label={DRIVERS.freightMix.label} value={DRIVERS.freightMix.value} defense={DRIVERS.freightMix.defense} format={(v) => fmtPct(v)} editId="defense-frt-mix" />
+            <DriverDefense label={DRIVERS.mobilityTakeRate.label} value={DRIVERS.mobilityTakeRate.value} defense={DRIVERS.mobilityTakeRate.defense} format={(v) => fmtPct(v)} editId="defense-mob-tr" />
+            <DriverDefense label={DRIVERS.deliveryTakeRate.label} value={DRIVERS.deliveryTakeRate.value} defense={DRIVERS.deliveryTakeRate.defense} format={(v) => fmtPct(v)} editId="defense-del-tr" />
+            <DriverDefense label={DRIVERS.freightTakeRate.label} value={DRIVERS.freightTakeRate.value} defense={DRIVERS.freightTakeRate.defense} format={(v) => fmtPct(v, 2)} editId="defense-frt-tr" />
+            <DriverDefense label={DRIVERS.mobilityOpMargin.label} value={DRIVERS.mobilityOpMargin.value} defense={DRIVERS.mobilityOpMargin.defense} format={(v) => fmtPct(v)} editId="defense-mob-margin" />
+            <DriverDefense label={DRIVERS.deliveryOpMargin.label} value={DRIVERS.deliveryOpMargin.value} defense={DRIVERS.deliveryOpMargin.defense} format={(v) => fmtPct(v)} editId="defense-del-margin" />
+            <DriverDefense label={DRIVERS.freightOpIncome.label} value={DRIVERS.freightOpIncome.value} defense={DRIVERS.freightOpIncome.defense} format={(v) => fmtM(v)} editId="defense-frt-oi" />
+            <DriverDefense label={DRIVERS.corpGA.label} value={DRIVERS.corpGA.value} defense={DRIVERS.corpGA.defense} format={(v) => fmtM(v)} editId="defense-corpga" />
           </div>
         </section>
 
@@ -229,14 +234,18 @@ export default function MethodologyPage() {
             Known Caveats
           </h2>
           <div className="flex flex-col gap-3">
-            {CAVEATS.map((c) => (
+            {CAVEATS.map((c, i) => (
               <div
                 key={c.title}
                 className="rounded-3xl px-5 py-4"
                 style={{ background: "#F6F6F6" }}
               >
-                <span className="text-[13px] font-bold" style={{ color: "#0A0A0A" }}>{c.title}</span>
-                <p className="text-[12px] leading-relaxed mt-1.5" style={{ color: "#6B6B6B" }}>{c.body}</p>
+                <span className="text-[13px] font-bold" style={{ color: "#0A0A0A" }}>
+                  <EditableText id={`caveat-title-${i}`}>{c.title}</EditableText>
+                </span>
+                <p className="text-[12px] leading-relaxed mt-1.5" style={{ color: "#6B6B6B" }}>
+                  <EditableText id={`caveat-body-${i}`}>{c.body}</EditableText>
+                </p>
               </div>
             ))}
           </div>
