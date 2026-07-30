@@ -12,7 +12,7 @@ export default function Home() {
         className="flex-none px-6 py-8 text-center text-[11px] font-medium"
         style={{ color: "#B5B5B5", borderTop: "1px solid rgba(0,0,0,0.06)" }}
       >
-        Built ahead of Uber&apos;s Q2&apos;26 earnings (Aug 5, 2026). All figures modeled from public earnings releases, see{" "}
+        Built ahead of Uber&apos;s Q2&apos;26 earnings (Aug 5, 2026). All figures from public earnings releases —{" "}
         <a href="/methodology" className="underline font-semibold" style={{ color: "#6B6B6B" }}>
           methodology
         </a>{" "}

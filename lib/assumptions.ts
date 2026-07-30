@@ -95,7 +95,7 @@ export const DRIVERS = {
     label: "Corp G&A + Platform R&D ($M)",
     value: -1097.0,
     defense:
-      "Modeled input. Average of Q4'25 (-$996M) and Q1'26 (-$1,077M) = -$1,037M; -$1,097M implies slight additional growth.",
+      "Average of Q4'25 (-$996M) and Q1'26 (-$1,077M) = -$1,037M; -$1,097M assumes a bit of continued growth.",
   },
 } as const;
 

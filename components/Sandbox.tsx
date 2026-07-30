@@ -238,7 +238,7 @@ export default function Sandbox() {
               })}
             </div>
             <SliderRow
-              label="Active EBITDA Margin (fine-tune)"
+              label="Active EBITDA Margin"
               value={inputs.ebitdaMargin}
               min={0.035}
               max={0.065}

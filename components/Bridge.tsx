@@ -286,7 +286,7 @@ export default function Bridge({ compact }: { compact?: boolean }) {
         </h2>
         {!compact && (
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-            <EditableText id="bridge-desc">Three independent calculations, all rooted in Gross Bookings. Revenue and Non-GAAP OI build from the segment mix; Adj EBITDA is a separate top-down calc.</EditableText>
+            <EditableText id="bridge-desc">Three calculations all starting from the same Gross Bookings number. Revenue and Non-GAAP OI build up from the segment mix; Adj EBITDA is a separate top-down calc.</EditableText>
           </p>
         )}
       </div>

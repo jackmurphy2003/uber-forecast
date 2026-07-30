@@ -15,7 +15,7 @@ const SOURCES = [
   { label: "Q3'25 Earnings Press Release", note: "Q3'25 actuals", file: "q3-25-press-release.pdf" },
   { label: "Q4'25 Earnings Press Release", note: "Q4'25 actuals", file: "q4-25-press-release.pdf" },
   { label: "Q1'26 Earnings Press Release", note: "Q1'26 actuals, retroactively disclosed Q4'24 / Q1'25 segment Non-GAAP OI", file: "q1-26-press-release.pdf" },
-  { label: "Q1'26 Earnings Call Transcript", note: "MAPC growth, trips/MAPC, and insurance-tailwind commentary cited in driver defense notes", file: "q1-26-call-transcript.pdf" },
+  { label: "Q1'26 Earnings Call Transcript", note: "main source for MAPC growth, trips/MAPC trends, and insurance tailwind commentary", file: "q1-26-call-transcript.pdf" },
 ];
 
 const DRIVER_TREE = [
@@ -178,7 +178,7 @@ export default function MethodologyPage() {
             Base-Case Assumption Defense
           </h2>
           <p className="text-[12.5px] mb-3" style={{ color: "#9B9B9B" }}>
-            Pulled directly from the Defense / Source column of the model&apos;s Assumptions tab.
+            Same notes from the assumptions tab in the model.
           </p>
           <div className="flex flex-col">
             <DriverDefense label={DRIVERS.mapcGrowth.label} value={DRIVERS.mapcGrowth.value} defense={DRIVERS.mapcGrowth.defense} format={(v) => fmtPct(v)} editId="defense-mapc" />
