@@ -73,16 +73,28 @@ export default function Header() {
 
       <div className="flex-shrink-0 flex items-center gap-2">
         <a
-          href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTGEyFVJhjJ4OJ4uQ-F7Xbg123_crgznesGnO7t8kOBt-vSOoLNDt2q1_eVgZBEDB_tS7F2-DscVtRD/pubhtml"
+          href="https://docs.google.com/spreadsheets/d/1ance72j6Z2G-qvO7fV0fTTLRFyQJOeBf_qKsaCppsTU/edit?usp=sharing"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1 text-[11px] font-semibold transition-colors duration-150"
-          style={{ color: "#9B9B9B" }}
-          onMouseEnter={e => (e.currentTarget.style.color = "#FFFFFF")}
-          onMouseLeave={e => (e.currentTarget.style.color = "#9B9B9B")}
+          className="flex items-center gap-1.5 text-[11.5px] font-bold transition-all duration-150"
+          style={{
+            color: "#06C167",
+            border: "1px solid rgba(6,193,103,0.4)",
+            borderRadius: "6px",
+            padding: "4px 11px",
+            background: "rgba(6,193,103,0.1)",
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = "rgba(6,193,103,0.2)";
+            e.currentTarget.style.borderColor = "rgba(6,193,103,0.7)";
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = "rgba(6,193,103,0.1)";
+            e.currentTarget.style.borderColor = "rgba(6,193,103,0.4)";
+          }}
         >
           Full Model
-          <svg width="9" height="9" viewBox="0 0 9 9" fill="none" style={{ display: "inline" }}>
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
             <path d="M1 8L8 1M8 1H3M8 1V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </a>
