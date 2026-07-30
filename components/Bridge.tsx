@@ -145,7 +145,7 @@ export default function Bridge() {
     <section>
       <div className="mb-5">
         <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-          <EditableText id="bridge-title">The Biggest Finding</EditableText>
+          <EditableText id="bridge-title">The Crossover</EditableText>
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
           <EditableText id="bridge-desc">{bridgeDesc}</EditableText>
