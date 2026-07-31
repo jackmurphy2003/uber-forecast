@@ -6,9 +6,9 @@ import { Lock } from "lucide-react";
 import { Suspense } from "react";
 
 const HOME_TABS = [
-  { tab: "forecast", label: "Forecast" },
-  { tab: "trends", label: "Historical Trends" },
-  { tab: "sandbox", label: "Sandbox" },
+  { tab: "forecast", label: "Forecast", shortLabel: "Forecast" },
+  { tab: "trends", label: "Historical Trends", shortLabel: "Trends" },
+  { tab: "sandbox", label: "Sandbox", shortLabel: "Sandbox" },
 ];
 
 function NavItems() {
@@ -17,31 +17,34 @@ function NavItems() {
   const currentTab = searchParams.get("tab") ?? "forecast";
 
   const allItems = [
-    ...HOME_TABS.map(({ tab, label }) => ({
+    ...HOME_TABS.map(({ tab, label, shortLabel }) => ({
       href: `/?tab=${tab}`,
       label,
+      shortLabel,
       active: pathname === "/" && currentTab === tab,
     })),
     {
       href: "/methodology",
       label: "Methodology",
+      shortLabel: "Notes",
       active: pathname === "/methodology",
     },
   ];
 
   return (
-    <nav className="flex items-center h-14">
-      {allItems.map(({ href, label, active }) => (
+    <nav className="flex items-center h-14 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+      {allItems.map(({ href, label, shortLabel, active }) => (
         <Link
           key={href}
           href={href}
-          className="relative flex items-center h-full px-4 text-[12.5px] font-medium whitespace-nowrap transition-colors duration-150"
+          className="relative flex items-center h-full px-3 md:px-4 text-[12.5px] font-medium whitespace-nowrap transition-colors duration-150 flex-shrink-0"
           style={{ color: active ? "#FFFFFF" : "#666666" }}
         >
-          {label}
+          <span className="md:hidden">{shortLabel}</span>
+          <span className="hidden md:inline">{label}</span>
           {active && (
             <span
-              className="absolute bottom-0 left-4 right-4"
+              className="absolute bottom-0 left-3 right-3 md:left-4 md:right-4"
               style={{ height: "2px", background: "#06C167", borderRadius: "2px 2px 0 0" }}
             />
           )}
@@ -71,7 +74,7 @@ export default function Header() {
         </Suspense>
       </div>
 
-      <div className="flex-shrink-0 flex items-center gap-2">
+      <div className="flex-shrink-0 flex items-center gap-2 ml-2">
         <a
           href="https://docs.google.com/spreadsheets/d/1ance72j6Z2G-qvO7fV0fTTLRFyQJOeBf_qKsaCppsTU/edit?usp=sharing"
           target="_blank"
@@ -98,9 +101,9 @@ export default function Header() {
             <path d="M1 8L8 1M8 1H3M8 1V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </a>
-        <span style={{ color: "rgba(255,255,255,0.12)", fontSize: 14 }}>|</span>
+        <span className="hidden sm:inline" style={{ color: "rgba(255,255,255,0.12)", fontSize: 14 }}>|</span>
         <div
-          className="flex items-center gap-1.5 text-[11px] font-semibold"
+          className="hidden sm:flex items-center gap-1.5 text-[11px] font-semibold"
           style={{
             color: "#3DDB94",
             border: "1px solid rgba(6,193,103,0.3)",

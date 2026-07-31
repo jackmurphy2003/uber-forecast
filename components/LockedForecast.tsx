@@ -31,7 +31,7 @@ function KPI({
 }) {
   return (
     <div
-      className="flex flex-col gap-2 px-6 py-5 rounded-3xl"
+      className="flex flex-col gap-1.5 px-4 py-4 sm:px-6 sm:py-5 rounded-3xl"
       style={{ background: "#F6F6F6" }}
     >
       <span
@@ -41,7 +41,7 @@ function KPI({
         {label}
       </span>
       <span
-        className="tnum text-[34px] sm:text-[38px] font-black leading-none tracking-tight"
+        className="tnum text-[24px] sm:text-[34px] font-black leading-none tracking-tight"
         style={{ color: "#0A0A0A" }}
       >
         {value}
@@ -88,7 +88,7 @@ export default function LockedForecast() {
         <KPI label="Gross Bookings" value={fmtM(out.grossBookings)} sub={`${fmtNum(out.mapcs, 1)}M MAPCs`} />
         <KPI label="Revenue" value={fmtM(out.totalRevenue)} sub={`${fmtPct(out.consolidatedTakeRate)} take rate`} />
         <KPI label="Adj EBITDA" value={fmtM(out.adjEbitda)} sub={`${fmtPct(LOCKED_INPUTS.ebitdaMargin)} margin`} />
-        <KPI label="Non-GAAP Op Income" value={fmtM(out.totalNGOP)} sub="segment sum" />
+        <KPI label="Non-GAAP OI" value={fmtM(out.totalNGOP)} sub="segment sum" />
       </div>
 
       {/* Guidance check */}

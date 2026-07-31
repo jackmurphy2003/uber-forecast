@@ -23,6 +23,7 @@ function matchScenario(margin: number): ScenarioKey | "custom" {
 function SliderRow({
   label,
   value,
+  baseValue,
   min,
   max,
   step,
@@ -34,6 +35,7 @@ function SliderRow({
 }: {
   label: string;
   value: number;
+  baseValue: number;
   min: number;
   max: number;
   step: number;
@@ -43,8 +45,11 @@ function SliderRow({
   histMax?: number;
   defense?: string;
 }) {
+  const basePct = ((baseValue - min) / (max - min)) * 100;
+  const atBase = Math.abs(value - baseValue) < step / 2;
+
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1.5">
       <div className="flex items-center justify-between gap-2">
         <span className="flex items-center gap-1.5 text-[12px] font-medium" style={{ color: "#3A3A3A" }}>
           {label}
@@ -56,7 +61,7 @@ function SliderRow({
         </span>
         <span
           className="tnum text-[13px] font-bold"
-          style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}
+          style={{ color: atBase ? "#04964F" : "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}
         >
           {format(value)}
         </span>
@@ -69,12 +74,22 @@ function SliderRow({
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
       />
+      {/* Base position marker */}
+      <div className="relative" style={{ height: 14 }}>
+        <div
+          className="absolute flex flex-col items-center"
+          style={{ left: `${basePct}%`, transform: "translateX(-50%)" }}
+        >
+          <div style={{ width: 1.5, height: 5, background: "#06C167", borderRadius: 1 }} />
+          <span style={{ fontSize: 8, color: "#06C167", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+            base {format(baseValue)}
+          </span>
+        </div>
+      </div>
       <div className="flex items-center justify-between text-[9.5px] font-medium" style={{ color: "#B5B5B5" }}>
         <span>{format(min)}</span>
         {histMin !== undefined && histMax !== undefined && (
-          <span>
-            12-qtr range: {format(histMin)} to {format(histMax)}
-          </span>
+          <span>12-qtr range: {format(histMin)} – {format(histMax)}</span>
         )}
         <span>{format(max)}</span>
       </div>
@@ -177,14 +192,13 @@ export default function Sandbox() {
 
       <div className="grid lg:grid-cols-[1fr_400px] gap-5 items-start">
         {/* Left: driver controls */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 order-2 lg:order-1">
           <GroupCard title="1. Platform Drivers">
             <SliderRow
               label="MAPCs YoY Growth Rate"
               value={inputs.mapcGrowth}
-              min={0.05}
-              max={0.30}
-              step={0.001}
+              baseValue={BASE_INPUTS.mapcGrowth}
+              min={0.05} max={0.30} step={0.001}
               onChange={(v) => set("mapcGrowth", v)}
               format={(v) => fmtPct(v)}
               defense={DRIVERS.mapcGrowth.defense}
@@ -192,9 +206,8 @@ export default function Sandbox() {
             <SliderRow
               label="Monthly Trips/MAPC YoY Growth"
               value={inputs.tripsPerMapcGrowth}
-              min={-0.02}
-              max={0.10}
-              step={0.001}
+              baseValue={BASE_INPUTS.tripsPerMapcGrowth}
+              min={-0.02} max={0.10} step={0.001}
               onChange={(v) => set("tripsPerMapcGrowth", v)}
               format={(v) => fmtPct(v)}
               defense={DRIVERS.tripsPerMapcGrowth.defense}
@@ -202,13 +215,11 @@ export default function Sandbox() {
             <SliderRow
               label="GB per Trip"
               value={inputs.gbPerTrip}
-              min={13.0}
-              max={16.0}
-              step={0.01}
+              baseValue={BASE_INPUTS.gbPerTrip}
+              min={13.0} max={16.0} step={0.01}
               onChange={(v) => set("gbPerTrip", v)}
               format={(v) => fmtDollar(v)}
-              histMin={RANGES.gbPerTrip.min}
-              histMax={RANGES.gbPerTrip.max}
+              histMin={RANGES.gbPerTrip.min} histMax={RANGES.gbPerTrip.max}
               defense={DRIVERS.gbPerTrip.defense}
             />
           </GroupCard>
@@ -240,13 +251,11 @@ export default function Sandbox() {
             <SliderRow
               label="Active EBITDA Margin"
               value={inputs.ebitdaMargin}
-              min={0.035}
-              max={0.065}
-              step={0.0005}
+              baseValue={BASE_INPUTS.ebitdaMargin}
+              min={0.035} max={0.065} step={0.0005}
               onChange={(v) => set("ebitdaMargin", v)}
               format={(v) => fmtPct(v, 2)}
-              histMin={RANGES.ebitdaMargin.min}
-              histMax={RANGES.ebitdaMargin.max}
+              histMin={RANGES.ebitdaMargin.min} histMax={RANGES.ebitdaMargin.max}
               defense={DRIVERS.ebitdaMarginBase.defense}
             />
             <p className="text-[10.5px] font-medium" style={{ color: "#B5B5B5" }}>
@@ -258,25 +267,21 @@ export default function Sandbox() {
             <SliderRow
               label="Mobility % of Total GB"
               value={inputs.mobilityMix}
-              min={0.40}
-              max={0.55}
-              step={0.001}
+              baseValue={BASE_INPUTS.mobilityMix}
+              min={0.40} max={0.55} step={0.001}
               onChange={setMobilityMix}
               format={(v) => fmtPct(v)}
-              histMin={RANGES.mobilityMix.min}
-              histMax={RANGES.mobilityMix.max}
+              histMin={RANGES.mobilityMix.min} histMax={RANGES.mobilityMix.max}
               defense={DRIVERS.mobilityMix.defense}
             />
             <SliderRow
               label="Delivery % of Total GB"
               value={inputs.deliveryMix}
-              min={0.40}
-              max={0.55}
-              step={0.001}
+              baseValue={BASE_INPUTS.deliveryMix}
+              min={0.40} max={0.55} step={0.001}
               onChange={setDeliveryMix}
               format={(v) => fmtPct(v)}
-              histMin={RANGES.deliveryMix.min}
-              histMax={RANGES.deliveryMix.max}
+              histMin={RANGES.deliveryMix.min} histMax={RANGES.deliveryMix.max}
               defense={DRIVERS.deliveryMix.defense}
             />
             <div className="flex items-center justify-between text-[12px] font-medium px-0.5" style={{ color: "#6B6B6B" }}>
@@ -291,37 +296,31 @@ export default function Sandbox() {
             <SliderRow
               label="Mobility Take Rate"
               value={inputs.mobilityTakeRate}
-              min={0.24}
-              max={0.34}
-              step={0.001}
+              baseValue={BASE_INPUTS.mobilityTakeRate}
+              min={0.24} max={0.34} step={0.001}
               onChange={(v) => set("mobilityTakeRate", v)}
               format={(v) => fmtPct(v)}
-              histMin={RANGES.mobilityTakeRate.min}
-              histMax={RANGES.mobilityTakeRate.max}
+              histMin={RANGES.mobilityTakeRate.min} histMax={RANGES.mobilityTakeRate.max}
               defense={DRIVERS.mobilityTakeRate.defense}
             />
             <SliderRow
               label="Delivery Take Rate"
               value={inputs.deliveryTakeRate}
-              min={0.15}
-              max={0.24}
-              step={0.001}
+              baseValue={BASE_INPUTS.deliveryTakeRate}
+              min={0.15} max={0.24} step={0.001}
               onChange={(v) => set("deliveryTakeRate", v)}
               format={(v) => fmtPct(v)}
-              histMin={RANGES.deliveryTakeRate.min}
-              histMax={RANGES.deliveryTakeRate.max}
+              histMin={RANGES.deliveryTakeRate.min} histMax={RANGES.deliveryTakeRate.max}
               defense={DRIVERS.deliveryTakeRate.defense}
             />
             <SliderRow
               label="Freight Take Rate"
               value={inputs.freightTakeRate}
-              min={0.97}
-              max={1.03}
-              step={0.0005}
+              baseValue={BASE_INPUTS.freightTakeRate}
+              min={0.97} max={1.03} step={0.0005}
               onChange={(v) => set("freightTakeRate", v)}
               format={(v) => fmtPct(v, 2)}
-              histMin={RANGES.freightTakeRate.min}
-              histMax={RANGES.freightTakeRate.max}
+              histMin={RANGES.freightTakeRate.min} histMax={RANGES.freightTakeRate.max}
               defense={DRIVERS.freightTakeRate.defense}
             />
           </GroupCard>
@@ -330,56 +329,48 @@ export default function Sandbox() {
             <SliderRow
               label="Mobility Op Margin (% of Mobility GB)"
               value={inputs.mobilityOpMargin}
-              min={0.04}
-              max={0.11}
-              step={0.001}
+              baseValue={BASE_INPUTS.mobilityOpMargin}
+              min={0.04} max={0.11} step={0.001}
               onChange={(v) => set("mobilityOpMargin", v)}
               format={(v) => fmtPct(v)}
-              histMin={RANGES.mobilityOpMargin.min}
-              histMax={RANGES.mobilityOpMargin.max}
+              histMin={RANGES.mobilityOpMargin.min} histMax={RANGES.mobilityOpMargin.max}
               defense={DRIVERS.mobilityOpMargin.defense}
             />
             <SliderRow
               label="Delivery Op Margin (% of Delivery GB)"
               value={inputs.deliveryOpMargin}
-              min={0.00}
-              max={0.06}
-              step={0.001}
+              baseValue={BASE_INPUTS.deliveryOpMargin}
+              min={0.00} max={0.06} step={0.001}
               onChange={(v) => set("deliveryOpMargin", v)}
               format={(v) => fmtPct(v)}
-              histMin={RANGES.deliveryOpMargin.min}
-              histMax={RANGES.deliveryOpMargin.max}
+              histMin={RANGES.deliveryOpMargin.min} histMax={RANGES.deliveryOpMargin.max}
               defense={DRIVERS.deliveryOpMargin.defense}
             />
             <SliderRow
               label="Freight Op Income ($M)"
               value={inputs.freightOpIncome}
-              min={-80}
-              max={20}
-              step={1}
+              baseValue={BASE_INPUTS.freightOpIncome}
+              min={-80} max={20} step={1}
               onChange={(v) => set("freightOpIncome", v)}
               format={(v) => fmtM(v)}
-              histMin={RANGES.freightOpIncome.min}
-              histMax={RANGES.freightOpIncome.max}
+              histMin={RANGES.freightOpIncome.min} histMax={RANGES.freightOpIncome.max}
               defense={DRIVERS.freightOpIncome.defense}
             />
             <SliderRow
               label="Corp G&A + Platform R&D ($M)"
               value={inputs.corpGA}
-              min={-1400}
-              max={-700}
-              step={1}
+              baseValue={BASE_INPUTS.corpGA}
+              min={-1400} max={-700} step={1}
               onChange={(v) => set("corpGA", v)}
               format={(v) => fmtM(v)}
-              histMin={RANGES.corpGA.min}
-              histMax={RANGES.corpGA.max}
+              histMin={RANGES.corpGA.min} histMax={RANGES.corpGA.max}
               defense={DRIVERS.corpGA.defense}
             />
           </GroupCard>
         </div>
 
-        {/* Right: live output panel */}
-        <div className="lg:sticky lg:top-6 flex flex-col gap-5">
+        {/* Right: live output panel — first on mobile so numbers are always visible */}
+        <div className="lg:sticky lg:top-6 flex flex-col gap-5 order-1 lg:order-2">
           <div
             className="rounded-[28px] p-6 sm:p-7 flex flex-col gap-6"
             style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)" }}
