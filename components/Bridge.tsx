@@ -226,23 +226,22 @@ export default function Bridge() {
           <div
             className="flex flex-col gap-2 px-5 py-4 rounded-2xl cursor-default"
             style={{
-              background: hoveredTile === "delivery" ? "#04A857" : GREEN,
+              background: hoveredTile === "delivery" ? "#D1FAE5" : "#ECFDF5",
+              border: "1px solid rgba(6,193,103,0.18)",
               transform: hoveredTile === "delivery" ? "translateY(-2px)" : "none",
-              boxShadow: hoveredTile === "delivery"
-                ? "0 8px 28px rgba(6,193,103,0.28)"
-                : "0 2px 10px rgba(6,193,103,0.14)",
+              boxShadow: hoveredTile === "delivery" ? "0 8px 28px rgba(6,193,103,0.12)" : "none",
               transition: "background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease",
             }}
             onMouseEnter={() => setHoveredTile("delivery")}
             onMouseLeave={() => setHoveredTile(null)}
           >
-            <span className="text-[9.5px] font-bold uppercase" style={{ color: "rgba(255,255,255,0.65)", letterSpacing: "0.08em" }}>
+            <span className="text-[9.5px] font-bold uppercase" style={{ color: "#059669", letterSpacing: "0.08em" }}>
               Delivery · first time leading
             </span>
-            <span className="tnum text-[26px] sm:text-[30px] font-black leading-none tracking-tight" style={{ color: "#FFFFFF", fontFamily: "var(--font-geist-mono)" }}>
+            <span className="tnum text-[26px] sm:text-[30px] font-black leading-none tracking-tight" style={{ color: "#064E3B", fontFamily: "var(--font-geist-mono)" }}>
               {fmtM(out.deliveryGB)}
             </span>
-            <span className="text-[11px] font-semibold" style={{ color: "rgba(255,255,255,0.7)" }}>
+            <span className="text-[11px] font-semibold" style={{ color: "#065F46" }}>
               {fmtPct(LOCKED_INPUTS.deliveryMix)} of total GB
             </span>
           </div>

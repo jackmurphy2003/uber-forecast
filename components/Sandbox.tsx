@@ -100,13 +100,15 @@ function SliderRow({
 function GroupCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div
-      className="flex flex-col gap-5 rounded-[28px] p-6 sm:p-7"
-      style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)" }}
+      className="flex flex-col rounded-[24px] overflow-hidden"
+      style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.07)" }}
     >
-      <h3 className="text-[11px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.08em" }}>
-        {title}
-      </h3>
-      <div className="flex flex-col gap-6">{children}</div>
+      <div className="px-5 sm:px-6 py-3.5" style={{ borderBottom: "1px solid rgba(0,0,0,0.05)", background: "#FAFAFA" }}>
+        <span className="text-[10.5px] font-semibold" style={{ color: "#9B9B9B", letterSpacing: "0.06em" }}>
+          {title}
+        </span>
+      </div>
+      <div className="flex flex-col gap-6 px-5 sm:px-6 py-5 sm:py-6">{children}</div>
     </div>
   );
 }
@@ -193,7 +195,7 @@ export default function Sandbox() {
       <div className="grid lg:grid-cols-[1fr_400px] gap-5 items-start">
         {/* Left: driver controls */}
         <div className="flex flex-col gap-5 order-2 lg:order-1">
-          <GroupCard title="1. Platform Drivers">
+          <GroupCard title="Platform Drivers">
             <SliderRow
               label="MAPCs YoY Growth Rate"
               value={inputs.mapcGrowth}
@@ -224,7 +226,7 @@ export default function Sandbox() {
             />
           </GroupCard>
 
-          <GroupCard title="2. EBITDA Margin Scenario">
+          <GroupCard title="EBITDA Margin Scenario">
             <div className="flex gap-2">
               {(Object.keys(EBITDA_SCENARIOS) as ScenarioKey[]).map((key) => {
                 const s = EBITDA_SCENARIOS[key];
@@ -263,7 +265,7 @@ export default function Sandbox() {
             </p>
           </GroupCard>
 
-          <GroupCard title="3. Segment Gross Bookings Mix">
+          <GroupCard title="Segment Gross Bookings Mix">
             <SliderRow
               label="Mobility % of Total GB"
               value={inputs.mobilityMix}
@@ -292,7 +294,7 @@ export default function Sandbox() {
             </div>
           </GroupCard>
 
-          <GroupCard title="4. Segment Revenue Take Rates">
+          <GroupCard title="Segment Take Rates">
             <SliderRow
               label="Mobility Take Rate"
               value={inputs.mobilityTakeRate}
@@ -325,7 +327,7 @@ export default function Sandbox() {
             />
           </GroupCard>
 
-          <GroupCard title="5. Segment Non-GAAP Operating Income">
+          <GroupCard title="Segment Operating Income">
             <SliderRow
               label="Mobility Op Margin (% of Mobility GB)"
               value={inputs.mobilityOpMargin}

@@ -9,14 +9,40 @@ export default function Home() {
         <TabContent />
       </main>
       <footer
-        className="hidden md:block flex-none px-6 py-8 text-center text-[11px] font-medium"
-        style={{ color: "#B5B5B5", borderTop: "1px solid rgba(0,0,0,0.06)" }}
+        className="flex-none px-6 pb-24 md:pb-10 pt-8 text-center"
+        style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}
       >
-        Built ahead of Uber&apos;s Q2&apos;26 earnings (Aug 5, 2026). All figures from public earnings releases —{" "}
-        <a href="/methodology" className="underline font-semibold" style={{ color: "#6B6B6B" }}>
-          methodology
-        </a>{" "}
-        for sources.
+        <p className="text-[11.5px] font-medium mb-2.5" style={{ color: "#9B9B9B" }}>
+          Uber Q2&apos;26 Financial Model &middot; Built by Jack Murphy (MS in Finance @ USC)
+        </p>
+        <div className="flex items-center justify-center gap-4 flex-wrap">
+          <a
+            href="/sources/uber-q226f-model.xlsx"
+            download
+            className="text-[11px] font-medium transition-colors duration-150 hover:underline"
+            style={{ color: "#B5B5B5" }}
+          >
+            Download Raw Model (.xlsx)
+          </a>
+          <span style={{ color: "#D5D5D5", fontSize: 12 }}>·</span>
+          <a
+            href="https://www.linkedin.com/in/jack-murphy-963375261/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[11px] font-medium transition-colors duration-150 hover:underline"
+            style={{ color: "#B5B5B5" }}
+          >
+            LinkedIn
+          </a>
+          <span style={{ color: "#D5D5D5", fontSize: 12 }}>·</span>
+          <a
+            href="/methodology"
+            className="text-[11px] font-medium transition-colors duration-150 hover:underline"
+            style={{ color: "#B5B5B5" }}
+          >
+            Methodology
+          </a>
+        </div>
       </footer>
     </div>
   );
