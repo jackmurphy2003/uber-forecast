@@ -48,7 +48,9 @@ function ChartCard({
   legend,
   annotation,
   children,
-  hoveredKey,
+  activeKey,
+  onHover,
+  onClick,
 }: {
   chartKey: string;
   title: string;
@@ -57,10 +59,12 @@ function ChartCard({
   legend?: { label: string; color: string }[];
   annotation?: string;
   children: React.ReactNode;
-  hoveredKey: string | null;
+  activeKey: string | null;
+  onHover: (key: string | null) => void;
+  onClick: (key: string | null) => void;
 }) {
-  const highlighted = hoveredKey === chartKey;
-  const dimmed = hoveredKey !== null && hoveredKey !== chartKey;
+  const highlighted = activeKey === chartKey;
+  const dimmed = activeKey !== null && activeKey !== chartKey;
 
   const badgeColors = {
     up:    { bg: "rgba(6,193,103,0.1)",  text: "#04964F" },
@@ -72,7 +76,10 @@ function ChartCard({
   return (
     <div
       data-chart-key={chartKey}
-      style={{
+      onMouseEnter={() => onHover(chartKey)}
+      onMouseLeave={() => onHover(null)}
+      onClick={() => onClick(chartKey)}
+      style={{ cursor: "pointer",
         background: "#FFFFFF",
         border: highlighted ? "1.5px solid rgba(6,193,103,0.4)" : "1px solid rgba(0,0,0,0.08)",
         borderRadius: 20,
@@ -133,56 +140,69 @@ function ChartCard({
 function AssumptionCard({
   label,
   value,
-  rationale,
+  delta,
+  drivers,
   chartKey,
-  hoveredKey,
+  activeKey,
   onHover,
+  onClick,
 }: {
   label: string;
   value: string;
-  rationale: string;
+  delta: string;
+  drivers: string[];
   chartKey: string | null;
-  hoveredKey: string | null;
+  activeKey: string | null;
   onHover: (key: string | null) => void;
+  onClick: (key: string | null) => void;
 }) {
-  const isActive = chartKey !== null && hoveredKey === chartKey;
-  const isDimmed = hoveredKey !== null && hoveredKey !== chartKey;
+  const isActive = chartKey !== null && activeKey === chartKey;
+  const isDimmed = activeKey !== null && activeKey !== chartKey;
 
   return (
     <div
       onMouseEnter={() => { if (chartKey) onHover(chartKey); }}
       onMouseLeave={() => onHover(null)}
+      onClick={() => onClick(chartKey)}
       style={{
         background: isActive ? "rgba(6,193,103,0.04)" : "#FFFFFF",
-        border: isActive ? "1px solid rgba(6,193,103,0.28)" : "1px solid rgba(0,0,0,0.07)",
+        border: "1px solid rgba(0,0,0,0.07)",
+        borderLeft: isActive ? "3px solid #06C167" : "1px solid rgba(0,0,0,0.07)",
         borderRadius: 14,
-        padding: "10px 14px",
+        padding: "9px 13px",
         opacity: isDimmed ? 0.35 : 1,
         transition: "all 0.15s ease",
-        cursor: chartKey ? "default" : "default",
+        cursor: chartKey ? "pointer" : "default",
       }}
     >
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 3 }}>
+      {/* Line 1: label + value */}
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8, marginBottom: 2 }}>
         <span style={{ fontSize: 11, fontWeight: 600, color: isActive ? "#059669" : "#3A3A3A", lineHeight: 1.3 }}>
           {label}
         </span>
-        <span style={{
-          fontSize: 12, fontWeight: 700,
-          fontFamily: "var(--font-geist-mono)",
-          color: isActive ? "#064E3B" : "#0A0A0A",
-          flexShrink: 0,
-        }}>
+        <span style={{ fontSize: 12, fontWeight: 700, fontFamily: "var(--font-geist-mono)", color: isActive ? "#064E3B" : "#0A0A0A", flexShrink: 0 }}>
           {value}
         </span>
       </div>
-      <p style={{ fontSize: 10, color: "#9B9B9B", lineHeight: 1.45, margin: 0 }}>
-        {rationale}
+      {/* Line 2: trend delta */}
+      <p style={{ fontSize: 10.5, color: "#6B6B6B", margin: "0 0 5px 0", lineHeight: 1.35 }}>
+        {delta}
       </p>
-      {!chartKey && (
-        <span style={{ fontSize: 9, color: "#C5C5C5", marginTop: 4, display: "block" }}>
-          Cost line — no chart
-        </span>
-      )}
+      {/* Line 3: driver badges */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+        {drivers.map((d) => (
+          <span key={d} style={{
+            fontSize: 9, fontWeight: 600, padding: "1px 5px", borderRadius: 4,
+            background: isActive ? "rgba(6,193,103,0.1)" : "rgba(0,0,0,0.05)",
+            color: isActive ? "#059669" : "#6B6B6B",
+          }}>{d}</span>
+        ))}
+        {!chartKey && (
+          <span style={{ fontSize: 9, fontWeight: 600, padding: "1px 5px", borderRadius: 4, background: "rgba(0,0,0,0.04)", color: "#C0C0C0" }}>
+            no chart
+          </span>
+        )}
+      </div>
     </div>
   );
 }
@@ -192,113 +212,138 @@ const ASSUMPTIONS = [
     key: "mapcGrowth",
     label: "MAPC Growth Rate",
     value: "17.5%",
-    rationale: "Q1'26 actual +17%, accelerating from ~14% YoY. Uber One +50M members, 7 new market launches.",
+    delta: "▲ Accelerating · Q1'26A: +17% vs ~14% prior year",
+    drivers: ["Uber One 50M members", "7 new markets"],
     chartKey: "mapc",
   },
   {
     key: "tripsPerMapcGrowth",
     label: "Trips / MAPC Growth",
     value: "+3.0% YoY",
-    rationale: "Ranged +2% to +4% over 7 quarters with no deceleration. Hold Q1'26 rate flat.",
+    delta: "→ Stable 7Q band · +2% to +4%",
+    drivers: ["No deceleration signal", "Q1'26A: +3.0%"],
     chartKey: "trips",
   },
   {
     key: "gbPerTrip",
     label: "GB per Trip",
     value: "$14.43",
-    rationale: "12Q mean. Range-bound $14.10–$14.75 — premium mix tailwind offset by affordability headwind.",
+    delta: "→ 12Q mean · band $14.10–$14.75",
+    drivers: ["Mix tailwind", "Affordability headwind"],
     chartKey: "gb-per-trip",
   },
   {
     key: "ebitdaMargin",
     label: "Adj EBITDA Margin",
     value: "4.85%",
-    rationale: "+0.43pp avg annual expansion applied to Q2'25 base of 4.53%. Insurance savings tailwind.",
+    delta: "▲ +0.43pp avg YoY · base: Q2'25 at 4.53%",
+    drivers: ["Insurance savings tailwind"],
     chartKey: "ebitda",
   },
   {
     key: "mobilityMix",
     label: "Mobility GB Mix",
     value: "48.8%",
-    rationale: "Mix declining each quarter. Q1'26 actual 49.1%; trend projects a modest further step down.",
+    delta: "▼ Declining every quarter · Q1'26A: 49.1%",
+    drivers: ["Del growing faster", "Mob GB +20% YoY"],
     chartKey: "segment-mix",
   },
   {
     key: "deliveryMix",
     label: "Delivery GB Mix",
     value: "48.9%",
-    rationale: "Mix rising. Delivery +23% vs Mobility +20% in Q1'26. Suburban expansion 'very early innings.'",
+    delta: "▲ Rising every quarter · Del +23% vs Mob +20%",
+    drivers: ["Suburban expansion", "Crossover imminent"],
     chartKey: "segment-mix",
   },
   {
     key: "freightMix",
     label: "Freight GB Mix",
     value: "2.3%",
-    rationale: "Straight-line from Q2'25. Growth returned in Q1'26 but one quarter is not yet a trend.",
+    delta: "→ Flat from Q2'25 baseline",
+    drivers: ["Q1'26 growth ≠ trend yet"],
     chartKey: "segment-mix",
   },
   {
     key: "mobilityTakeRate",
     label: "Mobility Take Rate",
     value: "30.7%",
-    rationale: "Q2'25 comparable. Q1'26 (25.8%) excluded — distorted by contra-revenue reclassification.",
+    delta: "→ Q2'25 comparable · Q1'26 excluded",
+    drivers: ["Reclassification distortion", "Q1'26A: 25.8%"],
     chartKey: "segment-take-rates",
   },
   {
     key: "deliveryTakeRate",
     label: "Delivery Take Rate",
     value: "19.2%",
-    rationale: "Avg of last 3 clean quarters (Q3'25–Q1'26: 19.2%–19.5%). Trending up, used conservative mid.",
+    delta: "▲ Trending up · 3Q clean avg (Q3'25–Q1'26)",
+    drivers: ["19.2% → 19.2% → 19.5%", "Conservative mid"],
     chartKey: "segment-take-rates",
   },
   {
     key: "freightTakeRate",
     label: "Freight Take Rate",
     value: "100.2%",
-    rationale: "Revenue consistently 100.1–100.2% of GB over 12Q. 12Q average = 100.15%.",
+    delta: "→ 12Q avg 100.15% · Rev ≈ GB",
+    drivers: ["Freight rev historically ≥ GB"],
     chartKey: "take-rate",
   },
   {
     key: "mobilityOpMargin",
     label: "Mobility Op Margin",
     value: "7.5%",
-    rationale: "Recent: 7.1% → 7.5% → 7.4% → 7.7%. Conservative mid-range; trend is upward.",
+    delta: "▲ Trending up · Q1'26A: 7.7%",
+    drivers: ["7.1% → 7.5% → 7.4% → 7.7%"],
     chartKey: "segment-op-margins",
   },
   {
     key: "deliveryOpMargin",
     label: "Delivery Op Margin",
     value: "3.6%",
-    rationale: "Recent: 3.2% → 3.3% → 3.6% → 3.7%. Q4'25 level — one notch below Q1'26 actuals.",
+    delta: "▲ Trending up · Q1'26A: 3.7%",
+    drivers: ["3.2% → 3.3% → 3.6% → 3.7%", "Conservative vs Q1'26"],
     chartKey: "segment-op-margins",
   },
   {
     key: "freightOpIncome",
     label: "Freight Op Income",
     value: "($28M)",
-    rationale: "Average of 4 disclosed quarters: Q4'24 −$41M, Q1'25 −$25M, Q4'25 −$18M, Q1'26 −$30M.",
+    delta: "→ 4Q avg −$28.5M · range −$18M to −$41M",
+    drivers: ["Q4'24 –$41M", "Q4'25 –$18M", "Q1'26 –$30M"],
     chartKey: "segment-op-margins",
   },
   {
     key: "corpGA",
     label: "Corp G&A + Platform R&D",
     value: "($1,097M)",
-    rationale: "Avg of Q4'25 (−$996M) and Q1'26 (−$1,077M) = −$1,037M, plus modest QoQ growth.",
+    delta: "→ Avg Q4'25/Q1'26 + modest QoQ growth",
+    drivers: ["–$996M Q4'25", "–$1,077M Q1'26"],
     chartKey: null,
   },
 ];
 
 export default function TrendsAndAssumptions() {
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
+  const [lockedKey, setLockedKey] = useState<string | null>(null);
+
+  const activeKey = lockedKey ?? hoveredKey;
 
   const col1 = ASSUMPTIONS.slice(0, 7);
   const col2 = ASSUMPTIONS.slice(7);
 
+  function handleHover(key: string | null) {
+    if (!lockedKey) setHoveredKey(key);
+  }
+
+  function handleClick(key: string | null) {
+    setLockedKey((prev) => (prev === key ? null : key));
+  }
+
   useEffect(() => {
-    if (!hoveredKey) return;
-    const el = document.querySelector(`[data-chart-key="${hoveredKey}"]`);
+    if (!activeKey) return;
+    const el = document.querySelector(`[data-chart-key="${activeKey}"]`);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [hoveredKey]);
+  }, [activeKey]);
 
   return (
     <section>
@@ -322,7 +367,7 @@ export default function TrendsAndAssumptions() {
           </div>
           <div className="flex flex-col gap-1.5">
             {ASSUMPTIONS.map(({ key, ...a }) => (
-              <AssumptionCard key={key} {...a} hoveredKey={hoveredKey} onHover={setHoveredKey} />
+              <AssumptionCard key={key} {...a} activeKey={activeKey} onHover={handleHover} onClick={handleClick} />
             ))}
           </div>
         </div>
@@ -330,7 +375,7 @@ export default function TrendsAndAssumptions() {
         {/* Right: charts */}
         <div className="overflow-y-auto pl-1" style={{ scrollbarWidth: "none" }}>
           <div className="grid grid-cols-2 gap-3">
-            <ChartCard chartKey="mapc" title="MAPCs" badge="↑ Accelerating" badgeTone="up" annotation="Q2'26F: +17.5% YoY growth" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="mapc" title="MAPCs" badge="↑ Accelerating" badgeTone="up" annotation="Q2'26F: +17.5% YoY growth" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
               <ResponsiveContainer>
                 <LineChart data={MAPC_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -341,7 +386,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="trips" title="Monthly Trips / MAPC" badge="→ Stable" annotation="Q2'26F: +3.0% YoY assumed" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="trips" title="Monthly Trips / MAPC" badge="→ Stable" annotation="Q2'26F: +3.0% YoY assumed" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
               <ResponsiveContainer>
                 <LineChart data={TRIPS_PER_MAPC_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -352,7 +397,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="gb-per-trip" title="Gross Bookings / Trip" badge="→ Range-bound" annotation="Assumed: $14.43 (12Q mean)" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="gb-per-trip" title="Gross Bookings / Trip" badge="→ Range-bound" annotation="Assumed: $14.43 (12Q mean)" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
               <ResponsiveContainer>
                 <LineChart data={GB_PER_TRIP_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -363,7 +408,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" annotation="Q1'26 excluded — reclassification distortion" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" annotation="Q1'26 excluded — reclassification distortion" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
               <ResponsiveContainer>
                 <LineChart data={TAKE_RATE_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -374,7 +419,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="ebitda" title="Adj EBITDA Margin" badge="↑ Expanding" badgeTone="up" annotation="Q2'26F: 4.85% (+0.43pp YoY expansion)" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="ebitda" title="Adj EBITDA Margin" badge="↑ Expanding" badgeTone="up" annotation="Q2'26F: 4.85% (+0.43pp YoY expansion)" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
               <ResponsiveContainer>
                 <LineChart data={EBITDA_MARGIN_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -385,7 +430,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="segment-mix" title="Segment GB Mix" badge="↑ Delivery accelerating" badgeTone="up" annotation="Q2'26F: Mob 48.8% / Del 48.9% (crossover)" hoveredKey={hoveredKey}
+            <ChartCard chartKey="segment-mix" title="Segment GB Mix" badge="↑ Delivery accelerating" badgeTone="up" annotation="Q2'26F: Mob 48.8% / Del 48.9% (crossover)" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
               legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }, { label: "Freight", color: GRAY }]}
             >
               <ResponsiveContainer>
@@ -400,7 +445,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="segment-take-rates" title="Segment Take Rates" badge="↑ Delivery rising" badgeTone="up" annotation="Q2'26F: Mob 30.7% / Del 19.2%" hoveredKey={hoveredKey}
+            <ChartCard chartKey="segment-take-rates" title="Segment Take Rates" badge="↑ Delivery rising" badgeTone="up" annotation="Q2'26F: Mob 30.7% / Del 19.2%" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
               legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }]}
             >
               <ResponsiveContainer>
@@ -414,7 +459,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="segment-op-margins" title="Segment Op Margins" badge="↑ Both rising" badgeTone="up" annotation="Q2'26F: Mob 7.5% / Del 3.6%" hoveredKey={hoveredKey}
+            <ChartCard chartKey="segment-op-margins" title="Segment Op Margins" badge="↑ Both rising" badgeTone="up" annotation="Q2'26F: Mob 7.5% / Del 3.6%" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
               legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }]}
             >
               <ResponsiveContainer>
@@ -435,7 +480,7 @@ export default function TrendsAndAssumptions() {
       {/* Mobile / tablet: stacked */}
       <div className="lg:hidden">
       <div className="grid sm:grid-cols-2 gap-3 mb-8">
-        <ChartCard chartKey="mapc" title="MAPCs" badge="↑ Accelerating" badgeTone="up" hoveredKey={hoveredKey}>
+        <ChartCard chartKey="mapc" title="MAPCs" badge="↑ Accelerating" badgeTone="up" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
           <ResponsiveContainer>
             <LineChart data={MAPC_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
               <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -447,7 +492,7 @@ export default function TrendsAndAssumptions() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard chartKey="trips" title="Monthly Trips / MAPC" badge="→ Stable" badgeTone="flat" hoveredKey={hoveredKey}>
+        <ChartCard chartKey="trips" title="Monthly Trips / MAPC" badge="→ Stable" badgeTone="flat" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
           <ResponsiveContainer>
             <LineChart data={TRIPS_PER_MAPC_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
               <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -459,7 +504,7 @@ export default function TrendsAndAssumptions() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard chartKey="gb-per-trip" title="Gross Bookings / Trip" badge="→ Range-bound" badgeTone="flat" hoveredKey={hoveredKey}>
+        <ChartCard chartKey="gb-per-trip" title="Gross Bookings / Trip" badge="→ Range-bound" badgeTone="flat" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
           <ResponsiveContainer>
             <LineChart data={GB_PER_TRIP_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
               <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -471,7 +516,7 @@ export default function TrendsAndAssumptions() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" hoveredKey={hoveredKey}>
+        <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
           <ResponsiveContainer>
             <LineChart data={TAKE_RATE_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
               <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -483,7 +528,7 @@ export default function TrendsAndAssumptions() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard chartKey="ebitda" title="Adj EBITDA Margin" badge="↑ Expanding" badgeTone="up" hoveredKey={hoveredKey}>
+        <ChartCard chartKey="ebitda" title="Adj EBITDA Margin" badge="↑ Expanding" badgeTone="up" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
           <ResponsiveContainer>
             <LineChart data={EBITDA_MARGIN_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
               <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -496,7 +541,7 @@ export default function TrendsAndAssumptions() {
         </ChartCard>
 
         <ChartCard
-          chartKey="segment-mix" title="Segment GB Mix" badge="↑ Delivery accelerating" badgeTone="up" hoveredKey={hoveredKey}
+          chartKey="segment-mix" title="Segment GB Mix" badge="↑ Delivery accelerating" badgeTone="up" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
           legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }, { label: "Freight", color: GRAY }]}
         >
           <ResponsiveContainer>
@@ -513,7 +558,7 @@ export default function TrendsAndAssumptions() {
         </ChartCard>
 
         <ChartCard
-          chartKey="segment-take-rates" title="Segment Take Rates" badge="↑ Delivery rising" badgeTone="up" hoveredKey={hoveredKey}
+          chartKey="segment-take-rates" title="Segment Take Rates" badge="↑ Delivery rising" badgeTone="up" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
           legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }]}
         >
           <ResponsiveContainer>
@@ -529,7 +574,7 @@ export default function TrendsAndAssumptions() {
         </ChartCard>
 
         <ChartCard
-          chartKey="segment-op-margins" title="Segment Op Margins" badge="↑ Both rising" badgeTone="up" hoveredKey={hoveredKey}
+          chartKey="segment-op-margins" title="Segment Op Margins" badge="↑ Both rising" badgeTone="up" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
           legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }]}
         >
           <ResponsiveContainer>
@@ -557,12 +602,12 @@ export default function TrendsAndAssumptions() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="flex flex-col gap-2">
           {col1.map(({ key, ...a }) => (
-            <AssumptionCard key={key} {...a} hoveredKey={hoveredKey} onHover={setHoveredKey} />
+            <AssumptionCard key={key} {...a} activeKey={activeKey} onHover={handleHover} onClick={handleClick} />
           ))}
         </div>
         <div className="flex flex-col gap-2">
           {col2.map(({ key, ...a }) => (
-            <AssumptionCard key={key} {...a} hoveredKey={hoveredKey} onHover={setHoveredKey} />
+            <AssumptionCard key={key} {...a} activeKey={activeKey} onHover={handleHover} onClick={handleClick} />
           ))}
         </div>
       </div>

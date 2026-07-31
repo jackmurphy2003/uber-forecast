@@ -47,6 +47,7 @@ function SliderRow({
 }) {
   const basePct = ((baseValue - min) / (max - min)) * 100;
   const atBase = Math.abs(value - baseValue) < step / 2;
+  const diff = value - baseValue;
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -59,12 +60,26 @@ function SliderRow({
             </span>
           )}
         </span>
-        <span
-          className="tnum text-[13px] font-bold"
-          style={{ color: atBase ? "#04964F" : "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}
-        >
-          {format(value)}
-        </span>
+        <div className="flex items-center gap-2">
+          {!atBase && (
+            <span
+              className="tnum text-[9.5px] font-bold px-1.5 py-0.5 rounded"
+              style={{
+                background: diff > 0 ? "rgba(6,193,103,0.1)" : "rgba(225,29,72,0.1)",
+                color: diff > 0 ? "#04964F" : "#E11D48",
+                fontFamily: "var(--font-geist-mono)",
+              }}
+            >
+              {diff > 0 ? "+" : ""}{format(Math.abs(diff))} vs base
+            </span>
+          )}
+          <span
+            className="tnum text-[13px] font-bold"
+            style={{ color: atBase ? "#04964F" : "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}
+          >
+            {format(value)}
+          </span>
+        </div>
       </div>
       <input
         type="range"
