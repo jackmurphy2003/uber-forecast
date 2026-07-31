@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import { DRIVERS, GUIDANCE, EBITDA_SCENARIOS } from "@/lib/assumptions";
+import { GUIDANCE, EBITDA_SCENARIOS } from "@/lib/assumptions";
 import { CONSOLIDATED } from "@/lib/data";
 import { fmtPct, fmtM } from "@/lib/format";
 import { FileDown } from "lucide-react";
