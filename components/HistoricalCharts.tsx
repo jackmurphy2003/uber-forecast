@@ -41,30 +41,30 @@ const INSIGHT_TILES = [
   {
     label: "MAPCs in Q1'26",
     stat: "199M",
-    sub: "+17% YoY — fastest rate in 2+ years",
     assumption: "17.5% growth assumed",
+    color: { bg: "rgba(79,70,229,0.08)", text: "#4338CA" },
   },
   {
     label: "GB/Trip, 12-quarter band",
     stat: "$14.10 – $14.75",
-    sub: "No directional trend over 3 years",
     assumption: "$14.43 mean assumed",
+    color: { bg: "rgba(100,116,139,0.1)", text: "#475569" },
   },
   {
     label: "EBITDA margin since Q2'23",
     stat: "2.7% → 4.6%",
-    sub: "+0.43pp avg YoY expansion",
     assumption: "4.85% assumed for Q2'26F",
+    color: { bg: "rgba(139,92,246,0.08)", text: "#7C3AED" },
   },
   {
     label: "Delivery – Mobility GB gap",
     stat: "3.4pp → 0.7pp",
-    sub: "Closed every quarter since Q2'23",
     assumption: "Projects to flip in Q2'26F",
+    color: { bg: "rgba(20,184,166,0.08)", text: "#0D9488" },
   },
 ];
 
-function InsightTile({ label, stat, assumption }: typeof INSIGHT_TILES[0]) {
+function InsightTile({ label, stat, assumption, color }: typeof INSIGHT_TILES[0]) {
   return (
     <div
       className="flex flex-col gap-2 rounded-2xl px-5 py-4"
@@ -78,7 +78,7 @@ function InsightTile({ label, stat, assumption }: typeof INSIGHT_TILES[0]) {
       </span>
       <span
         className="inline-flex items-center gap-1 text-[10px] font-semibold w-fit px-2 py-0.5 rounded-full"
-        style={{ background: "rgba(6,193,103,0.1)", color: "#04964F" }}
+        style={{ background: color.bg, color: color.text }}
       >
         → {assumption}
       </span>
@@ -233,7 +233,7 @@ export default function HistoricalCharts() {
 
         <ChartCard
           title="Consolidated Take Rate"
-          badge="→ Stable (noisy)"
+          badge="⚠ See notes"
           badgeTone="mixed"
         >
           <ResponsiveContainer>
@@ -266,7 +266,7 @@ export default function HistoricalCharts() {
 
         <ChartCard
           title="Segment GB Mix"
-          badge="→ Converging"
+          badge="↑ Delivery accelerating"
           badgeTone="up"
           assumptionNote="48.8% / 48.9% used in model"
           legend={[
