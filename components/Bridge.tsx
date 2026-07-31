@@ -53,11 +53,12 @@ function StaticEndDot({ cx, cy, index, fill }: { cx?: number; cy?: number; index
   return <circle cx={cx} cy={cy} r={5} fill={fill} stroke="white" strokeWidth={2.5} />;
 }
 
-function CrossoverTooltip({ active, payload, label }: any) {
+interface TooltipPayloadEntry { dataKey: string; value: number; }
+function CrossoverTooltip({ active, payload, label }: { active?: boolean; payload?: TooltipPayloadEntry[]; label?: string }) {
   if (!active || !payload?.length) return null;
   const isProjected = label === "Q2'26F";
-  const delivery = payload.find((p: any) => p.dataKey === "delivery");
-  const mobility = payload.find((p: any) => p.dataKey === "mobility");
+  const delivery = payload.find((p) => p.dataKey === "delivery");
+  const mobility = payload.find((p) => p.dataKey === "mobility");
   return (
     <div style={{
       background: "#FFFFFF",
@@ -203,7 +204,7 @@ export default function Bridge() {
                 dataKey="mobility"
                 stroke="#3A3A3A"
                 strokeWidth={2}
-                dot={(props: any) => <StaticEndDot {...props} fill="#3A3A3A" />}
+                dot={(props) => <StaticEndDot {...(props as { cx: number; cy: number; index: number })} fill="#3A3A3A" />}
                 activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF", fill: "#3A3A3A" }}
                 isAnimationActive={false}
               />
@@ -212,7 +213,7 @@ export default function Bridge() {
                 dataKey="delivery"
                 stroke={GREEN}
                 strokeWidth={2}
-                dot={(props: any) => <PulsingDot {...props} fill={GREEN} />}
+                dot={(props) => <PulsingDot {...(props as { cx: number; cy: number; index: number })} fill={GREEN} />}
                 activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF", fill: GREEN }}
                 isAnimationActive={false}
               />
