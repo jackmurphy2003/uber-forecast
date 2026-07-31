@@ -199,7 +199,7 @@ export default function MethodologyPage() {
             Known Caveats
           </h2>
           <div className="flex flex-col gap-3">
-            {CAVEATS.map((c, i) => (
+            {CAVEATS.map((c) => (
               <div
                 key={c.title}
                 className="rounded-3xl px-5 py-4"
