@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import EditBar from "@/components/EditBar";
-
 const sans = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -28,7 +26,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={`${sans.variable} ${geistMono.variable}`}>
         {children}
-        <EditBar />
       </body>
     </html>
   );

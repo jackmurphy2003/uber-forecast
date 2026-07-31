@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Info, RotateCcw, TrendingUp, TrendingDown, Minus } from "lucide-react";
-import EditableText from "./EditableText";
+
 import { DRIVERS, EBITDA_SCENARIOS, GUIDANCE, type ScenarioKey } from "@/lib/assumptions";
 import { RANGES } from "@/lib/historical";
 import { runForecast, type ForecastInputs } from "@/lib/forecast";
@@ -173,10 +173,10 @@ export default function Sandbox() {
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
           <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-            <EditableText id="sandbox-title">Driver Sandbox</EditableText>
+            Driver Sandbox
           </h2>
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-            <EditableText id="sandbox-subtitle">Change any assumption using the sliders to see the impact on the Sandbox output.</EditableText>
+            Change any assumption using the sliders to see the impact on the Sandbox output.
           </p>
         </div>
         <button

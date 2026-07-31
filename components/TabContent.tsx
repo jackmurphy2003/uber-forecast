@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import LockedForecast from "./LockedForecast";
 import Bridge from "./Bridge";
-import EditableText from "./EditableText";
+
 import HistoricalCharts from "./HistoricalCharts";
 import Sandbox from "./Sandbox";
 
@@ -16,10 +16,10 @@ function SheetsEmbed() {
     <section>
       <div className="mb-5">
         <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-          <EditableText id="fullmodel-title">Full Model</EditableText>
+          Full Model
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-          <EditableText id="fullmodel-subtitle">Click the sheet tabs at the bottom to navigate between Assumptions, Historicals, and the driver tree.</EditableText>
+          Click the sheet tabs at the bottom to navigate between Assumptions, Historicals, and the driver tree.
         </p>
       </div>
       <div

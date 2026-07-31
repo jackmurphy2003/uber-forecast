@@ -2,7 +2,7 @@ import { DRIVERS, GUIDANCE, LOCKED_SNAPSHOT_DATE } from "@/lib/assumptions";
 import { runForecast } from "@/lib/forecast";
 import { fmtM, fmtPct, fmtNum, fmtDollar } from "@/lib/format";
 import GuidanceBar from "./GuidanceBar";
-import EditableText from "./EditableText";
+
 
 export const LOCKED_INPUTS = {
   mapcGrowth: DRIVERS.mapcGrowth.value,
@@ -69,10 +69,10 @@ export default function LockedForecast() {
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
           <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-            <EditableText id="locked-title">Uber 2026 Q2 Forecast</EditableText>
+            Uber 2026 Q2 Forecast
           </h2>
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-            <EditableText id="locked-subtitle">Directly from my spreadsheet - not affected by Sandbox tab sliders</EditableText>
+            Directly from my spreadsheet - not affected by Sandbox tab sliders
           </p>
         </div>
         <div className="text-[11.5px] font-medium" style={{ color: "#6B6B6B" }}>

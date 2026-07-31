@@ -12,7 +12,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import { PieChart, Pie, Cell } from "recharts";
-import EditableText from "./EditableText";
+
 import { runForecast } from "@/lib/forecast";
 import { fmtM, fmtPct } from "@/lib/format";
 import { LOCKED_INPUTS } from "./LockedForecast";
@@ -146,10 +146,10 @@ export default function Bridge() {
     <section>
       <div className="mb-5">
         <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-          <EditableText id="bridge-title">The Crossover</EditableText>
+          The Crossover
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-          <EditableText id="bridge-desc">{bridgeDesc}</EditableText>
+          {bridgeDesc}
         </p>
       </div>
 
