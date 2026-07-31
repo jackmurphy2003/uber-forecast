@@ -62,7 +62,7 @@ export default function MethodologyPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 px-6 md:px-10 py-10 md:py-14 max-w-[900px] w-full mx-auto flex flex-col gap-14">
+      <main className="flex-1 px-6 md:px-10 py-8 md:py-14 pb-24 md:pb-14 max-w-[900px] w-full mx-auto flex flex-col gap-14">
         <div>
           <h1 className="text-[30px] font-black tracking-tight mb-3" style={{ color: "#0A0A0A" }}>
             Methodology

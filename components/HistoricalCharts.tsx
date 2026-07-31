@@ -174,9 +174,18 @@ export default function HistoricalCharts() {
         </p>
       </div>
 
-      {/* Insight tiles */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-        {INSIGHT_TILES.map((t) => <InsightTile key={t.label} {...t} />)}
+      {/* Insight tiles — swipeable on mobile, 4-col grid on desktop */}
+      <div className="mb-8 -mx-6 md:mx-0">
+        <div
+          className="flex gap-3 overflow-x-auto md:grid md:grid-cols-4 md:overflow-visible px-6 md:px-0 pr-6 md:pr-0 pb-1 md:pb-0"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {INSIGHT_TILES.map((t) => (
+            <div key={t.label} className="flex-shrink-0 w-[240px] md:w-auto">
+              <InsightTile {...t} />
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

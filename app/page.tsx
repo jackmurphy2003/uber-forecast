@@ -5,11 +5,11 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 px-6 md:px-10 py-10 md:py-14 max-w-[1400px] w-full mx-auto">
+      <main className="flex-1 px-6 md:px-10 py-8 md:py-14 max-w-[1400px] w-full mx-auto pb-24 md:pb-14">
         <TabContent />
       </main>
       <footer
-        className="flex-none px-6 py-8 text-center text-[11px] font-medium"
+        className="hidden md:block flex-none px-6 py-8 text-center text-[11px] font-medium"
         style={{ color: "#B5B5B5", borderTop: "1px solid rgba(0,0,0,0.06)" }}
       >
         Built ahead of Uber&apos;s Q2&apos;26 earnings (Aug 5, 2026). All figures from public earnings releases —{" "}
