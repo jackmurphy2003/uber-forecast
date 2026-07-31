@@ -5,7 +5,7 @@ import { Suspense } from "react";
 import LockedForecast from "./LockedForecast";
 import Bridge from "./Bridge";
 
-import HistoricalCharts from "./HistoricalCharts";
+import TrendsAndAssumptions from "./TrendsAndAssumptions";
 import Sandbox from "./Sandbox";
 
 const EMBED_URL =
@@ -52,7 +52,7 @@ function TabContentInner() {
           <SheetsEmbed />
         </>
       )}
-      {tab === "trends" && <HistoricalCharts />}
+      {tab === "trends" && <TrendsAndAssumptions />}
       {tab === "sandbox" && <Sandbox />}
     </div>
   );
