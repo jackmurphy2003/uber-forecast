@@ -40,7 +40,7 @@ export default function Home() {
             className="text-[11px] font-medium transition-colors duration-150 hover:underline"
             style={{ color: "#B5B5B5" }}
           >
-            Methodology
+            Notes
           </a>
         </div>
       </footer>

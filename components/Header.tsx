@@ -9,7 +9,7 @@ const NAV_ITEMS = [
   { tab: "forecast", href: "/?tab=forecast",  label: "Forecast"    },
   { tab: "trends",   href: "/?tab=trends",    label: "Trends & Assumptions" },
   { tab: "sandbox",  href: "/?tab=sandbox",   label: "Sandbox"     },
-  { tab: "notes",    href: "/methodology",     label: "Methodology" },
+  { tab: "notes",    href: "/methodology",     label: "Notes" },
 ];
 
 function DesktopNav() {
