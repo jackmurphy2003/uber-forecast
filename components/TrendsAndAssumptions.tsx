@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -46,6 +46,7 @@ function ChartCard({
   badge,
   badgeTone = "flat",
   legend,
+  annotation,
   children,
   hoveredKey,
 }: {
@@ -54,6 +55,7 @@ function ChartCard({
   badge: string;
   badgeTone?: "up" | "flat" | "mixed";
   legend?: { label: string; color: string }[];
+  annotation?: string;
   children: React.ReactNode;
   hoveredKey: string | null;
 }) {
@@ -69,46 +71,61 @@ function ChartCard({
 
   return (
     <div
+      data-chart-key={chartKey}
       style={{
         background: "#FFFFFF",
         border: highlighted ? "1.5px solid rgba(6,193,103,0.4)" : "1px solid rgba(0,0,0,0.08)",
-        borderRadius: 24,
-        padding: 20,
+        borderRadius: 20,
+        padding: 16,
         boxShadow: highlighted
           ? "0 12px 40px rgba(6,193,103,0.14), 0 2px 8px rgba(0,0,0,0.05)"
           : "0 1px 4px rgba(0,0,0,0.04)",
         opacity: dimmed ? 0.35 : 1,
-        transform: highlighted ? "translateY(-5px) scale(1.015)" : "none",
+        transform: highlighted ? "translateY(-4px) scale(1.012)" : "none",
         transition: "all 0.2s ease",
         position: "relative",
         zIndex: highlighted ? 10 : 1,
         display: "flex",
         flexDirection: "column",
-        gap: 8,
+        gap: 6,
       }}
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-        <h4 style={{ fontSize: 12, fontWeight: 700, color: "#0A0A0A", margin: 0 }}>{title}</h4>
+        <h4 style={{ fontSize: 11.5, fontWeight: 700, color: "#0A0A0A", margin: 0 }}>{title}</h4>
         <span style={{
-          fontSize: 9.5, fontWeight: 700,
-          padding: "2px 8px", borderRadius: 999,
+          fontSize: 9, fontWeight: 700,
+          padding: "2px 7px", borderRadius: 999,
           background: bg, color: text,
           whiteSpace: "nowrap",
         }}>{badge}</span>
       </div>
 
       {legend && (
-        <div style={{ display: "flex", gap: 12 }}>
+        <div style={{ display: "flex", gap: 10 }}>
           {legend.map((l) => (
-            <span key={l.label} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 9.5, color: "#6B6B6B" }}>
-              <span style={{ width: 6, height: 6, borderRadius: "50%", background: l.color, flexShrink: 0 }} />
+            <span key={l.label} style={{ display: "flex", alignItems: "center", gap: 3, fontSize: 9, color: "#6B6B6B" }}>
+              <span style={{ width: 5, height: 5, borderRadius: "50%", background: l.color, flexShrink: 0 }} />
               {l.label}
             </span>
           ))}
         </div>
       )}
 
-      <div style={{ width: "100%", height: 130 }}>{children}</div>
+      <div style={{ width: "100%", height: 95 }}>{children}</div>
+
+      {annotation && (
+        <div style={{
+          fontSize: 9.5, fontWeight: 600,
+          fontFamily: "var(--font-geist-mono)",
+          color: highlighted ? "#059669" : "#6B6B6B",
+          background: highlighted ? "rgba(6,193,103,0.07)" : "rgba(0,0,0,0.04)",
+          padding: "3px 8px", borderRadius: 6,
+          transition: "all 0.2s ease",
+          whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+        }}>
+          {annotation}
+        </div>
+      )}
     </div>
   );
 }
@@ -277,6 +294,12 @@ export default function TrendsAndAssumptions() {
   const col1 = ASSUMPTIONS.slice(0, 7);
   const col2 = ASSUMPTIONS.slice(7);
 
+  useEffect(() => {
+    if (!hoveredKey) return;
+    const el = document.querySelector(`[data-chart-key="${hoveredKey}"]`);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [hoveredKey]);
+
   return (
     <section>
       <div className="mb-6">
@@ -289,11 +312,25 @@ export default function TrendsAndAssumptions() {
       </div>
 
       {/* Desktop: side-by-side panels */}
-      <div className="hidden lg:grid gap-5" style={{ gridTemplateColumns: "1fr 340px", height: "calc(100vh - 170px)" }}>
-        {/* Left: charts */}
-        <div className="overflow-y-auto pr-1" style={{ scrollbarWidth: "none" }}>
+      <div className="hidden lg:grid gap-5" style={{ gridTemplateColumns: "320px 1fr", height: "calc(100vh - 170px)" }}>
+
+        {/* Left: assumptions */}
+        <div className="flex flex-col overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+          <div className="mb-3">
+            <h3 className="text-[13px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>Model Assumptions</h3>
+            <p className="text-[10.5px]" style={{ color: "#B5B5B5" }}>Hover to highlight chart</p>
+          </div>
+          <div className="flex flex-col gap-1.5">
+            {ASSUMPTIONS.map(({ key, ...a }) => (
+              <AssumptionCard key={key} {...a} hoveredKey={hoveredKey} onHover={setHoveredKey} />
+            ))}
+          </div>
+        </div>
+
+        {/* Right: charts */}
+        <div className="overflow-y-auto pl-1" style={{ scrollbarWidth: "none" }}>
           <div className="grid grid-cols-2 gap-3">
-            <ChartCard chartKey="mapc" title="MAPCs" badge="↑ Accelerating" badgeTone="up" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="mapc" title="MAPCs" badge="↑ Accelerating" badgeTone="up" annotation="Q2'26F: +17.5% YoY growth" hoveredKey={hoveredKey}>
               <ResponsiveContainer>
                 <LineChart data={MAPC_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -304,7 +341,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="trips" title="Monthly Trips / MAPC" badge="→ Stable" badgeTone="flat" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="trips" title="Monthly Trips / MAPC" badge="→ Stable" annotation="Q2'26F: +3.0% YoY assumed" hoveredKey={hoveredKey}>
               <ResponsiveContainer>
                 <LineChart data={TRIPS_PER_MAPC_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -315,7 +352,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="gb-per-trip" title="Gross Bookings / Trip" badge="→ Range-bound" badgeTone="flat" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="gb-per-trip" title="Gross Bookings / Trip" badge="→ Range-bound" annotation="Assumed: $14.43 (12Q mean)" hoveredKey={hoveredKey}>
               <ResponsiveContainer>
                 <LineChart data={GB_PER_TRIP_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -326,7 +363,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" annotation="Q1'26 excluded — reclassification distortion" hoveredKey={hoveredKey}>
               <ResponsiveContainer>
                 <LineChart data={TAKE_RATE_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -337,7 +374,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="ebitda" title="Adj EBITDA Margin" badge="↑ Expanding" badgeTone="up" hoveredKey={hoveredKey}>
+            <ChartCard chartKey="ebitda" title="Adj EBITDA Margin" badge="↑ Expanding" badgeTone="up" annotation="Q2'26F: 4.85% (+0.43pp YoY expansion)" hoveredKey={hoveredKey}>
               <ResponsiveContainer>
                 <LineChart data={EBITDA_MARGIN_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -348,7 +385,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="segment-mix" title="Segment GB Mix" badge="↑ Delivery accelerating" badgeTone="up" hoveredKey={hoveredKey}
+            <ChartCard chartKey="segment-mix" title="Segment GB Mix" badge="↑ Delivery accelerating" badgeTone="up" annotation="Q2'26F: Mob 48.8% / Del 48.9% (crossover)" hoveredKey={hoveredKey}
               legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }, { label: "Freight", color: GRAY }]}
             >
               <ResponsiveContainer>
@@ -363,7 +400,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="segment-take-rates" title="Segment Take Rates" badge="↑ Delivery rising" badgeTone="up" hoveredKey={hoveredKey}
+            <ChartCard chartKey="segment-take-rates" title="Segment Take Rates" badge="↑ Delivery rising" badgeTone="up" annotation="Q2'26F: Mob 30.7% / Del 19.2%" hoveredKey={hoveredKey}
               legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }]}
             >
               <ResponsiveContainer>
@@ -377,7 +414,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="segment-op-margins" title="Segment Op Margins" badge="↑ Both rising" badgeTone="up" hoveredKey={hoveredKey}
+            <ChartCard chartKey="segment-op-margins" title="Segment Op Margins" badge="↑ Both rising" badgeTone="up" annotation="Q2'26F: Mob 7.5% / Del 3.6%" hoveredKey={hoveredKey}
               legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }]}
             >
               <ResponsiveContainer>
@@ -391,19 +428,6 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-          </div>
-        </div>
-
-        {/* Right: assumptions */}
-        <div className="flex flex-col overflow-y-auto" style={{ scrollbarWidth: "none" }}>
-          <div className="mb-3">
-            <h3 className="text-[13px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>Model Assumptions</h3>
-            <p className="text-[10.5px]" style={{ color: "#B5B5B5" }}>Hover to highlight chart</p>
-          </div>
-          <div className="flex flex-col gap-1.5">
-            {ASSUMPTIONS.map(({ key, ...a }) => (
-              <AssumptionCard key={key} {...a} hoveredKey={hoveredKey} onHover={setHoveredKey} />
-            ))}
           </div>
         </div>
       </div>
