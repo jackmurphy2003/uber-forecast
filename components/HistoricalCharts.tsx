@@ -64,21 +64,20 @@ const INSIGHT_TILES = [
   },
 ];
 
-function InsightTile({ label, stat, sub, assumption }: typeof INSIGHT_TILES[0]) {
+function InsightTile({ label, stat, assumption }: typeof INSIGHT_TILES[0]) {
   return (
     <div
-      className="flex flex-col gap-1.5 rounded-2xl px-5 py-4"
+      className="flex flex-col gap-2 rounded-2xl px-5 py-4"
       style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)" }}
     >
       <span className="text-[10px] font-semibold uppercase" style={{ color: "#B5B5B5", letterSpacing: "0.07em" }}>
         {label}
       </span>
-      <span className="text-[19px] font-black tracking-tight leading-none" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
+      <span className="text-[20px] font-black tracking-tight leading-none" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
         {stat}
       </span>
-      <span className="text-[11px]" style={{ color: "#9B9B9B" }}>{sub}</span>
       <span
-        className="inline-flex items-center gap-1 text-[10px] font-semibold mt-0.5 w-fit px-2 py-0.5 rounded-full"
+        className="inline-flex items-center gap-1 text-[10px] font-semibold w-fit px-2 py-0.5 rounded-full"
         style={{ background: "rgba(6,193,103,0.1)", color: "#04964F" }}
       >
         → {assumption}
@@ -91,7 +90,6 @@ type BadgeTone = "up" | "flat" | "mixed";
 
 function ChartCard({
   title,
-  callout,
   assumptionNote,
   badge,
   badgeTone = "flat",
@@ -99,7 +97,6 @@ function ChartCard({
   children,
 }: {
   title: string;
-  callout: string;
   assumptionNote?: string;
   badge: string;
   badgeTone?: BadgeTone;
@@ -107,9 +104,9 @@ function ChartCard({
   children: React.ReactNode;
 }) {
   const badgeColors: Record<BadgeTone, { bg: string; text: string }> = {
-    up:   { bg: "rgba(6,193,103,0.1)",     text: "#04964F" },
-    flat: { bg: "rgba(0,0,0,0.05)",         text: "#6B6B6B" },
-    mixed:{ bg: "rgba(245,158,11,0.1)",     text: "#B45309" },
+    up:    { bg: "rgba(6,193,103,0.1)",  text: "#04964F" },
+    flat:  { bg: "rgba(0,0,0,0.05)",     text: "#6B6B6B" },
+    mixed: { bg: "rgba(245,158,11,0.1)", text: "#B45309" },
   };
   const { bg, text } = badgeColors[badgeTone];
 
@@ -121,24 +118,13 @@ function ChartCard({
         border: "1px solid rgba(0,0,0,0.08)",
         boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
       }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(0,0,0,0.09)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)";
-      }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 6px 24px rgba(0,0,0,0.09)"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.boxShadow = "0 1px 4px rgba(0,0,0,0.04)"; }}
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex flex-col gap-1 min-w-0">
-          <h4 className="text-[12px] font-bold" style={{ color: "#0A0A0A" }}>
-            {title}
-          </h4>
-          <p className="text-[11px] leading-snug" style={{ color: "#9B9B9B" }}>
-            {callout}
-          </p>
-        </div>
+      <div className="flex items-center justify-between gap-2">
+        <h4 className="text-[12px] font-bold" style={{ color: "#0A0A0A" }}>{title}</h4>
         <span
-          className="flex-shrink-0 text-[9.5px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap mt-0.5"
+          className="flex-shrink-0 text-[9.5px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
           style={{ background: bg, color: text }}
         >
           {badge}
@@ -156,13 +142,10 @@ function ChartCard({
         </div>
       )}
 
-      <div style={{ width: "100%", height: 130 }}>{children}</div>
+      <div style={{ width: "100%", height: 140 }}>{children}</div>
 
       {assumptionNote && (
-        <div
-          className="flex items-center gap-1.5 pt-2"
-          style={{ borderTop: "1px solid rgba(6,193,103,0.12)" }}
-        >
+        <div className="pt-2" style={{ borderTop: "1px solid rgba(6,193,103,0.12)" }}>
           <span
             className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
             style={{ background: "rgba(6,193,103,0.1)", color: "#04964F" }}
@@ -199,7 +182,6 @@ export default function HistoricalCharts() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <ChartCard
           title="MAPCs"
-          callout="17% YoY in Q1'26, up from 14% a year ago. Accelerating."
           badge="↑ Accelerating"
           badgeTone="up"
           assumptionNote="17.5% growth used in model"
@@ -217,7 +199,6 @@ export default function HistoricalCharts() {
 
         <ChartCard
           title="Monthly Trips / MAPC"
-          callout="+2% to +4% YoY range for 7 straight quarters. No deceleration."
           badge="→ Stable"
           badgeTone="flat"
           assumptionNote="+3% YoY used in model"
@@ -235,7 +216,6 @@ export default function HistoricalCharts() {
 
         <ChartCard
           title="Gross Bookings / Trip"
-          callout="Flat $14.10–$14.75 band for 12 quarters. No trend = use the mean."
           badge="→ Range-bound"
           badgeTone="flat"
           assumptionNote="$14.43 12Q mean used in model"
@@ -253,7 +233,6 @@ export default function HistoricalCharts() {
 
         <ChartCard
           title="Consolidated Take Rate"
-          callout="Stable 26–27% ex the 3 reclassification quarters (Q2'24, Q3'24, Q1'26)."
           badge="→ Stable (noisy)"
           badgeTone="mixed"
         >
@@ -270,7 +249,6 @@ export default function HistoricalCharts() {
 
         <ChartCard
           title="Adj EBITDA Margin"
-          callout="2.7% in Q2'23 → 4.6% in Q1'26. +0.43pp avg YoY expansion applied to Q2'25 base."
           badge="↑ Expanding"
           badgeTone="up"
           assumptionNote="4.85% used in model"
@@ -288,7 +266,6 @@ export default function HistoricalCharts() {
 
         <ChartCard
           title="Segment GB Mix"
-          callout="Delivery closed from 3.4pp behind in Q2'23 to 0.7pp in Q1'26. Projects to flip."
           badge="→ Converging"
           badgeTone="up"
           assumptionNote="48.8% / 48.9% used in model"
@@ -313,7 +290,6 @@ export default function HistoricalCharts() {
 
         <ChartCard
           title="Segment Take Rates"
-          callout="Delivery trending up every clean quarter: 18.9% → 19.5%. Mobility stable at 30.7%."
           badge="↑ Delivery rising"
           badgeTone="up"
           assumptionNote="19.2% / 30.7% used in model"
@@ -336,7 +312,6 @@ export default function HistoricalCharts() {
 
         <ChartCard
           title="Segment Op Margins"
-          callout="4 NGOP quarters show Mobility at 7.1–7.7%, Delivery at 3.2–3.7%. Both trending up."
           badge="↑ Both rising"
           badgeTone="up"
           assumptionNote="7.5% / 3.6% used in model"
