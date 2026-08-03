@@ -39,6 +39,29 @@ function SheetsEmbed() {
   );
 }
 
+function IntroBlurb() {
+  return (
+    <div className="mb-6 max-w-[760px]">
+      <span
+        className="text-[10px] font-black tracking-[0.10em] uppercase block mb-1.5"
+        style={{ color: "#9B9B9B" }}
+      >
+        About this project
+      </span>
+      <p className="text-[13px] leading-relaxed" style={{ color: "#6B6B6B" }}>
+        An independent forecast of{" "}
+        <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Uber&apos;s Q2 2026 earnings</span>, built
+        from public filings and locked on July 27 — nine days before Uber reports on August 5. Every
+        number below is my own estimate, checked against management&apos;s guidance.{" "}
+        <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Trends &amp; Assumptions</span> shows the
+        data behind each input, and the{" "}
+        <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Sandbox</span> lets you bend my
+        assumptions and watch the P&amp;L move.
+      </p>
+    </div>
+  );
+}
+
 function TabContentInner() {
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab") ?? "forecast";
@@ -47,7 +70,10 @@ function TabContentInner() {
     <div className="flex flex-col gap-16">
       {tab === "forecast" && (
         <>
-          <LockedForecast />
+          <div>
+            <IntroBlurb />
+            <LockedForecast />
+          </div>
           <Bridge />
           <SheetsEmbed />
         </>

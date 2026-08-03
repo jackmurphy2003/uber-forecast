@@ -41,7 +41,7 @@ function KPI({
         {label}
       </span>
       <span
-        className="tnum text-[24px] sm:text-[34px] font-black leading-none tracking-tight"
+        className="tnum text-[24px] sm:text-[clamp(20px,2.4vw,34px)] font-black leading-none tracking-tight whitespace-nowrap"
         style={{ color: "#0A0A0A" }}
       >
         {value}
