@@ -408,7 +408,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" annotation="Q1'26 excluded — reclassification distortion" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
+            <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" annotation="Q1'26 excluded (reclassification distortion)" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
               <ResponsiveContainer>
                 <LineChart data={TAKE_RATE_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />

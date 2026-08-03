@@ -51,7 +51,7 @@ function IntroBlurb() {
       <p className="text-[13px] leading-relaxed" style={{ color: "#6B6B6B" }}>
         A bottom-up forecast of{" "}
         <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Uber&apos;s Q2 2026 earnings</span>, built
-        from public financials on Uber&apos;s investor site and locked on July 27 — nine days before
+        from public financials on Uber&apos;s investor site and locked on July 27, nine days before
         Uber reports on August 5. Every number below is my own estimate, checked against
         management&apos;s guidance.{" "}
         <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Trends &amp; Assumptions</span> shows the

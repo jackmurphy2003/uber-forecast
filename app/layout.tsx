@@ -19,7 +19,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Uber Q2'26F — Forecast Model",
+  title: "Uber Q2'26F | Forecast Model",
   description: "Interactive Uber Q2'26 earnings forecast: locked submission, driver sandbox, and methodology.",
 };
 

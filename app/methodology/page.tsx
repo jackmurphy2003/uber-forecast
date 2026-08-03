@@ -7,15 +7,15 @@ import { FileDown } from "lucide-react";
 const GLOSSARY = [
   {
     term: "MAPC",
-    def: "Monthly Active Platform Consumers — unique users who take at least one ride or place one order in a month. Uber's core user count.",
+    def: "Monthly Active Platform Consumers: unique users who take at least one ride or place one order in a month. Uber's core user count.",
   },
   {
     term: "Gross Bookings (GB)",
-    def: "Total dollar value of all rides, food orders, and freight billed on the platform — before Uber pays drivers and couriers.",
+    def: "Total dollar value of all rides, food orders, and freight billed on the platform, before Uber pays drivers and couriers.",
   },
   {
     term: "Take Rate",
-    def: "Revenue as a percentage of Gross Bookings — the cut Uber keeps after paying out drivers and couriers.",
+    def: "Revenue as a percentage of Gross Bookings: the cut Uber keeps after paying out drivers and couriers.",
   },
   {
     term: "Adj EBITDA",
@@ -44,7 +44,7 @@ const SOURCES = [
   { label: "Q3'24 Earnings Press Release", note: "prior-year comp supplies Q3'23 actuals", file: "q3-24-press-release.pdf" },
   { label: "Q4'24 Earnings Press Release", note: "prior-year comp supplies Q4'23 actuals; Non-GAAP OI history begins here", file: "q4-24-press-release.pdf" },
   { label: "Q1'25 Earnings Press Release", note: "prior-year comp supplies Q1'24 actuals", file: "q1-25-press-release.pdf" },
-  { label: "Q2'25 Earnings Press Release", note: "Q2'25 actuals — base quarter for the Q2'26F build-up", file: "q2-25-press-release.pdf" },
+  { label: "Q2'25 Earnings Press Release", note: "Q2'25 actuals; base quarter for the Q2'26F build-up", file: "q2-25-press-release.pdf" },
   { label: "Q3'25 Earnings Press Release", note: "Q3'25 actuals", file: "q3-25-press-release.pdf" },
   { label: "Q4'25 Earnings Press Release", note: "Q4'25 actuals", file: "q4-25-press-release.pdf" },
   { label: "Q1'26 Earnings Press Release", note: "Q1'26 actuals; retroactively disclosed Q4'24/Q1'25 segment Non-GAAP OI", file: "q1-26-press-release.pdf" },
