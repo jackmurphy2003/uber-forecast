@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import CrossoverHero from "@/components/CrossoverHero";
 import {
   ResponsiveContainer,
   LineChart,
@@ -347,13 +348,17 @@ export default function TrendsAndAssumptions() {
 
   return (
     <section>
-      <div className="mb-6">
+      <div className="mb-4">
         <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
           Trends &amp; Assumptions
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
           Q2&apos;23 – Q1&apos;26 actuals &middot; hover an assumption to highlight its chart
         </p>
+      </div>
+
+      <div className="mb-5">
+        <CrossoverHero />
       </div>
 
       {/* Desktop: side-by-side panels */}
