@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import LockedForecast from "./LockedForecast";
 import Bridge from "./Bridge";
+import ConsensusCard from "./ConsensusCard";
 
 import TrendsAndAssumptions from "./TrendsAndAssumptions";
 import Sandbox from "./Sandbox";
@@ -39,26 +40,31 @@ function SheetsEmbed() {
   );
 }
 
-function IntroBlurb() {
+function AboutHero() {
   return (
-    <div className="mb-6 max-w-[760px]">
-      <span
-        className="text-[10px] font-black tracking-[0.10em] uppercase block mb-1.5"
-        style={{ color: "#0A0A0A" }}
-      >
-        About this project
-      </span>
-      <p className="text-[13px] leading-relaxed" style={{ color: "#6B6B6B" }}>
-        A bottom-up forecast of{" "}
-        <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Uber&apos;s Q2 2026 earnings</span>, built
-        from public financials on Uber&apos;s investor site and locked on August 4, before Uber
-        reports on August 5. Every number below is my own estimate, checked against
-        management&apos;s guidance.{" "}
-        <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Trends &amp; Assumptions</span> shows the
-        data behind each input, and the{" "}
-        <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Sandbox</span> lets you test and change
-        assumptions and watch the P&amp;L update in real time.
-      </p>
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 items-stretch">
+      <div className="lg:col-span-7 flex flex-col justify-center">
+        <span
+          className="text-[10px] font-black tracking-[0.10em] uppercase block mb-1.5"
+          style={{ color: "#0A0A0A" }}
+        >
+          About this project
+        </span>
+        <p className="text-[13px] leading-relaxed" style={{ color: "#6B6B6B" }}>
+          A bottom-up forecast of{" "}
+          <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Uber&apos;s Q2 2026 earnings</span>, built
+          from public financials on Uber&apos;s investor site and locked on August 4, before Uber
+          reports on August 5. Every number below is my own estimate, checked against
+          management&apos;s guidance.{" "}
+          <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Trends &amp; Assumptions</span> shows the
+          data behind each input, and the{" "}
+          <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Sandbox</span> lets you test and change
+          assumptions and watch the P&amp;L update in real time.
+        </p>
+      </div>
+      <div className="lg:col-span-5">
+        <ConsensusCard />
+      </div>
     </div>
   );
 }
@@ -72,7 +78,7 @@ function TabContentInner() {
       {tab === "forecast" && (
         <>
           <div>
-            <IntroBlurb />
+            <AboutHero />
             <LockedForecast />
           </div>
           <Bridge />
