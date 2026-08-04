@@ -3,13 +3,14 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { BarChart2, TrendingUp, Sliders, FileText } from "lucide-react";
+import { BarChart2, TrendingUp, Sliders, FileText, Target } from "lucide-react";
 
 const NAV_ITEMS = [
-  { tab: "forecast", href: "/?tab=forecast", label: "Forecast", icon: BarChart2  },
-  { tab: "trends",   href: "/?tab=trends",   label: "Trends",   icon: TrendingUp },
-  { tab: "sandbox",  href: "/?tab=sandbox",  label: "Sandbox",  icon: Sliders    },
-  { tab: "notes",    href: "/methodology",    label: "Notes",    icon: FileText   },
+  { tab: "forecast",   href: "/?tab=forecast",  label: "Forecast",  icon: BarChart2  },
+  { tab: "trends",     href: "/?tab=trends",    label: "Trends",    icon: TrendingUp },
+  { tab: "sandbox",    href: "/?tab=sandbox",   label: "Sandbox",   icon: Sliders    },
+  { tab: "notes",      href: "/methodology",     label: "Notes",     icon: FileText   },
+  { tab: "scorecard",  href: "/?tab=scorecard", label: "Score",     icon: Target     },
 ];
 
 function BottomNavInner() {

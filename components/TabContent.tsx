@@ -8,6 +8,7 @@ import ConsensusCard from "./ConsensusCard";
 
 import TrendsAndAssumptions from "./TrendsAndAssumptions";
 import Sandbox from "./Sandbox";
+import Scorecard from "./Scorecard";
 
 const EMBED_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGEyFVJhjJ4OJ4uQ-F7Xbg123_crgznesGnO7t8kOBt-vSOoLNDt2q1_eVgZBEDB_tS7F2-DscVtRD/pubhtml?widget=true&headers=false";
@@ -87,6 +88,7 @@ function TabContentInner() {
       )}
       {tab === "trends" && <TrendsAndAssumptions />}
       {tab === "sandbox" && <Sandbox />}
+      {tab === "scorecard" && <Scorecard />}
     </div>
   );
 }

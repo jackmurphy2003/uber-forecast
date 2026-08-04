@@ -6,10 +6,11 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Lock } from "lucide-react";
 
 const NAV_ITEMS = [
-  { tab: "forecast", href: "/?tab=forecast",  label: "Forecast"    },
-  { tab: "trends",   href: "/?tab=trends",    label: "Trends & Assumptions" },
-  { tab: "sandbox",  href: "/?tab=sandbox",   label: "Sandbox"     },
-  { tab: "notes",    href: "/methodology",     label: "Notes" },
+  { tab: "forecast",   href: "/?tab=forecast",   label: "Forecast"    },
+  { tab: "trends",     href: "/?tab=trends",     label: "Trends & Assumptions" },
+  { tab: "sandbox",    href: "/?tab=sandbox",    label: "Sandbox"     },
+  { tab: "notes",      href: "/methodology",      label: "Notes" },
+  { tab: "scorecard",  href: "/?tab=scorecard",  label: "Scorecard"   },
 ];
 
 function DesktopNav() {
