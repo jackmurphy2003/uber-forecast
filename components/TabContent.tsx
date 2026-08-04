@@ -42,7 +42,7 @@ function SheetsEmbed() {
 
 function AboutHero() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 items-stretch">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6 items-center">
       <div className="lg:col-span-7 flex flex-col justify-center">
         <span
           className="text-[10px] font-black tracking-[0.10em] uppercase block mb-1.5"
