@@ -6,11 +6,11 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Lock } from "lucide-react";
 
 const NAV_ITEMS = [
-  { tab: "forecast",   href: "/?tab=forecast",   label: "Forecast"    },
-  { tab: "trends",     href: "/?tab=trends",     label: "Trends & Assumptions" },
-  { tab: "sandbox",    href: "/?tab=sandbox",    label: "Sandbox"     },
+  { tab: "forecast",   href: "/?tab=forecast",   label: "Forecast" },
+  { tab: "trends",     href: "/?tab=trends",     label: "Trends & Assumptions", shortLabel: "Trends" },
+  { tab: "sandbox",    href: "/?tab=sandbox",    label: "Sandbox" },
   { tab: "notes",      href: "/methodology",      label: "Notes" },
-  { tab: "scorecard",  href: "/?tab=scorecard",  label: "Scorecard"   },
+  { tab: "scorecard",  href: "/?tab=scorecard",  label: "Scorecard" },
 ];
 
 function DesktopNav() {
@@ -31,10 +31,17 @@ function DesktopNav() {
           <Link
             key={item.href}
             href={item.href}
-            className="relative flex items-center h-full px-4 text-[12.5px] font-medium whitespace-nowrap transition-colors duration-150"
+            className="relative flex items-center h-full px-2.5 lg:px-3.5 text-[12.5px] font-medium whitespace-nowrap transition-colors duration-150"
             style={{ color: active ? "#FFFFFF" : "#666666" }}
           >
-            {item.label}
+            {item.shortLabel ? (
+              <>
+                <span className="hidden lg:inline">{item.label}</span>
+                <span className="lg:hidden">{item.shortLabel}</span>
+              </>
+            ) : (
+              item.label
+            )}
             {active && (
               <span
                 className="absolute bottom-0 left-4 right-4"
@@ -60,7 +67,7 @@ export default function Header() {
         borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}
     >
-      <div className="flex items-center gap-8 h-full">
+      <div className="flex items-center gap-4 lg:gap-8 h-full">
         <span
           className="text-[12px] md:text-[13px] font-extrabold tracking-tight flex-shrink-0"
           style={{ color: "#FFFFFF", letterSpacing: "0.04em" }}
@@ -94,7 +101,7 @@ export default function Header() {
           </svg>
         </a>
         <div
-          className="hidden sm:flex items-center gap-1.5 font-semibold"
+          className="hidden lg:flex items-center gap-1.5 font-semibold"
           style={{
             fontSize: 11,
             color: "#3DDB94",
