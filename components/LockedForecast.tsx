@@ -1,4 +1,4 @@
-import { DRIVERS, GUIDANCE, LOCKED_SNAPSHOT_DATE } from "@/lib/assumptions";
+import { DRIVERS, GUIDANCE, LOCKED_SNAPSHOT_DATE, LOCKED_SNAPSHOT_TIME } from "@/lib/assumptions";
 import { runForecast } from "@/lib/forecast";
 import { fmtM, fmtPct, fmtNum, fmtDollar } from "@/lib/format";
 import GuidanceBar from "./GuidanceBar";
@@ -77,18 +77,11 @@ export default function LockedForecast() {
         </div>
         <div className="text-[11.5px] font-medium" style={{ color: "#6B6B6B" }}>
           Submitted{" "}
-          {submittedDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })},{" "}
-          {Math.round((earningsDate.getTime() - submittedDate.getTime()) / 86400000)} days before
-          Uber&apos;s {earningsDate.toLocaleDateString("en-US", { month: "long", day: "numeric" })} print
+          {submittedDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })} at{" "}
+          {LOCKED_SNAPSHOT_TIME}, before Uber&apos;s{" "}
+          {earningsDate.toLocaleDateString("en-US", { month: "long", day: "numeric" })} Q2 print
         </div>
       </div>
-
-      <p className="text-[11px] leading-relaxed -mt-5 mb-7" style={{ color: "#B45309" }}>
-        Revised August 4: Mobility take rate cut to 25.8% after re-reading Uber&apos;s Q1&apos;26
-        disclosure of a UK business model change (driver payments recorded as contra-revenue,
-        structural from January 2026). Affects revenue only; Gross Bookings, Adj EBITDA, and
-        operating income are unchanged.
-      </p>
 
       {/* Headline KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">

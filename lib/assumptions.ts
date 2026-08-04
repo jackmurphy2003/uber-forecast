@@ -59,7 +59,7 @@ export const DRIVERS = {
     label: "Mobility Take Rate",
     value: 0.258,
     defense:
-      "Q1'26 actual (25.8%). UK business model change effective January 2026 records driver payments as contra-revenue: structural, not a one-off. YoY take-rate compression from Q1'25 to Q1'26 (-16%) applied to the Q2'25 base. Revised August 4 from 30.7%.",
+      "Q1'26 actual (25.8%). UK business model change effective January 2026 records driver payments as contra-revenue: structural, not a one-off. YoY take-rate compression from Q1'25 to Q1'26 (-16%) applied to the Q2'25 base.",
   },
   deliveryTakeRate: {
     label: "Delivery Take Rate",
@@ -117,4 +117,5 @@ export const GUIDANCE = {
   earningsDate: "2026-08-05",
 };
 
-export const LOCKED_SNAPSHOT_DATE = "2026-07-27";
+export const LOCKED_SNAPSHOT_DATE = "2026-08-04";
+export const LOCKED_SNAPSHOT_TIME = "10:48 AM";

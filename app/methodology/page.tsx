@@ -70,7 +70,7 @@ const CAVEATS = [
   },
   {
     title: "Two separate contra-revenue effects on take rates",
-    body: "Q2'24 and Q3'24 take rates are distorted by a reclassification of certain sales and marketing costs as contra-revenue. Q1'26 is different: a UK business model change effective January 2026 records driver payments as contra-revenue, and it is structural rather than one-off. The Mobility take rate was revised to 25.8% on August 4 to reflect it; the change affects revenue only, not Gross Bookings, EBITDA, or operating income.",
+    body: "Q2'24 and Q3'24 take rates are distorted by a reclassification of certain sales and marketing costs as contra-revenue. Q1'26 is different: a UK business model change effective January 2026 records driver payments as contra-revenue, and it is structural rather than one-off. The Mobility take rate assumption (25.8%) reflects this. It affects revenue only, not Gross Bookings, EBITDA, or operating income.",
   },
   {
     title: "Segment trips/MAPC not disclosed",

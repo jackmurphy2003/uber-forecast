@@ -269,7 +269,7 @@ const ASSUMPTIONS = [
     label: "Mobility Take Rate",
     value: "25.8%",
     delta: "▼ UK business model change · structural, holds in Q2",
-    drivers: ["Q1'26A: 25.8%", "Revised Aug 4 from 30.7%"],
+    drivers: ["Q1'26A: 25.8%", "Contra-revenue, not a one-off"],
     chartKey: "segment-take-rates",
   },
   {
