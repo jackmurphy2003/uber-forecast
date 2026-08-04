@@ -104,7 +104,7 @@ export default function Header() {
           }}
         >
           <Lock size={10} strokeWidth={2} />
-          <span>Locked Aug 5</span>
+          <span>Reports Aug 5</span>
         </div>
       </div>
     </header>
