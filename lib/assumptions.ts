@@ -57,15 +57,15 @@ export const DRIVERS = {
   },
   mobilityTakeRate: {
     label: "Mobility Take Rate",
-    value: 0.307,
+    value: 0.258,
     defense:
-      "Q2'25 comparable (30.7%). Q1'26 at 25.8% excluded: same contra-revenue reclassification as consolidated (Mobility revenue +5% vs GB +25%).",
+      "Q1'26 actual (25.8%). UK business model change effective January 2026 records driver payments as contra-revenue: structural, not a one-off. YoY take-rate compression from Q1'25 to Q1'26 (-16%) applied to the Q2'25 base. Revised August 4 from 30.7%.",
   },
   deliveryTakeRate: {
     label: "Delivery Take Rate",
-    value: 0.192,
+    value: 0.193,
     defense:
-      "Trending up: Q2'25 18.9% → Q3'25 19.2% → Q4'25 19.2% → Q1'26 19.5%. No reclassification impact. 19.2% = average of the last 3 clean quarters.",
+      "Trending up: Q2'25 18.9% → Q3'25 19.2% → Q4'25 19.2% → Q1'26 19.5%. No reclassification impact. 19.3% = average of the last 3 clean quarters (Q3'25 through Q1'26).",
   },
   freightTakeRate: {
     label: "Freight Take Rate",

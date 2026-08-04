@@ -83,6 +83,13 @@ export default function LockedForecast() {
         </div>
       </div>
 
+      <p className="text-[11px] leading-relaxed -mt-5 mb-7" style={{ color: "#B45309" }}>
+        Revised August 4: Mobility take rate cut to 25.8% after re-reading Uber&apos;s Q1&apos;26
+        disclosure of a UK business model change (driver payments recorded as contra-revenue,
+        structural from January 2026). Affects revenue only; Gross Bookings, Adj EBITDA, and
+        operating income are unchanged.
+      </p>
+
       {/* Headline KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         <KPI label="Gross Bookings" value={fmtM(out.grossBookings)} sub={`${fmtNum(out.mapcs, 1)}M MAPCs`} />

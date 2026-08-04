@@ -267,17 +267,17 @@ const ASSUMPTIONS = [
   {
     key: "mobilityTakeRate",
     label: "Mobility Take Rate",
-    value: "30.7%",
-    delta: "→ Q2'25 comparable · Q1'26 excluded",
-    drivers: ["Reclassification distortion", "Q1'26A: 25.8%"],
+    value: "25.8%",
+    delta: "▼ UK business model change · structural, holds in Q2",
+    drivers: ["Q1'26A: 25.8%", "Revised Aug 4 from 30.7%"],
     chartKey: "segment-take-rates",
   },
   {
     key: "deliveryTakeRate",
     label: "Delivery Take Rate",
-    value: "19.2%",
+    value: "19.3%",
     delta: "▲ Trending up · 3Q clean avg (Q3'25–Q1'26)",
-    drivers: ["19.2% → 19.2% → 19.5%", "Conservative mid"],
+    drivers: ["19.2% → 19.2% → 19.5%", "No reclass impact"],
     chartKey: "segment-take-rates",
   },
   {
@@ -408,7 +408,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" annotation="Q1'26 excluded (reclassification distortion)" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
+            <ChartCard chartKey="take-rate" title="Consolidated Take Rate" badge="⚠ See notes" badgeTone="mixed" annotation="Q1'26 step-down is structural (UK change) · Q2'26F: 24.3%" activeKey={activeKey} onHover={handleHover} onClick={handleClick}>
               <ResponsiveContainer>
                 <LineChart data={TAKE_RATE_SERIES} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                   <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -445,7 +445,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="segment-take-rates" title="Segment Take Rates" badge="↑ Delivery rising" badgeTone="up" annotation="Q2'26F: Mob 30.7% / Del 19.2%" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
+            <ChartCard chartKey="segment-take-rates" title="Segment Take Rates" badge="↑ Delivery rising" badgeTone="up" annotation="Q2'26F: Mob 25.8% / Del 19.3%" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
               legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }]}
             >
               <ResponsiveContainer>
