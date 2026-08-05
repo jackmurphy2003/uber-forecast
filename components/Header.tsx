@@ -31,8 +31,9 @@ function DesktopNav() {
           <Link
             key={item.href}
             href={item.href}
-            className="relative flex items-center h-full px-2.5 lg:px-3.5 text-[12.5px] font-medium whitespace-nowrap transition-colors duration-150"
-            style={{ color: active ? "#FFFFFF" : "#666666" }}
+            className={`relative flex items-center h-full px-2.5 lg:px-3.5 text-[12.5px] font-medium whitespace-nowrap transition-colors duration-150 ${
+              active ? "text-white" : "text-[#666666] hover:text-[#9B9B9B]"
+            }`}
           >
             {item.shortLabel ? (
               <>
@@ -67,13 +68,28 @@ export default function Header() {
         borderBottom: "1px solid rgba(255,255,255,0.07)",
       }}
     >
-      <div className="flex items-center gap-4 lg:gap-8 h-full">
-        <span
-          className="text-[12px] md:text-[13px] font-extrabold tracking-tight flex-shrink-0"
-          style={{ color: "#FFFFFF", letterSpacing: "0.04em" }}
+      <div className="flex items-center gap-3 lg:gap-6 h-full">
+        <Link
+          href="/?tab=forecast"
+          className="flex items-center gap-2 flex-shrink-0 transition-opacity duration-150 hover:opacity-75"
         >
-          UBER Q2&apos;26F
-        </span>
+          <span
+            className="inline-block rounded-full flex-shrink-0"
+            style={{ width: 6, height: 6, background: "#06C167" }}
+          />
+          <span
+            className="text-[12px] md:text-[13px] font-bold tracking-tight"
+            style={{ color: "#FFFFFF", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.02em" }}
+          >
+            UBER Q2&apos;26F
+          </span>
+        </Link>
+
+        <span
+          className="hidden md:block flex-shrink-0"
+          style={{ width: 1, height: 18, background: "rgba(255,255,255,0.1)" }}
+        />
+
         <Suspense fallback={<nav className="hidden md:flex" />}>
           <DesktopNav />
         </Suspense>
@@ -84,14 +100,13 @@ export default function Header() {
           href="https://docs.google.com/spreadsheets/d/1ance72j6Z2G-qvO7fV0fTTLRFyQJOeBf_qKsaCppsTU/edit?usp=sharing"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 font-bold transition-all duration-150"
+          className="flex items-center gap-1.5 font-semibold transition-all duration-150 text-[#B5B5B5] hover:text-white"
           style={{
             fontSize: 11,
-            color: "#06C167",
-            border: "1px solid rgba(6,193,103,0.4)",
+            border: "1px solid rgba(255,255,255,0.14)",
             borderRadius: "6px",
             padding: "4px 9px",
-            background: "rgba(6,193,103,0.1)",
+            background: "rgba(255,255,255,0.03)",
           }}
         >
           <span className="hidden sm:inline">Full Model</span>
