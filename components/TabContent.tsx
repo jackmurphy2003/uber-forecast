@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import Link from "next/link";
 import LockedForecast from "./LockedForecast";
 import Bridge from "./Bridge";
 import ConsensusCard from "./ConsensusCard";
@@ -70,6 +71,24 @@ function AboutHero() {
   );
 }
 
+function VarianceCallout() {
+  return (
+    <Link
+      href="/?tab=scorecard"
+      className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 rounded-2xl px-5 py-3.5 mb-6 transition-opacity duration-150 hover:opacity-80"
+      style={{ background: "#ECFDF5", border: "1px solid rgba(6,193,103,0.2)" }}
+    >
+      <span className="flex items-center gap-2 text-[12.5px] font-semibold" style={{ color: "#064E3B" }}>
+        <span className="inline-block rounded-full flex-shrink-0" style={{ width: 6, height: 6, background: "#06C167" }} />
+        Uber reported August 5, see how this model did
+      </span>
+      <span className="text-[11.5px] font-bold flex-shrink-0" style={{ color: "#04964F" }}>
+        View Variance Analysis &rarr;
+      </span>
+    </Link>
+  );
+}
+
 function TabContentInner() {
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab") ?? "forecast";
@@ -79,6 +98,7 @@ function TabContentInner() {
       {tab === "forecast" && (
         <>
           <div>
+            <VarianceCallout />
             <AboutHero />
             <LockedForecast />
           </div>

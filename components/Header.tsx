@@ -7,10 +7,10 @@ import { Lock } from "lucide-react";
 
 const NAV_ITEMS = [
   { tab: "forecast",   href: "/?tab=forecast",   label: "Forecast" },
+  { tab: "scorecard",  href: "/?tab=scorecard",  label: "Variance Analysis", shortLabel: "Variance" },
   { tab: "trends",     href: "/?tab=trends",     label: "Trends & Assumptions", shortLabel: "Trends" },
   { tab: "sandbox",    href: "/?tab=sandbox",    label: "Sandbox" },
   { tab: "notes",      href: "/methodology",      label: "Notes" },
-  { tab: "scorecard",  href: "/?tab=scorecard",  label: "Variance Analysis", shortLabel: "Variance" },
 ];
 
 function DesktopNav() {
