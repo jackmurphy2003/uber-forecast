@@ -305,7 +305,7 @@ export default function Scorecard() {
               <span className="text-[12px] font-semibold ml-2" style={{ color: "#059669" }}>
                 mean absolute error across six metrics
               </span>
-              <p className="text-[11.5px] leading-relaxed mt-1.5" style={{ color: "#065F46" }}>
+              <p className="text-[11.5px] leading-relaxed mt-1.5 max-w-[760px]" style={{ color: "#065F46" }}>
                 {mapeExNGOP.toFixed(1)}% excluding Non-GAAP OI, the largest single variance and the
                 only metric with no guidance or consensus benchmark to anchor against. Street
                 consensus was closer to actual than my model on {headToHead.length - modelWins} of{" "}
