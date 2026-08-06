@@ -308,9 +308,10 @@ export default function Scorecard() {
               <p className="text-[11.5px] leading-relaxed mt-1.5 max-w-[760px]" style={{ color: "#065F46" }}>
                 {mapeExNGOP.toFixed(1)}% excluding Non-GAAP OI, the largest single variance and the
                 only metric with no guidance or consensus benchmark to anchor against. Street
-                consensus was closer to actual than my model on {headToHead.length - modelWins} of{" "}
-                {headToHead.length} comparable metrics. I was pretty close, but I guess this is why
-                they&apos;re the professionals.
+                consensus was closer than my model on {headToHead.length - modelWins} of{" "}
+                {headToHead.length} comparable metrics. Still, landing within 1.7% on Gross Bookings
+                and 1.9% on Adj EBITDA with a model built solo from public filings the day before
+                the print is solid.
               </p>
             </div>
 
@@ -319,12 +320,27 @@ export default function Scorecard() {
                 <span className="text-[11px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
                   My Model vs. Actual
                 </span>
-                <div style={{ width: "100%", height: 220 }} className="mt-2">
+
+                {/* Gross Bookings gets its own callout -- its scale (~$58B) would flatten
+                    the other three metrics (~$2-14B) into slivers on a shared axis. */}
+                <div className="flex items-center justify-between mt-3 pb-3" style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+                  <span className="text-[11px] font-semibold" style={{ color: "#3A3A3A" }}>Gross Bookings</span>
+                  <span className="tnum text-[11px]" style={{ color: "#9B9B9B", fontFamily: "var(--font-geist-mono)" }}>
+                    {fmtM(MODEL_MAP.grossBookings)} <span style={{ color: "#D5D5D5" }}>→</span>{" "}
+                    <span style={{ color: "#0A0A0A", fontWeight: 700 }}>{fmtM(actuals.grossBookings)}</span>
+                  </span>
+                </div>
+
+                <div style={{ width: "100%", height: 180 }} className="mt-3">
                   <ResponsiveContainer>
-                    <BarChart data={dollarChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }} barGap={4}>
+                    <BarChart
+                      data={dollarChartData.filter((d) => d.name !== "Gross Bookings")}
+                      margin={{ top: 4, right: 8, left: 0, bottom: 0 }}
+                      barGap={4}
+                    >
                       <CartesianGrid stroke={GRID_COLOR} vertical={false} />
                       <XAxis dataKey="name" tick={{ ...AXIS_STYLE, fontSize: 8.5 }} axisLine={false} tickLine={false} />
-                      <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`} />
+                      <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `$${(v / 1000).toFixed(1)}K`} />
                       <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => fmtM(v)} />
                       <Bar dataKey="My Model" fill="#D5D5D5" radius={[4, 4, 0, 0]} />
                       <Bar dataKey="Actual" fill={GREEN} radius={[4, 4, 0, 0]} />
