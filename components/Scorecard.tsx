@@ -249,7 +249,7 @@ export default function Scorecard() {
     : [];
 
   return (
-    <section className="flex flex-col gap-10">
+    <section>
       <div>
         <div className="mb-6">
           <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
@@ -295,7 +295,7 @@ export default function Scorecard() {
       </div>
 
       {actuals && (
-        <>
+        <div className="flex flex-col gap-10">
           {/* Accuracy headline -- the 5-second read */}
           <div>
             <div className="rounded-2xl p-5 mb-5" style={{ background: "#ECFDF5", border: "1px solid rgba(6,193,103,0.2)" }}>
@@ -472,7 +472,7 @@ export default function Scorecard() {
               ))}
             </div>
           </div>
-        </>
+        </div>
       )}
     </section>
   );

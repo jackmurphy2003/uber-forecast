@@ -115,8 +115,9 @@ export default function Header() {
             <path d="M1 8L8 1M8 1H3M8 1V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </a>
-        <div
-          className="hidden lg:flex items-center gap-1.5 font-semibold"
+        <Link
+          href="/?tab=scorecard"
+          className="hidden lg:flex items-center gap-1.5 font-semibold transition-opacity duration-150 hover:opacity-75"
           style={{
             fontSize: 11,
             color: "#3DDB94",
@@ -127,8 +128,8 @@ export default function Header() {
           }}
         >
           <Lock size={10} strokeWidth={2} />
-          <span>Reports Aug 5</span>
-        </div>
+          <span>Reported Aug 5</span>
+        </Link>
       </div>
     </header>
   );
