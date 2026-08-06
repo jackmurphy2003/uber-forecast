@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { tab: "trends",     href: "/?tab=trends",    label: "Trends",    icon: TrendingUp },
   { tab: "sandbox",    href: "/?tab=sandbox",   label: "Sandbox",   icon: Sliders    },
   { tab: "notes",      href: "/methodology",     label: "Notes",     icon: FileText   },
-  { tab: "scorecard",  href: "/?tab=scorecard", label: "Score",     icon: Target     },
+  { tab: "scorecard",  href: "/?tab=scorecard", label: "Variance",  icon: Target     },
 ];
 
 function BottomNavInner() {

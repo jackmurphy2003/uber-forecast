@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { tab: "trends",     href: "/?tab=trends",     label: "Trends & Assumptions", shortLabel: "Trends" },
   { tab: "sandbox",    href: "/?tab=sandbox",    label: "Sandbox" },
   { tab: "notes",      href: "/methodology",      label: "Notes" },
-  { tab: "scorecard",  href: "/?tab=scorecard",  label: "Scorecard" },
+  { tab: "scorecard",  href: "/?tab=scorecard",  label: "Variance Analysis", shortLabel: "Variance" },
 ];
 
 function DesktopNav() {
