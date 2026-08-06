@@ -68,7 +68,16 @@ const GUIDANCE_MAP: Record<string, string | null> = {
   trips: null,
 };
 
-const CONSENSUS_MAP: Record<string, string | null> = {
+const CONSENSUS_MAP: Record<string, number | null> = {
+  grossBookings: CONSENSUS.grossBookings,
+  totalRevenue: (CONSENSUS.revenueLow + CONSENSUS.revenueHigh) / 2,
+  adjEbitda: null,
+  totalNGOP: null,
+  mapcs: CONSENSUS.mapcs,
+  trips: CONSENSUS.trips,
+};
+
+const CONSENSUS_DISPLAY: Record<string, string | null> = {
   grossBookings: `${fmtDollar(CONSENSUS.grossBookings / 1000, 2)}B`,
   totalRevenue: `${fmtDollar(CONSENSUS.revenueLow / 1000, 2)}B–${fmtDollar(CONSENSUS.revenueHigh / 1000, 2)}B`,
   adjEbitda: null,
@@ -101,63 +110,14 @@ function LockedRow({ label, model, metricKey }: { label: string; model: number; 
   );
 }
 
-function ResultRow({
-  label,
-  model,
-  actual,
-  note,
-  metricKey,
-}: {
-  label: string;
-  model: number;
-  actual: number;
-  note?: string;
-  metricKey: string;
-}) {
-  const variance = actual - model;
-  const variancePct = (variance / model) * 100;
-  const up = variance >= 0;
-  return (
-    <div className="px-4 py-3" style={{ borderTop: "1px solid rgba(0,0,0,0.05)" }}>
-      <div className="flex items-center justify-between">
-        <span className="text-[12px] font-semibold" style={{ color: "#0A0A0A" }}>
-          {label}
-        </span>
-        <div className="flex items-center gap-4">
-          <span className="tnum text-[11.5px]" style={{ color: "#9B9B9B", fontFamily: "var(--font-geist-mono)" }}>
-            Model {fmtMetric(metricKey, model)}
-          </span>
-          <span className="tnum text-[12.5px] font-bold" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
-            Actual {fmtMetric(metricKey, actual)}
-          </span>
-          <span
-            className="tnum text-[10.5px] font-bold px-2 py-0.5 rounded flex-shrink-0"
-            style={{
-              background: up ? "rgba(6,193,103,0.1)" : "rgba(225,29,72,0.1)",
-              color: up ? "#04964F" : "#E11D48",
-              fontFamily: "var(--font-geist-mono)",
-            }}
-          >
-            {fmtSigned(variancePct)}%
-          </span>
-        </div>
-      </div>
-      {note && (
-        <p className="text-[11px] italic mt-1" style={{ color: "#9B9B9B" }}>
-          {note}
-        </p>
-      )}
-    </div>
-  );
-}
-
-function ComparisonRow({
+function CombinedRow({
   label,
   guidance,
   consensus,
   model,
   actual,
   metricKey,
+  note,
   isFirst,
 }: {
   label: string;
@@ -166,26 +126,43 @@ function ComparisonRow({
   model: number;
   actual: number;
   metricKey: string;
+  note?: string;
   isFirst: boolean;
 }) {
+  const variancePct = ((actual - model) / model) * 100;
+  const up = variancePct >= 0;
   return (
-    <div
-      className="grid grid-cols-[1.3fr_1fr_1fr_1fr_1fr] gap-2 px-4 py-3 items-center"
-      style={{ borderTop: isFirst ? undefined : "1px solid rgba(0,0,0,0.05)" }}
-    >
-      <span className="text-[11.5px] font-semibold" style={{ color: "#0A0A0A" }}>{label}</span>
-      <span className="tnum text-[10.5px]" style={{ color: guidance ? "#6B6B6B" : "#D5D5D5", fontFamily: "var(--font-geist-mono)" }}>
-        {guidance ?? "—"}
-      </span>
-      <span className="tnum text-[10.5px]" style={{ color: consensus ? "#6B6B6B" : "#D5D5D5", fontFamily: "var(--font-geist-mono)" }}>
-        {consensus ?? "—"}
-      </span>
-      <span className="tnum text-[10.5px]" style={{ color: "#6B6B6B", fontFamily: "var(--font-geist-mono)" }}>
-        {fmtMetric(metricKey, model)}
-      </span>
-      <span className="tnum text-[11px] font-bold" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
-        {fmtMetric(metricKey, actual)}
-      </span>
+    <div className="px-4 py-3" style={{ borderTop: isFirst ? undefined : "1px solid rgba(0,0,0,0.05)" }}>
+      <div className="grid grid-cols-[1.1fr_1fr_1fr_0.9fr_0.9fr_0.7fr] gap-2 items-baseline">
+        <span className="text-[11.5px] font-semibold" style={{ color: "#0A0A0A" }}>{label}</span>
+        <span className="tnum text-[10px]" style={{ color: guidance ? "#9B9B9B" : "#D5D5D5", fontFamily: "var(--font-geist-mono)" }}>
+          {guidance ?? "—"}
+        </span>
+        <span className="tnum text-[10px]" style={{ color: consensus ? "#9B9B9B" : "#D5D5D5", fontFamily: "var(--font-geist-mono)" }}>
+          {consensus ?? "—"}
+        </span>
+        <span className="tnum text-[10.5px]" style={{ color: "#9B9B9B", fontFamily: "var(--font-geist-mono)" }}>
+          {fmtMetric(metricKey, model)}
+        </span>
+        <span className="tnum text-[11px] font-bold" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
+          {fmtMetric(metricKey, actual)}
+        </span>
+        <span
+          className="tnum text-[10px] font-bold px-1.5 py-0.5 rounded justify-self-start"
+          style={{
+            background: up ? "rgba(6,193,103,0.1)" : "rgba(225,29,72,0.1)",
+            color: up ? "#04964F" : "#E11D48",
+            fontFamily: "var(--font-geist-mono)",
+          }}
+        >
+          {fmtSigned(variancePct)}%
+        </span>
+      </div>
+      {note && (
+        <p className="text-[11px] italic mt-1.5" style={{ color: "#9B9B9B" }}>
+          {note}
+        </p>
+      )}
     </div>
   );
 }
@@ -210,16 +187,27 @@ export default function Scorecard() {
   const hasReported = new Date() >= earningsDate;
   const actuals = ACTUALS;
 
-  const variances = actuals
-    ? METRICS.map(({ key }) => Math.abs(((actuals[key] - MODEL_MAP[key]) / MODEL_MAP[key]) * 100))
+  // MAPE: textbook definition divides by actual, not by the forecast.
+  const absErrors = actuals
+    ? METRICS.map(({ key }) => Math.abs((actuals[key] - MODEL_MAP[key]) / actuals[key]) * 100)
     : [];
-  const mape = variances.length ? variances.reduce((a, b) => a + b, 0) / variances.length : 0;
-  const variancesExNGOP = actuals
+  const mape = absErrors.length ? absErrors.reduce((a, b) => a + b, 0) / absErrors.length : 0;
+  const absErrorsExNGOP = actuals
     ? METRICS.filter(({ key }) => key !== "totalNGOP").map(
-        ({ key }) => Math.abs(((actuals[key] - MODEL_MAP[key]) / MODEL_MAP[key]) * 100)
+        ({ key }) => Math.abs((actuals[key] - MODEL_MAP[key]) / actuals[key]) * 100
       )
     : [];
-  const mapeExNGOP = variancesExNGOP.length ? variancesExNGOP.reduce((a, b) => a + b, 0) / variancesExNGOP.length : 0;
+  const mapeExNGOP = absErrorsExNGOP.length ? absErrorsExNGOP.reduce((a, b) => a + b, 0) / absErrorsExNGOP.length : 0;
+
+  // Model vs. consensus: whoever's estimate was closer to actual, on the metrics where both exist.
+  const headToHead = actuals
+    ? METRICS.filter(({ key }) => CONSENSUS_MAP[key] !== null).map(({ key, label }) => {
+        const modelErr = Math.abs((actuals[key] - MODEL_MAP[key]) / actuals[key]) * 100;
+        const consensusErr = Math.abs((actuals[key] - (CONSENSUS_MAP[key] as number)) / actuals[key]) * 100;
+        return { label, modelErr, consensusErr, modelCloser: modelErr < consensusErr };
+      })
+    : [];
+  const modelWins = headToHead.filter((h) => h.modelCloser).length;
 
   const varianceData = actuals
     ? METRICS.map(({ key, label }) => {
@@ -251,6 +239,18 @@ export default function Scorecard() {
         },
       ]
     : [];
+
+  // GB price/volume bridge: hold GB/Trip at the modeled rate to isolate the volume miss,
+  // then apply the actual GB/Trip beat to actual trips to isolate the price/mix effect.
+  const modelGBPerTrip = LOCKED_INPUTS.gbPerTrip;
+  const bridge = actuals
+    ? (() => {
+        const actualGBPerTrip = actuals.grossBookings / actuals.trips;
+        const volumeEffect = (actuals.trips - MODEL_MAP.trips) * modelGBPerTrip;
+        const priceEffect = (actualGBPerTrip - modelGBPerTrip) * actuals.trips;
+        return { volumeEffect, priceEffect, actualGBPerTrip };
+      })()
+    : null;
 
   return (
     <section className="flex flex-col gap-10">
@@ -300,62 +300,55 @@ export default function Scorecard() {
 
       {actuals && (
         <>
-          {/* Guidance vs. Consensus vs. Model vs. Actual */}
+          {/* Accuracy headline */}
+          <div className="rounded-2xl p-5" style={{ background: "#ECFDF5", border: "1px solid rgba(6,193,103,0.2)" }}>
+            <span className="tnum text-[22px] font-black" style={{ color: "#064E3B", fontFamily: "var(--font-geist-mono)" }}>
+              {mape.toFixed(1)}%
+            </span>
+            <span className="text-[12px] font-semibold ml-2" style={{ color: "#059669" }}>
+              mean absolute error across six metrics
+            </span>
+            <p className="text-[11.5px] leading-relaxed mt-1.5" style={{ color: "#065F46" }}>
+              {mapeExNGOP.toFixed(1)}% excluding Non-GAAP OI, the largest single variance and the
+              only metric with no guidance or consensus benchmark to anchor against. Street
+              consensus was closer to actual than this model on {headToHead.length - modelWins} of{" "}
+              {headToHead.length} metrics with a comparable estimate ({headToHead
+                .filter((h) => !h.modelCloser)
+                .map((h) => h.label)
+                .join(", ")}
+              ), a reasonable outcome given consensus pools dozens of analysts against one
+              independently-built model.
+            </p>
+          </div>
+
+          {/* Combined comparison + scorecard table */}
           <div>
             <SectionHeader
-              title="Q2'26: Guidance vs. Consensus vs. Model"
-              sub="Who called it best, and how close was the model overall."
+              title="Scorecard: Guidance vs. Consensus vs. Model vs. Actual"
+              sub="Every benchmark side by side, with the why behind each line."
             />
-            <div className="rounded-2xl p-5 mb-3" style={{ background: "#ECFDF5", border: "1px solid rgba(6,193,103,0.2)" }}>
-              <span className="tnum text-[22px] font-black" style={{ color: "#064E3B", fontFamily: "var(--font-geist-mono)" }}>
-                {mape.toFixed(1)}%
-              </span>
-              <span className="text-[12px] font-semibold ml-2" style={{ color: "#059669" }}>
-                average miss across six metrics
-              </span>
-              <p className="text-[11.5px] leading-relaxed mt-1.5" style={{ color: "#065F46" }}>
-                {mapeExNGOP.toFixed(1)}% excluding Non-GAAP OI, the largest single variance and the
-                one metric that had no guidance or consensus benchmark to anchor against.
-              </p>
-            </div>
             <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
               <div
-                className="grid grid-cols-[1.3fr_1fr_1fr_1fr_1fr] gap-2 px-4 py-2.5"
+                className="grid grid-cols-[1.1fr_1fr_1fr_0.9fr_0.9fr_0.7fr] gap-2 px-4 py-2.5"
                 style={{ background: "#FAFAFA" }}
               >
-                {["Metric", "Guidance", "Consensus", "Model", "Actual"].map((h) => (
+                {["Metric", "Guidance", "Consensus", "Model", "Actual", "Var"].map((h) => (
                   <span key={h} className="text-[9.5px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
                     {h}
                   </span>
                 ))}
               </div>
               {METRICS.map(({ key, label }, i) => (
-                <ComparisonRow
+                <CombinedRow
                   key={key}
                   label={label}
                   guidance={GUIDANCE_MAP[key]}
-                  consensus={CONSENSUS_MAP[key]}
-                  model={MODEL_MAP[key]}
-                  actual={actuals[key]}
-                  metricKey={key}
-                  isFirst={i === 0}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Top-line Scorecard */}
-          <div>
-            <SectionHeader title="Scorecard" sub="Model vs. actual, with the why behind each line." />
-            <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
-              {METRICS.map(({ key, label }) => (
-                <ResultRow
-                  key={key}
-                  label={label}
+                  consensus={CONSENSUS_DISPLAY[key]}
                   model={MODEL_MAP[key]}
                   actual={actuals[key]}
                   metricKey={key}
                   note={SCORECARD_NOTES.find((n) => n.key === key)?.note}
+                  isFirst={i === 0}
                 />
               ))}
             </div>
@@ -383,6 +376,56 @@ export default function Scorecard() {
               </div>
             </div>
           </div>
+
+          {/* GB price/volume bridge */}
+          {bridge && (
+            <div>
+              <SectionHeader
+                title="Gross Bookings Bridge: Volume vs. Price/Mix"
+                sub="Trips came in light. GB/Trip more than made up for it."
+              />
+              <div className="rounded-2xl p-5" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
+                      Volume effect
+                    </span>
+                    <span className="tnum text-[16px] font-black" style={{ color: "#E11D48", fontFamily: "var(--font-geist-mono)" }}>
+                      {fmtM(bridge.volumeEffect)}
+                    </span>
+                    <span className="text-[10.5px]" style={{ color: "#9B9B9B" }}>
+                      Trips came in{" "}
+                      {Math.abs(actuals.trips - MODEL_MAP.trips).toLocaleString("en-US", { maximumFractionDigits: 1 })}M
+                      short of the model at the modeled ${modelGBPerTrip.toFixed(2)}/trip rate.
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
+                      Price/mix effect
+                    </span>
+                    <span className="tnum text-[16px] font-black" style={{ color: "#04964F", fontFamily: "var(--font-geist-mono)" }}>
+                      +{fmtM(bridge.priceEffect)}
+                    </span>
+                    <span className="text-[10.5px]" style={{ color: "#9B9B9B" }}>
+                      GB/Trip came in at ${bridge.actualGBPerTrip.toFixed(2)}, ${(bridge.actualGBPerTrip - modelGBPerTrip).toFixed(2)}{" "}
+                      above the ${modelGBPerTrip.toFixed(2)} modeled rate, applied to actual trips.
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
+                      Net GB variance
+                    </span>
+                    <span className="tnum text-[16px] font-black" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
+                      +{fmtM(bridge.volumeEffect + bridge.priceEffect)}
+                    </span>
+                    <span className="text-[10.5px]" style={{ color: "#9B9B9B" }}>
+                      Ties to the {fmtSigned(((actuals.grossBookings - MODEL_MAP.grossBookings) / MODEL_MAP.grossBookings) * 100)}% GB beat above.
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Driver-by-Driver Attribution */}
           <div>
