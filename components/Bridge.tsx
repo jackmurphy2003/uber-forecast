@@ -236,7 +236,7 @@ export default function Bridge() {
             onMouseLeave={() => setHoveredTile(null)}
           >
             <span className="text-[9.5px] font-bold uppercase" style={{ color: "#059669", letterSpacing: "0.08em" }}>
-              Delivery · first time leading
+              Delivery · projected to lead
             </span>
             <span className="tnum text-[26px] sm:text-[30px] font-black leading-none tracking-tight" style={{ color: "#064E3B", fontFamily: "var(--font-geist-mono)" }}>
               {fmtM(out.deliveryGB)}

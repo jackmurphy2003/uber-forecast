@@ -253,7 +253,7 @@ const ASSUMPTIONS = [
     label: "Delivery GB Mix",
     value: "48.9%",
     delta: "▲ Rising every quarter · Del +23% vs Mob +20%",
-    drivers: ["Suburban expansion", "Crossover imminent"],
+    drivers: ["Suburban expansion", "Modeled crossover"],
     chartKey: "segment-mix",
   },
   {
@@ -430,7 +430,7 @@ export default function TrendsAndAssumptions() {
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
-            <ChartCard chartKey="segment-mix" title="Segment GB Mix" badge="↑ Delivery accelerating" badgeTone="up" annotation="Q2'26F: Mob 48.8% / Del 48.9% (crossover)" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
+            <ChartCard chartKey="segment-mix" title="Segment GB Mix" badge="↑ Delivery accelerating" badgeTone="up" annotation="Q2'26F: Mob 48.8% / Del 48.9% (crossover modeled)" activeKey={activeKey} onHover={handleHover} onClick={handleClick}
               legend={[{ label: "Mobility", color: GREEN }, { label: "Delivery", color: BLACK }, { label: "Freight", color: GRAY }]}
             >
               <ResponsiveContainer>
