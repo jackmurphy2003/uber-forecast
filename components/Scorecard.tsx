@@ -5,6 +5,8 @@ import {
   ResponsiveContainer,
   BarChart,
   Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -228,25 +230,23 @@ export default function Scorecard() {
 
   const forecastTotalGB = out.mobilityGB + out.deliveryGB + out.freightGB;
   const actualTotalGB = actuals ? actuals.mobilityGB + actuals.deliveryGB + actuals.freightGB : 0;
-  const mixChartData = actuals
+
+  // Crossover, resolved: same two-line language as the Forecast tab's GB Mix
+  // chart (Mobility dark, Delivery green), zoomed to the relevant band instead
+  // of 0-60% so a ~1-3pp gap actually reads instead of flattening out.
+  const mobilityModelPct = (out.mobilityGB / forecastTotalGB) * 100;
+  const deliveryModelPct = (out.deliveryGB / forecastTotalGB) * 100;
+  const mobilityActualPct = actuals ? (actuals.mobilityGB / actualTotalGB) * 100 : 0;
+  const deliveryActualPct = actuals ? (actuals.deliveryGB / actualTotalGB) * 100 : 0;
+  const crossoverLineData = actuals
     ? [
-        {
-          name: "Mobility",
-          "My Model": (out.mobilityGB / forecastTotalGB) * 100,
-          Actual: (actuals.mobilityGB / actualTotalGB) * 100,
-        },
-        {
-          name: "Delivery",
-          "My Model": (out.deliveryGB / forecastTotalGB) * 100,
-          Actual: (actuals.deliveryGB / actualTotalGB) * 100,
-        },
-        {
-          name: "Freight",
-          "My Model": (out.freightGB / forecastTotalGB) * 100,
-          Actual: (actuals.freightGB / actualTotalGB) * 100,
-        },
+        { point: "Model", Mobility: mobilityModelPct, Delivery: deliveryModelPct },
+        { point: "Actual", Mobility: mobilityActualPct, Delivery: deliveryActualPct },
       ]
     : [];
+  const crossoverMin = Math.min(mobilityModelPct, deliveryModelPct, mobilityActualPct, deliveryActualPct);
+  const crossoverMax = Math.max(mobilityModelPct, deliveryModelPct, mobilityActualPct, deliveryActualPct);
+  const crossoverDomain: [number, number] = [Math.floor(crossoverMin - 1), Math.ceil(crossoverMax + 1)];
 
   return (
     <section>
@@ -422,16 +422,31 @@ export default function Scorecard() {
                   </p>
                   {d.driver === "Segment Mix / The Crossover" && (
                     <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
-                      <div style={{ width: "100%", height: 180 }}>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[9.5px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
+                          GB Mix: Model vs. Actual
+                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className="flex items-center gap-1 text-[9.5px]" style={{ color: "#9B9B9B" }}>
+                            <span className="inline-block rounded-full" style={{ width: 7, height: 7, background: "#3A3A3A" }} />
+                            Mobility
+                          </span>
+                          <span className="flex items-center gap-1 text-[9.5px]" style={{ color: "#9B9B9B" }}>
+                            <span className="inline-block rounded-full" style={{ width: 7, height: 7, background: GREEN }} />
+                            Delivery
+                          </span>
+                        </div>
+                      </div>
+                      <div style={{ width: "100%", height: 160 }}>
                         <ResponsiveContainer>
-                          <BarChart data={mixChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }} barGap={4}>
+                          <LineChart data={crossoverLineData} margin={{ top: 8, right: 20, left: 0, bottom: 0 }}>
                             <CartesianGrid stroke={GRID_COLOR} vertical={false} />
-                            <XAxis dataKey="name" tick={AXIS_STYLE} axisLine={false} tickLine={false} />
-                            <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `${v}%`} />
+                            <XAxis dataKey="point" tick={AXIS_STYLE} axisLine={false} tickLine={false} />
+                            <YAxis domain={crossoverDomain} tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `${v}%`} />
                             <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => `${v.toFixed(1)}%`} />
-                            <Bar dataKey="My Model" fill="#D5D5D5" radius={[4, 4, 0, 0]} />
-                            <Bar dataKey="Actual" fill={GREEN} radius={[4, 4, 0, 0]} />
-                          </BarChart>
+                            <Line type="monotone" dataKey="Mobility" stroke="#3A3A3A" strokeWidth={2.5} dot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} />
+                            <Line type="monotone" dataKey="Delivery" stroke={GREEN} strokeWidth={2.5} dot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} />
+                          </LineChart>
                         </ResponsiveContainer>
                       </div>
                       <p className="text-[11px] leading-relaxed mt-2" style={{ color: "#9B9B9B" }}>
