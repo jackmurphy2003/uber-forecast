@@ -246,7 +246,7 @@ export default function Scorecard() {
     : [];
   const crossoverMin = Math.min(mobilityModelPct, deliveryModelPct, mobilityActualPct, deliveryActualPct);
   const crossoverMax = Math.max(mobilityModelPct, deliveryModelPct, mobilityActualPct, deliveryActualPct);
-  const crossoverDomain: [number, number] = [Math.floor(crossoverMin - 1), Math.ceil(crossoverMax + 1)];
+  const crossoverDomain: [number, number] = [Math.floor(crossoverMin - 3), Math.ceil(crossoverMax + 3)];
 
   return (
     <section>
