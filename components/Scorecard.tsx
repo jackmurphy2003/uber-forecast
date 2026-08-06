@@ -97,7 +97,7 @@ function LockedRow({ label, model, metricKey }: { label: string; model: number; 
       </span>
       <div className="flex items-center gap-4">
         <span className="tnum text-[12px]" style={{ color: "#9B9B9B", fontFamily: "var(--font-geist-mono)" }}>
-          Model {fmtMetric(metricKey, model)}
+          My Model {fmtMetric(metricKey, model)}
         </span>
         <span
           className="text-[10px] font-bold px-2 py-0.5 rounded"
@@ -218,39 +218,35 @@ export default function Scorecard() {
       })
     : [];
 
+  const dollarChartData = actuals
+    ? METRICS.filter(({ key }) => DOLLAR_KEYS.has(key)).map(({ key, label }) => ({
+        name: label,
+        "My Model": MODEL_MAP[key],
+        Actual: actuals[key],
+      }))
+    : [];
+
   const forecastTotalGB = out.mobilityGB + out.deliveryGB + out.freightGB;
   const actualTotalGB = actuals ? actuals.mobilityGB + actuals.deliveryGB + actuals.freightGB : 0;
   const mixChartData = actuals
     ? [
         {
           name: "Mobility",
-          Forecast: (out.mobilityGB / forecastTotalGB) * 100,
+          "My Model": (out.mobilityGB / forecastTotalGB) * 100,
           Actual: (actuals.mobilityGB / actualTotalGB) * 100,
         },
         {
           name: "Delivery",
-          Forecast: (out.deliveryGB / forecastTotalGB) * 100,
+          "My Model": (out.deliveryGB / forecastTotalGB) * 100,
           Actual: (actuals.deliveryGB / actualTotalGB) * 100,
         },
         {
           name: "Freight",
-          Forecast: (out.freightGB / forecastTotalGB) * 100,
+          "My Model": (out.freightGB / forecastTotalGB) * 100,
           Actual: (actuals.freightGB / actualTotalGB) * 100,
         },
       ]
     : [];
-
-  // GB price/volume bridge: hold GB/Trip at the modeled rate to isolate the volume miss,
-  // then apply the actual GB/Trip beat to actual trips to isolate the price/mix effect.
-  const modelGBPerTrip = LOCKED_INPUTS.gbPerTrip;
-  const bridge = actuals
-    ? (() => {
-        const actualGBPerTrip = actuals.grossBookings / actuals.trips;
-        const volumeEffect = (actuals.trips - MODEL_MAP.trips) * modelGBPerTrip;
-        const priceEffect = (actualGBPerTrip - modelGBPerTrip) * actuals.trips;
-        return { volumeEffect, priceEffect, actualGBPerTrip };
-      })()
-    : null;
 
   return (
     <section className="flex flex-col gap-10">
@@ -261,8 +257,8 @@ export default function Scorecard() {
           </h2>
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
             {actuals
-              ? "Q2'26 model vs. guidance, Street consensus, and actual results, plus the diagnosis behind every number."
-              : "Model vs. actual results, populated once Uber reports."}
+              ? "Q2'26: how close my model was, then the why behind every number."
+              : "My model vs. actual results, populated once Uber reports."}
           </p>
         </div>
 
@@ -300,31 +296,70 @@ export default function Scorecard() {
 
       {actuals && (
         <>
-          {/* Accuracy headline */}
-          <div className="rounded-2xl p-5" style={{ background: "#ECFDF5", border: "1px solid rgba(6,193,103,0.2)" }}>
-            <span className="tnum text-[22px] font-black" style={{ color: "#064E3B", fontFamily: "var(--font-geist-mono)" }}>
-              {mape.toFixed(1)}%
-            </span>
-            <span className="text-[12px] font-semibold ml-2" style={{ color: "#059669" }}>
-              mean absolute error across six metrics
-            </span>
-            <p className="text-[11.5px] leading-relaxed mt-1.5" style={{ color: "#065F46" }}>
-              {mapeExNGOP.toFixed(1)}% excluding Non-GAAP OI, the largest single variance and the
-              only metric with no guidance or consensus benchmark to anchor against. Street
-              consensus was closer to actual than this model on {headToHead.length - modelWins} of{" "}
-              {headToHead.length} metrics with a comparable estimate ({headToHead
-                .filter((h) => !h.modelCloser)
-                .map((h) => h.label)
-                .join(", ")}
-              ), a reasonable outcome given consensus pools dozens of analysts against one
-              independently-built model.
-            </p>
+          {/* Accuracy headline -- the 5-second read */}
+          <div>
+            <div className="rounded-2xl p-5 mb-5" style={{ background: "#ECFDF5", border: "1px solid rgba(6,193,103,0.2)" }}>
+              <span className="tnum text-[22px] font-black" style={{ color: "#064E3B", fontFamily: "var(--font-geist-mono)" }}>
+                {mape.toFixed(1)}%
+              </span>
+              <span className="text-[12px] font-semibold ml-2" style={{ color: "#059669" }}>
+                mean absolute error across six metrics
+              </span>
+              <p className="text-[11.5px] leading-relaxed mt-1.5" style={{ color: "#065F46" }}>
+                {mapeExNGOP.toFixed(1)}% excluding Non-GAAP OI, the largest single variance and the
+                only metric with no guidance or consensus benchmark to anchor against. Street
+                consensus was closer to actual than my model on {headToHead.length - modelWins} of{" "}
+                {headToHead.length} comparable metrics. I was pretty close, but I guess this is why
+                they&apos;re the professionals.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="rounded-2xl p-5" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
+                <span className="text-[11px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
+                  My Model vs. Actual
+                </span>
+                <div style={{ width: "100%", height: 220 }} className="mt-2">
+                  <ResponsiveContainer>
+                    <BarChart data={dollarChartData} margin={{ top: 4, right: 8, left: 0, bottom: 0 }} barGap={4}>
+                      <CartesianGrid stroke={GRID_COLOR} vertical={false} />
+                      <XAxis dataKey="name" tick={{ ...AXIS_STYLE, fontSize: 8.5 }} axisLine={false} tickLine={false} />
+                      <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}K`} />
+                      <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => fmtM(v)} />
+                      <Bar dataKey="My Model" fill="#D5D5D5" radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="Actual" fill={GREEN} radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              <div className="rounded-2xl p-5" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
+                <span className="text-[11px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
+                  % Miss by Metric
+                </span>
+                <div style={{ width: "100%", height: 220 }} className="mt-2">
+                  <ResponsiveContainer>
+                    <BarChart data={varianceData} layout="vertical" margin={{ top: 4, right: 16, left: 0, bottom: 0 }}>
+                      <CartesianGrid stroke={GRID_COLOR} horizontal={false} />
+                      <XAxis type="number" tick={AXIS_STYLE} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
+                      <YAxis type="category" dataKey="name" tick={{ ...AXIS_STYLE, fontSize: 9.5 }} axisLine={false} tickLine={false} width={72} />
+                      <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => `${fmtSigned(v)}%`} />
+                      <Bar dataKey="variance" radius={[0, 4, 4, 0]}>
+                        {varianceData.map((d) => (
+                          <Cell key={d.name} fill={d.variance >= 0 ? GREEN : RED} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Combined comparison + scorecard table */}
+          {/* Combined comparison + scorecard table -- the why */}
           <div>
             <SectionHeader
-              title="Scorecard: Guidance vs. Consensus vs. Model vs. Actual"
+              title="Scorecard: Guidance vs. Consensus vs. My Model vs. Actual"
               sub="Every benchmark side by side, with the why behind each line."
             />
             <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
@@ -332,7 +367,7 @@ export default function Scorecard() {
                 className="grid grid-cols-[1.1fr_1fr_1fr_0.9fr_0.9fr_0.7fr] gap-2 px-4 py-2.5"
                 style={{ background: "#FAFAFA" }}
               >
-                {["Metric", "Guidance", "Consensus", "Model", "Actual", "Var"].map((h) => (
+                {["Metric", "Guidance", "Consensus", "My Model", "Actual", "Var"].map((h) => (
                   <span key={h} className="text-[9.5px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
                     {h}
                   </span>
@@ -352,80 +387,10 @@ export default function Scorecard() {
                 />
               ))}
             </div>
-            <p className="text-[11px] mt-3 mb-4" style={{ color: "#9B9B9B" }}>
+            <p className="text-[11px] mt-3" style={{ color: "#9B9B9B" }}>
               Source: {actuals.source}
             </p>
-            <div className="rounded-2xl p-5" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
-              <span className="text-[11px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
-                % Miss by Metric
-              </span>
-              <div style={{ width: "100%", height: 200 }} className="mt-2">
-                <ResponsiveContainer>
-                  <BarChart data={varianceData} layout="vertical" margin={{ top: 4, right: 16, left: 0, bottom: 0 }}>
-                    <CartesianGrid stroke={GRID_COLOR} horizontal={false} />
-                    <XAxis type="number" tick={AXIS_STYLE} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
-                    <YAxis type="category" dataKey="name" tick={{ ...AXIS_STYLE, fontSize: 9.5 }} axisLine={false} tickLine={false} width={72} />
-                    <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => `${fmtSigned(v)}%`} />
-                    <Bar dataKey="variance" radius={[0, 4, 4, 0]}>
-                      {varianceData.map((d) => (
-                        <Cell key={d.name} fill={d.variance >= 0 ? GREEN : RED} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
           </div>
-
-          {/* GB price/volume bridge */}
-          {bridge && (
-            <div>
-              <SectionHeader
-                title="Gross Bookings Bridge: Volume vs. Price/Mix"
-                sub="Trips came in light. GB/Trip more than made up for it."
-              />
-              <div className="rounded-2xl p-5" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
-                      Volume effect
-                    </span>
-                    <span className="tnum text-[16px] font-black" style={{ color: "#E11D48", fontFamily: "var(--font-geist-mono)" }}>
-                      {fmtM(bridge.volumeEffect)}
-                    </span>
-                    <span className="text-[10.5px]" style={{ color: "#9B9B9B" }}>
-                      Trips came in{" "}
-                      {Math.abs(actuals.trips - MODEL_MAP.trips).toLocaleString("en-US", { maximumFractionDigits: 1 })}M
-                      short of the model at the modeled ${modelGBPerTrip.toFixed(2)}/trip rate.
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
-                      Price/mix effect
-                    </span>
-                    <span className="tnum text-[16px] font-black" style={{ color: "#04964F", fontFamily: "var(--font-geist-mono)" }}>
-                      +{fmtM(bridge.priceEffect)}
-                    </span>
-                    <span className="text-[10.5px]" style={{ color: "#9B9B9B" }}>
-                      GB/Trip came in at ${bridge.actualGBPerTrip.toFixed(2)}, ${(bridge.actualGBPerTrip - modelGBPerTrip).toFixed(2)}{" "}
-                      above the ${modelGBPerTrip.toFixed(2)} modeled rate, applied to actual trips.
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
-                      Net GB variance
-                    </span>
-                    <span className="tnum text-[16px] font-black" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
-                      +{fmtM(bridge.volumeEffect + bridge.priceEffect)}
-                    </span>
-                    <span className="text-[10.5px]" style={{ color: "#9B9B9B" }}>
-                      Ties to the {fmtSigned(((actuals.grossBookings - MODEL_MAP.grossBookings) / MODEL_MAP.grossBookings) * 100)}% GB beat above.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Driver-by-Driver Attribution */}
           <div>
@@ -448,7 +413,7 @@ export default function Scorecard() {
                             <XAxis dataKey="name" tick={AXIS_STYLE} axisLine={false} tickLine={false} />
                             <YAxis tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `${v}%`} />
                             <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => `${v.toFixed(1)}%`} />
-                            <Bar dataKey="Forecast" fill="#D5D5D5" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="My Model" fill="#D5D5D5" radius={[4, 4, 0, 0]} />
                             <Bar dataKey="Actual" fill={GREEN} radius={[4, 4, 0, 0]} />
                           </BarChart>
                         </ResponsiveContainer>
