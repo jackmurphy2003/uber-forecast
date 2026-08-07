@@ -525,7 +525,7 @@ export default function Scorecard() {
                         <EndpointSummary label="Mobility" color="#3A3A3A" actual={mobilityActualPct} forecast={mobilityModelPct} />
                         <EndpointSummary label="Delivery" color={GREEN} actual={deliveryActualPct} forecast={deliveryModelPct} />
                       </div>
-                      <div>
+                      <div style={{ maxWidth: 800, margin: "0 auto" }}>
                         <div style={{ width: "100%", height: 190 }}>
                           <ResponsiveContainer>
                             <LineChart data={crossoverWithGhost} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
