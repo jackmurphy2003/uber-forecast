@@ -530,8 +530,8 @@ export default function Scorecard() {
                           <ResponsiveContainer>
                             <LineChart data={crossoverWithGhost} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
                               <CartesianGrid stroke={GRID_COLOR} vertical={false} />
-                              <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={0} />
-                              <YAxis domain={crossoverDomain} tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `${v}%`} />
+                              <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={0} tickMargin={8} />
+                              <YAxis domain={crossoverDomain} tick={AXIS_STYLE} axisLine={false} tickLine={false} width={38} tickMargin={6} tickFormatter={(v) => `${v}%`} />
                               <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => `${v.toFixed(1)}%`} />
                               <ReferenceLine
                                 segment={[
@@ -561,9 +561,6 @@ export default function Scorecard() {
                           </ResponsiveContainer>
                         </div>
                       </div>
-                      <p className="text-[10.5px] mt-1.5" style={{ color: "#C5C5C5" }}>
-                        Solid dot = actual results · hollow dot = my Q2&apos;26 prediction
-                      </p>
                       <p className="text-[11px] leading-relaxed mt-2" style={{ color: "#9B9B9B" }}>
                         Mobility&apos;s share of GB widened to{" "}
                         <span style={{ color: "#3A3A3A", fontWeight: 600 }}>
