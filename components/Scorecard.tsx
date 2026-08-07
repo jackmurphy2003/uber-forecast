@@ -304,7 +304,10 @@ export default function Scorecard() {
     const delta = actual - forecast;
     const up = delta >= 0;
     return (
-      <div className="rounded-xl px-3.5 py-3" style={{ background: "#F6F6F6" }}>
+      <div
+        className="rounded-xl px-3.5 py-3"
+        style={{ background: "#FFFFFF", border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}
+      >
         <span className="flex items-center gap-1.5 text-[9.5px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.03em" }}>
           <span className="inline-block rounded-full flex-shrink-0" style={{ width: 6, height: 6, background: color }} />
           {label} (Actual)
@@ -497,20 +500,23 @@ export default function Scorecard() {
                   </p>
                   {d.driver === "Segment Mix / The Crossover" && (
                     <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-[9.5px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
-                          GB Mix: Q2&apos;25–Q2&apos;26
-                        </span>
-                        <div className="flex items-center gap-3">
-                          <span className="flex items-center gap-1 text-[9.5px]" style={{ color: "#9B9B9B" }}>
-                            <span className="inline-block rounded-full" style={{ width: 7, height: 7, background: "#3A3A3A" }} />
-                            Mobility
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center mb-1">
+                        <div className="lg:col-span-8 flex items-center justify-between">
+                          <span className="text-[9.5px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
+                            GB Mix: Q2&apos;25–Q2&apos;26
                           </span>
-                          <span className="flex items-center gap-1 text-[9.5px]" style={{ color: "#9B9B9B" }}>
-                            <span className="inline-block rounded-full" style={{ width: 7, height: 7, background: GREEN }} />
-                            Delivery
-                          </span>
-                          <span style={{ width: 1, height: 10, background: "rgba(0,0,0,0.1)" }} />
+                          <div className="flex items-center gap-3">
+                            <span className="flex items-center gap-1 text-[9.5px]" style={{ color: "#9B9B9B" }}>
+                              <span className="inline-block rounded-full" style={{ width: 7, height: 7, background: "#3A3A3A" }} />
+                              Mobility
+                            </span>
+                            <span className="flex items-center gap-1 text-[9.5px]" style={{ color: "#9B9B9B" }}>
+                              <span className="inline-block rounded-full" style={{ width: 7, height: 7, background: GREEN }} />
+                              Delivery
+                            </span>
+                          </div>
+                        </div>
+                        <div className="lg:col-span-4 flex items-center justify-center gap-3">
                           <span className="flex items-center gap-1 text-[9.5px]" style={{ color: "#9B9B9B" }}>
                             <span className="inline-block rounded-full" style={{ width: 6, height: 6, background: "#9B9B9B" }} />
                             Actual
@@ -524,7 +530,7 @@ export default function Scorecard() {
                       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                         <div className="lg:col-span-8" style={{ width: "100%", height: 190 }}>
                           <ResponsiveContainer>
-                            <LineChart data={crossoverWithGhost} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+                            <LineChart data={crossoverWithGhost} margin={{ top: 8, right: 25, left: 0, bottom: 0 }}>
                               <CartesianGrid stroke={GRID_COLOR} vertical={false} />
                               <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={0} tickMargin={8} />
                               <YAxis domain={crossoverDomain} tick={AXIS_STYLE} axisLine={false} tickLine={false} width={38} tickMargin={6} tickFormatter={(v) => `${v}%`} />
@@ -556,7 +562,7 @@ export default function Scorecard() {
                             </LineChart>
                           </ResponsiveContainer>
                         </div>
-                        <div className="lg:col-span-4 flex flex-col gap-4 justify-center">
+                        <div className="lg:col-span-4 flex flex-col gap-4 justify-center lg:mt-2">
                           <EndpointSummary label="Mobility" color="#3A3A3A" actual={mobilityActualPct} forecast={mobilityModelPct} />
                           <EndpointSummary label="Delivery" color={GREEN} actual={deliveryActualPct} forecast={deliveryModelPct} />
                         </div>
