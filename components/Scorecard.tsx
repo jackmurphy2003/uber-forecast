@@ -521,12 +521,8 @@ export default function Scorecard() {
                           </span>
                         </div>
                       </div>
-                      <div className="grid grid-cols-2 gap-3 mb-4">
-                        <EndpointSummary label="Mobility" color="#3A3A3A" actual={mobilityActualPct} forecast={mobilityModelPct} />
-                        <EndpointSummary label="Delivery" color={GREEN} actual={deliveryActualPct} forecast={deliveryModelPct} />
-                      </div>
-                      <div style={{ maxWidth: 800, margin: "0 auto" }}>
-                        <div style={{ width: "100%", height: 190 }}>
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                        <div className="lg:col-span-8" style={{ width: "100%", height: 190 }}>
                           <ResponsiveContainer>
                             <LineChart data={crossoverWithGhost} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
                               <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -559,6 +555,10 @@ export default function Scorecard() {
                               <Line type="monotone" dataKey="deliveryGhost" name="Delivery (my Q2'26 prediction)" stroke={GREEN} strokeWidth={2} strokeDasharray="4 3" strokeOpacity={0.45} dot={ghostEndpointDot(GREEN)} isAnimationActive={false} connectNulls={false} />
                             </LineChart>
                           </ResponsiveContainer>
+                        </div>
+                        <div className="lg:col-span-4 flex flex-col gap-4 justify-center">
+                          <EndpointSummary label="Mobility" color="#3A3A3A" actual={mobilityActualPct} forecast={mobilityModelPct} />
+                          <EndpointSummary label="Delivery" color={GREEN} actual={deliveryActualPct} forecast={deliveryModelPct} />
                         </div>
                       </div>
                       <p className="text-[11px] leading-relaxed mt-2" style={{ color: "#9B9B9B" }}>
