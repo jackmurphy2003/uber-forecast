@@ -193,7 +193,7 @@ export default function Sandbox() {
             Driver Sandbox
           </h2>
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-            Change any assumption using the sliders to see the impact on the Sandbox output.
+            Change any assumption using the sliders to see the impact on the Sandbox output
           </p>
         </div>
         <button

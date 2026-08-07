@@ -72,7 +72,7 @@ export default function LockedForecast() {
             Uber 2026 Q2 Forecast
           </h2>
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-            Directly from my spreadsheet - not affected by Sandbox tab sliders
+            Directly from my spreadsheet - not affected by any of the Sandbox tab sliders
           </p>
         </div>
         <div className="text-[11.5px] font-medium" style={{ color: "#6B6B6B" }}>

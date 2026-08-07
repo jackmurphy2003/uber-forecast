@@ -74,7 +74,7 @@ export default function ConsensusCard() {
       </div>
 
       <div className="flex items-stretch gap-3">
-        <MetricChip label="GB" model={out.grossBookings} street={CONSENSUS.grossBookings} />
+        <MetricChip label="Gross bookings" model={out.grossBookings} street={CONSENSUS.grossBookings} />
         <div style={{ width: 1, background: "rgba(0,0,0,0.07)" }} />
         <MetricChip label="Revenue" model={out.totalRevenue} street={revenueMid} />
       </div>

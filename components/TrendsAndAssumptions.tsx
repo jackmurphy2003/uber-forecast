@@ -352,7 +352,7 @@ export default function TrendsAndAssumptions() {
           Trends &amp; Assumptions
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
-          Q2&apos;23 – Q1&apos;26 actuals &middot; hover an assumption to highlight its chart
+          Q2&apos;23 – Q1&apos;26 actuals &middot; hover or click an assumption to highlight its chart
         </p>
       </div>
 
@@ -363,7 +363,7 @@ export default function TrendsAndAssumptions() {
         <div className="flex flex-col overflow-y-auto" style={{ scrollbarWidth: "none" }}>
           <div className="mb-3">
             <h3 className="text-[13px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>Model Assumptions</h3>
-            <p className="text-[10.5px]" style={{ color: "#B5B5B5" }}>Hover to highlight chart</p>
+            <p className="text-[10.5px]" style={{ color: "#B5B5B5" }}>Hover to highlight chart, click to lock</p>
           </div>
           <div className="flex flex-col gap-1.5">
             {ASSUMPTIONS.map(({ key, ...a }) => (

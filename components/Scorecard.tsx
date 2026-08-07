@@ -18,6 +18,7 @@ import { LOCKED_INPUTS } from "./LockedForecast";
 import { GUIDANCE } from "@/lib/assumptions";
 import { CONSENSUS } from "@/lib/consensus";
 import { ACTUALS } from "@/lib/actuals";
+import { SEGMENT_GB } from "@/lib/data";
 import { SCORECARD_NOTES, DRIVER_ATTRIBUTION, TAKEAWAYS } from "@/lib/reconciliation";
 import { fmtM, fmtSigned, fmtPct, fmtDollar } from "@/lib/format";
 
@@ -194,12 +195,6 @@ export default function Scorecard() {
     ? METRICS.map(({ key }) => Math.abs((actuals[key] - MODEL_MAP[key]) / actuals[key]) * 100)
     : [];
   const mape = absErrors.length ? absErrors.reduce((a, b) => a + b, 0) / absErrors.length : 0;
-  const absErrorsExNGOP = actuals
-    ? METRICS.filter(({ key }) => key !== "totalNGOP").map(
-        ({ key }) => Math.abs((actuals[key] - MODEL_MAP[key]) / actuals[key]) * 100
-      )
-    : [];
-  const mapeExNGOP = absErrorsExNGOP.length ? absErrorsExNGOP.reduce((a, b) => a + b, 0) / absErrorsExNGOP.length : 0;
 
   // Model vs. consensus: whoever's estimate was closer to actual, on the metrics where both exist.
   const headToHead = actuals
@@ -231,22 +226,46 @@ export default function Scorecard() {
   const forecastTotalGB = out.mobilityGB + out.deliveryGB + out.freightGB;
   const actualTotalGB = actuals ? actuals.mobilityGB + actuals.deliveryGB + actuals.freightGB : 0;
 
-  // Crossover, resolved: same two-line language as the Forecast tab's GB Mix
-  // chart (Mobility dark, Delivery green), zoomed to the relevant band instead
-  // of 0-60% so a ~1-3pp gap actually reads instead of flattening out.
+  // Crossover, resolved: Q2'25-Q2'26 timeline like the Forecast tab's GB
+  // Mix chart (Mobility dark, Delivery green), with actual Q2'26 extending the
+  // solid line and a faint dashed "ghost" line showing where the model predicted
+  // Q2'26 would land instead -- the gap between the two is the miss.
   const mobilityModelPct = (out.mobilityGB / forecastTotalGB) * 100;
   const deliveryModelPct = (out.deliveryGB / forecastTotalGB) * 100;
   const mobilityActualPct = actuals ? (actuals.mobilityGB / actualTotalGB) * 100 : 0;
   const deliveryActualPct = actuals ? (actuals.deliveryGB / actualTotalGB) * 100 : 0;
-  const crossoverLineData = actuals
-    ? [
-        { point: "Model", Mobility: mobilityModelPct, Delivery: deliveryModelPct },
-        { point: "Actual", Mobility: mobilityActualPct, Delivery: deliveryActualPct },
-      ]
-    : [];
-  const crossoverMin = Math.min(mobilityModelPct, deliveryModelPct, mobilityActualPct, deliveryActualPct);
-  const crossoverMax = Math.max(mobilityModelPct, deliveryModelPct, mobilityActualPct, deliveryActualPct);
-  const crossoverDomain: [number, number] = [Math.floor(crossoverMin - 3), Math.ceil(crossoverMax + 3)];
+
+  const historicalMix = SEGMENT_GB.slice(
+    SEGMENT_GB.findIndex((q) => q.quarter === "Q2'25")
+  ).map((q) => ({
+    quarter: q.quarter,
+    mobility: (q.mobility / q.total) * 100,
+    delivery: (q.delivery / q.total) * 100,
+  }));
+  const lastHistorical = historicalMix[historicalMix.length - 1];
+  const crossoverSeries = actuals
+    ? [...historicalMix, { quarter: "Q2'26", mobility: mobilityActualPct, delivery: deliveryActualPct }]
+    : historicalMix;
+  const crossoverWithGhost = crossoverSeries.map((d, i) => {
+    if (i === historicalMix.length - 1) {
+      return { ...d, mobilityGhost: lastHistorical.mobility, deliveryGhost: lastHistorical.delivery };
+    }
+    if (i === historicalMix.length) {
+      return { ...d, mobilityGhost: mobilityModelPct, deliveryGhost: deliveryModelPct };
+    }
+    return d;
+  });
+  const allMixValues = [
+    ...historicalMix.flatMap((d) => [d.mobility, d.delivery]),
+    mobilityActualPct,
+    deliveryActualPct,
+    mobilityModelPct,
+    deliveryModelPct,
+  ];
+  const crossoverDomain: [number, number] = [
+    Math.floor(Math.min(...allMixValues) - 2),
+    Math.ceil(Math.max(...allMixValues) + 2),
+  ];
 
   return (
     <section>
@@ -257,7 +276,7 @@ export default function Scorecard() {
           </h2>
           <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
             {actuals
-              ? "Q2'26: how close my model was, then the why behind every number."
+              ? "Q2'26: My model vs the actual numbers"
               : "My model vs. actual results, populated once Uber reports."}
           </p>
         </div>
@@ -306,12 +325,8 @@ export default function Scorecard() {
                 mean absolute error across six metrics
               </span>
               <p className="text-[11.5px] leading-relaxed mt-1.5 max-w-[760px]" style={{ color: "#065F46" }}>
-                {mapeExNGOP.toFixed(1)}% excluding Non-GAAP OI, the largest single variance and the
-                only metric with no guidance or consensus benchmark to anchor against. Street
-                consensus was closer than my model on {headToHead.length - modelWins} of{" "}
-                {headToHead.length} comparable metrics. Still, landing within 1.7% on Gross Bookings
-                and 1.9% on Adj EBITDA with a model built solo from public filings the day before
-                the print is solid.
+                Street consensus was closer than my model on {headToHead.length - modelWins} of{" "}
+                {headToHead.length} comparable metrics. Still, I feel good about a 3% MAPE - especially since a few metrics fell outside of Uber&apos;s own guidance from the Q1&apos;26 press release.
               </p>
             </div>
 
@@ -375,8 +390,8 @@ export default function Scorecard() {
           {/* Combined comparison + scorecard table -- the why */}
           <div>
             <SectionHeader
-              title="Scorecard: Guidance vs. Consensus vs. My Model vs. Actual"
-              sub="Every benchmark side by side, with the why behind each line."
+              title="Comparison Table"
+              sub="Guidance vs Consensus vs My Model - all compared to the actuals"
             />
             <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(0,0,0,0.08)" }}>
               <div
@@ -410,7 +425,7 @@ export default function Scorecard() {
 
           {/* Driver-by-Driver Attribution */}
           <div>
-            <SectionHeader title="Driver-by-Driver Attribution" sub="Was I right, and why or why not?" />
+            <SectionHeader title="Driver Notes" sub="Was I right, and why or why not?" />
             <div className="flex flex-col gap-2.5">
               {DRIVER_ATTRIBUTION.map((d) => (
                 <div key={d.driver} className="rounded-2xl px-5 py-4" style={{ background: "#F6F6F6" }}>
@@ -424,7 +439,7 @@ export default function Scorecard() {
                     <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-[9.5px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.04em" }}>
-                          GB Mix: Model vs. Actual
+                          GB Mix: Q2&apos;25–Q2&apos;26
                         </span>
                         <div className="flex items-center gap-3">
                           <span className="flex items-center gap-1 text-[9.5px]" style={{ color: "#9B9B9B" }}>
@@ -437,18 +452,23 @@ export default function Scorecard() {
                           </span>
                         </div>
                       </div>
-                      <div style={{ width: "100%", height: 160 }}>
+                      <div style={{ width: "100%", height: 180 }}>
                         <ResponsiveContainer>
-                          <LineChart data={crossoverLineData} margin={{ top: 8, right: 20, left: 0, bottom: 0 }}>
+                          <LineChart data={crossoverWithGhost} margin={{ top: 8, right: 20, left: 0, bottom: 0 }}>
                             <CartesianGrid stroke={GRID_COLOR} vertical={false} />
-                            <XAxis dataKey="point" tick={AXIS_STYLE} axisLine={false} tickLine={false} />
+                            <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={0} />
                             <YAxis domain={crossoverDomain} tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `${v}%`} />
                             <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => `${v.toFixed(1)}%`} />
-                            <Line type="monotone" dataKey="Mobility" stroke="#3A3A3A" strokeWidth={2.5} dot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} />
-                            <Line type="monotone" dataKey="Delivery" stroke={GREEN} strokeWidth={2.5} dot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} />
+                            <Line type="monotone" dataKey="mobility" name="Mobility" stroke="#3A3A3A" strokeWidth={2.5} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} connectNulls={false} />
+                            <Line type="monotone" dataKey="delivery" name="Delivery" stroke={GREEN} strokeWidth={2.5} dot={false} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} connectNulls={false} />
+                            <Line type="monotone" dataKey="mobilityGhost" name="Mobility (my Q2'26 prediction)" stroke="#3A3A3A" strokeWidth={2} strokeDasharray="4 3" strokeOpacity={0.35} dot={{ r: 3, strokeWidth: 0, fill: "#3A3A3A", fillOpacity: 0.35 }} isAnimationActive={false} connectNulls={false} />
+                            <Line type="monotone" dataKey="deliveryGhost" name="Delivery (my Q2'26 prediction)" stroke={GREEN} strokeWidth={2} strokeDasharray="4 3" strokeOpacity={0.35} dot={{ r: 3, strokeWidth: 0, fill: GREEN, fillOpacity: 0.35 }} isAnimationActive={false} connectNulls={false} />
                           </LineChart>
                         </ResponsiveContainer>
                       </div>
+                      <p className="text-[10.5px] mt-1.5" style={{ color: "#C5C5C5" }}>
+                        Solid = actual results · faint dashed = my Q2&apos;26 prediction
+                      </p>
                       <p className="text-[11px] leading-relaxed mt-2" style={{ color: "#9B9B9B" }}>
                         Mobility&apos;s share of GB widened to{" "}
                         <span style={{ color: "#3A3A3A", fontWeight: 600 }}>

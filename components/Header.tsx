@@ -81,7 +81,7 @@ export default function Header() {
             className="text-[12px] md:text-[13px] font-bold tracking-tight"
             style={{ color: "#FFFFFF", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.02em" }}
           >
-            UBER Q2&apos;26F
+            Jack&apos;s UBER Q2&apos;26F Interactive Model
           </span>
         </Link>
 

@@ -140,13 +140,13 @@ function SegmentMixDonut({
 
 export default function Bridge() {
   const [hoveredTile, setHoveredTile] = useState<"delivery" | "mobility" | null>(null);
-  const bridgeDesc = `Delivery gross bookings projected to surpass Mobility, the core offering, for the first time, ${fmtM(GAP_M)} ahead on a ${fmtM(out.grossBookings)} base.`;
+  const bridgeDesc = "I'm projecting that Delivery gross bookings will surpass Mobility, the core offering, for the first time.";
 
   return (
     <section>
       <div className="mb-5">
         <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-          The Crossover
+          The Q2&apos;26 Crossover
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
           {bridgeDesc}

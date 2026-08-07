@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
+import DevEditMode from "@/components/DevEditMode";
 
 const sans = Inter({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${sans.variable} ${geistMono.variable}`}>
         {children}
         <BottomNav />
+        <DevEditMode />
       </body>
     </html>
   );

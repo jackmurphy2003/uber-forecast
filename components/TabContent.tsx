@@ -19,7 +19,7 @@ function SheetsEmbed() {
     <section>
       <div className="mb-5">
         <h2 className="text-[19px] font-extrabold tracking-tight" style={{ color: "#0A0A0A" }}>
-          Full Model
+          My Full Model
         </h2>
         <p className="text-[12px]" style={{ color: "#6B6B6B" }}>
           Click the sheet tabs at the bottom to navigate between Assumptions, Historicals, and the driver tree.
@@ -56,7 +56,7 @@ function AboutHero() {
           A bottom-up forecast of{" "}
           <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Uber&apos;s Q2 2026 earnings</span>, built
           from public financials on Uber&apos;s investor site and locked on August 4, before Uber
-          reports on August 5. Every number below is my own estimate, checked against
+          reports on August 5. Every number below is pulled from the spreadsheet I built from my own assumptions, checked against
           management&apos;s guidance.{" "}
           <span style={{ color: "#0A0A0A", fontWeight: 600 }}>Trends &amp; Assumptions</span> shows the
           data behind each input, and the{" "}
@@ -80,7 +80,7 @@ function VarianceCallout() {
     >
       <span className="flex items-center gap-2 text-[12.5px] font-semibold" style={{ color: "#064E3B" }}>
         <span className="inline-block rounded-full flex-shrink-0" style={{ width: 6, height: 6, background: "#06C167" }} />
-        Uber reported August 5, see how this model did
+        Uber reported August 5, see how my model did
       </span>
       <span className="text-[11.5px] font-bold flex-shrink-0" style={{ color: "#04964F" }}>
         View Variance Analysis &rarr;
