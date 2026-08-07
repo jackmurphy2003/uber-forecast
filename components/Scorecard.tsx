@@ -287,8 +287,9 @@ export default function Scorecard() {
     };
   }
 
-  // Endpoint summary card, rendered beside the chart instead of inline on it --
-  // keeps the actual/forecast/delta text out of the crowded Q2'26 corner.
+  // Endpoint summary card, rendered above the chart instead of squeezed beside it --
+  // keeps the actual/forecast/delta text out of the crowded Q2'26 corner, and reads
+  // top-to-bottom before the reader even looks at the lines.
   function EndpointSummary({
     label,
     color,
@@ -303,17 +304,17 @@ export default function Scorecard() {
     const delta = actual - forecast;
     const up = delta >= 0;
     return (
-      <div>
+      <div className="rounded-xl px-3.5 py-3" style={{ background: "#F6F6F6" }}>
         <span className="flex items-center gap-1.5 text-[9.5px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.03em" }}>
           <span className="inline-block rounded-full flex-shrink-0" style={{ width: 6, height: 6, background: color }} />
-          {label}
+          {label} (Actual)
         </span>
-        <div className="flex items-baseline gap-1.5 mt-0.5">
-          <span className="tnum text-[15px] font-black" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
+        <div className="flex items-baseline gap-1.5 mt-1">
+          <span className="tnum text-[17px] font-black" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
             {actual.toFixed(1)}%
           </span>
           <span
-            className="tnum text-[9.5px] font-bold px-1 rounded"
+            className="tnum text-[10px] font-bold px-1.5 py-0.5 rounded"
             style={{ background: up ? "rgba(6,193,103,0.1)" : "rgba(225,29,72,0.1)", color: up ? "#04964F" : "#E11D48" }}
           >
             {up ? "Beat" : "Miss"} {fmtSigned(delta)}%
@@ -520,8 +521,12 @@ export default function Scorecard() {
                           </span>
                         </div>
                       </div>
-                      <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
-                        <div className="flex-1 min-w-0" style={{ height: 190 }}>
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <EndpointSummary label="Mobility" color="#3A3A3A" actual={mobilityActualPct} forecast={mobilityModelPct} />
+                        <EndpointSummary label="Delivery" color={GREEN} actual={deliveryActualPct} forecast={deliveryModelPct} />
+                      </div>
+                      <div>
+                        <div style={{ width: "100%", height: 190 }}>
                           <ResponsiveContainer>
                             <LineChart data={crossoverWithGhost} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
                               <CartesianGrid stroke={GRID_COLOR} vertical={false} />
@@ -554,10 +559,6 @@ export default function Scorecard() {
                               <Line type="monotone" dataKey="deliveryGhost" name="Delivery (my Q2'26 prediction)" stroke={GREEN} strokeWidth={2} strokeDasharray="4 3" strokeOpacity={0.45} dot={ghostEndpointDot(GREEN)} isAnimationActive={false} connectNulls={false} />
                             </LineChart>
                           </ResponsiveContainer>
-                        </div>
-                        <div className="flex sm:flex-col gap-4 sm:gap-3 sm:w-[110px] sm:flex-shrink-0 sm:justify-center">
-                          <EndpointSummary label="Mobility" color="#3A3A3A" actual={mobilityActualPct} forecast={mobilityModelPct} />
-                          <EndpointSummary label="Delivery" color={GREEN} actual={deliveryActualPct} forecast={deliveryModelPct} />
                         </div>
                       </div>
                       <p className="text-[10.5px] mt-1.5" style={{ color: "#C5C5C5" }}>
