@@ -264,8 +264,8 @@ export default function Scorecard() {
     deliveryModelPct,
   ];
   const crossoverDomain: [number, number] = [
-    Math.floor(Math.min(...allMixValues) - 2),
-    Math.ceil(Math.max(...allMixValues) + 2),
+    Math.floor(Math.min(...allMixValues) - 1),
+    Math.ceil(Math.max(...allMixValues) + 1),
   ];
   const crossoverLastIdx = crossoverWithGhost.length - 1;
 
@@ -287,31 +287,43 @@ export default function Scorecard() {
     };
   }
 
-  // Endpoint callout: actual value bold, forecast value + delta muted, to the right of the dot.
-  // Recharts strips non-SVG props (like `payload`) before calling a Line's `label` render
-  // function, so the forecast value is read from the closed-over data array by index instead.
-  function endpointLabel(ghostKey: "mobilityGhost" | "deliveryGhost") {
-    return function EndpointLabel(props: { x?: number; y?: number; index?: number; value?: number }) {
-      const { x, y, index, value } = props;
-      if (index !== crossoverLastIdx || x == null || y == null || value == null) return <g key={`label-${index}`} />;
-      const fc = (crossoverWithGhost[index] as unknown as Record<string, number>)[ghostKey];
-      const delta = value - fc;
-      const up = delta >= 0;
-      return (
-        <text key={`label-${index}`} x={x + 10} y={y} dy={4} fontSize={10.5} fontFamily="var(--font-geist-mono)">
-          <tspan fontWeight={700} fill="#0A0A0A">
-            {value.toFixed(1)}%
-          </tspan>
-          <tspan fill="#B5B5B5" fontWeight={400}>
-            {" "}
-            (FC: {fc.toFixed(1)}%){" "}
-          </tspan>
-          <tspan fontWeight={700} fill={up ? "#04964F" : "#E11D48"}>
-            {fmtSigned(delta)}%
-          </tspan>
-        </text>
-      );
-    };
+  // Endpoint summary card, rendered beside the chart instead of inline on it --
+  // keeps the actual/forecast/delta text out of the crowded Q2'26 corner.
+  function EndpointSummary({
+    label,
+    color,
+    actual,
+    forecast,
+  }: {
+    label: string;
+    color: string;
+    actual: number;
+    forecast: number;
+  }) {
+    const delta = actual - forecast;
+    const up = delta >= 0;
+    return (
+      <div>
+        <span className="flex items-center gap-1.5 text-[9.5px] font-bold uppercase" style={{ color: "#9B9B9B", letterSpacing: "0.03em" }}>
+          <span className="inline-block rounded-full flex-shrink-0" style={{ width: 6, height: 6, background: color }} />
+          {label}
+        </span>
+        <div className="flex items-baseline gap-1.5 mt-0.5">
+          <span className="tnum text-[15px] font-black" style={{ color: "#0A0A0A", fontFamily: "var(--font-geist-mono)" }}>
+            {actual.toFixed(1)}%
+          </span>
+          <span
+            className="tnum text-[9.5px] font-bold px-1 rounded"
+            style={{ background: up ? "rgba(6,193,103,0.1)" : "rgba(225,29,72,0.1)", color: up ? "#04964F" : "#E11D48" }}
+          >
+            {up ? "Beat" : "Miss"} {fmtSigned(delta)}%
+          </span>
+        </div>
+        <span className="tnum text-[9.5px]" style={{ color: "#B5B5B5", fontFamily: "var(--font-geist-mono)" }}>
+          Modeled: {forecast.toFixed(1)}%
+        </span>
+      </div>
+    );
   }
 
   return (
@@ -508,39 +520,45 @@ export default function Scorecard() {
                           </span>
                         </div>
                       </div>
-                      <div style={{ width: "100%", height: 190 }}>
-                        <ResponsiveContainer>
-                          <LineChart data={crossoverWithGhost} margin={{ top: 8, right: 130, left: 0, bottom: 0 }}>
-                            <CartesianGrid stroke={GRID_COLOR} vertical={false} />
-                            <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={0} />
-                            <YAxis domain={crossoverDomain} tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `${v}%`} />
-                            <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => `${v.toFixed(1)}%`} />
-                            <ReferenceLine
-                              segment={[
-                                { x: "Q2'26", y: mobilityActualPct },
-                                { x: "Q2'26", y: mobilityModelPct },
-                              ]}
-                              stroke="#B5B5B5"
-                              strokeDasharray="2 2"
-                              strokeWidth={1}
-                              ifOverflow="visible"
-                            />
-                            <ReferenceLine
-                              segment={[
-                                { x: "Q2'26", y: deliveryActualPct },
-                                { x: "Q2'26", y: deliveryModelPct },
-                              ]}
-                              stroke="#B5B5B5"
-                              strokeDasharray="2 2"
-                              strokeWidth={1}
-                              ifOverflow="visible"
-                            />
-                            <Line type="monotone" dataKey="mobility" name="Mobility" stroke="#3A3A3A" strokeWidth={2.5} dot={actualEndpointDot("#3A3A3A")} label={endpointLabel("mobilityGhost")} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} connectNulls={false} />
-                            <Line type="monotone" dataKey="delivery" name="Delivery" stroke={GREEN} strokeWidth={2.5} dot={actualEndpointDot(GREEN)} label={endpointLabel("deliveryGhost")} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} connectNulls={false} />
-                            <Line type="monotone" dataKey="mobilityGhost" name="Mobility (my Q2'26 prediction)" stroke="#3A3A3A" strokeWidth={2} strokeDasharray="4 3" strokeOpacity={0.45} dot={ghostEndpointDot("#3A3A3A")} isAnimationActive={false} connectNulls={false} />
-                            <Line type="monotone" dataKey="deliveryGhost" name="Delivery (my Q2'26 prediction)" stroke={GREEN} strokeWidth={2} strokeDasharray="4 3" strokeOpacity={0.45} dot={ghostEndpointDot(GREEN)} isAnimationActive={false} connectNulls={false} />
-                          </LineChart>
-                        </ResponsiveContainer>
+                      <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
+                        <div className="flex-1 min-w-0" style={{ height: 190 }}>
+                          <ResponsiveContainer>
+                            <LineChart data={crossoverWithGhost} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+                              <CartesianGrid stroke={GRID_COLOR} vertical={false} />
+                              <XAxis dataKey="quarter" tick={AXIS_STYLE} axisLine={false} tickLine={false} interval={0} />
+                              <YAxis domain={crossoverDomain} tick={AXIS_STYLE} axisLine={false} tickLine={false} width={34} tickFormatter={(v) => `${v}%`} />
+                              <Tooltip contentStyle={TOOLTIP_STYLE} labelStyle={{ color: "#6B6B6B" }} formatter={(v: number) => `${v.toFixed(1)}%`} />
+                              <ReferenceLine
+                                segment={[
+                                  { x: "Q2'26", y: mobilityActualPct },
+                                  { x: "Q2'26", y: mobilityModelPct },
+                                ]}
+                                stroke="#B5B5B5"
+                                strokeDasharray="2 2"
+                                strokeWidth={1}
+                                ifOverflow="visible"
+                              />
+                              <ReferenceLine
+                                segment={[
+                                  { x: "Q2'26", y: deliveryActualPct },
+                                  { x: "Q2'26", y: deliveryModelPct },
+                                ]}
+                                stroke="#B5B5B5"
+                                strokeDasharray="2 2"
+                                strokeWidth={1}
+                                ifOverflow="visible"
+                              />
+                              <Line type="monotone" dataKey="mobility" name="Mobility" stroke="#3A3A3A" strokeWidth={2.5} dot={actualEndpointDot("#3A3A3A")} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} connectNulls={false} />
+                              <Line type="monotone" dataKey="delivery" name="Delivery" stroke={GREEN} strokeWidth={2.5} dot={actualEndpointDot(GREEN)} activeDot={{ r: 4, strokeWidth: 2, stroke: "#FFFFFF" }} isAnimationActive={false} connectNulls={false} />
+                              <Line type="monotone" dataKey="mobilityGhost" name="Mobility (my Q2'26 prediction)" stroke="#3A3A3A" strokeWidth={2} strokeDasharray="4 3" strokeOpacity={0.45} dot={ghostEndpointDot("#3A3A3A")} isAnimationActive={false} connectNulls={false} />
+                              <Line type="monotone" dataKey="deliveryGhost" name="Delivery (my Q2'26 prediction)" stroke={GREEN} strokeWidth={2} strokeDasharray="4 3" strokeOpacity={0.45} dot={ghostEndpointDot(GREEN)} isAnimationActive={false} connectNulls={false} />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </div>
+                        <div className="flex sm:flex-col gap-4 sm:gap-3 sm:w-[110px] sm:flex-shrink-0 sm:justify-center">
+                          <EndpointSummary label="Mobility" color="#3A3A3A" actual={mobilityActualPct} forecast={mobilityModelPct} />
+                          <EndpointSummary label="Delivery" color={GREEN} actual={deliveryActualPct} forecast={deliveryModelPct} />
+                        </div>
                       </div>
                       <p className="text-[10.5px] mt-1.5" style={{ color: "#C5C5C5" }}>
                         Solid dot = actual results · hollow dot = my Q2&apos;26 prediction
